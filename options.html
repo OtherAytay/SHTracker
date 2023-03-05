@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sissy Habit Tracker</title>
+    <link href="scss/custom.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+</head>
+
+<body>
+    <div class="container-fluid overflow-hidden">
+        <div class="row">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
+                <div class="container-fluid">
+                    <a class="navbar-brand text-fusion-OS" href="#">Sissy Habit Tracker</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item"><a class="nav-link" aria-current="page" href="#">Home</a></li>
+                            <li class="nav-item"><a class="nav-link active" href="options.html">Options</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="row">
+            <div class="col-xxl-4 offset-xxl-4 col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-sm-10 offset-sm-1 my-2">
+                <div class="card">
+                    <h2 class="card-header text-center">Options</h2>
+                    <div class="card-body">
+                        <h4 class="text-center">Lifestyle Areas</h4>
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <h5 class="text-feminization">Feminization</h5>
+                                <ul class="list-group d-inline-flex ">
+                                    <li class="list-group-item border-feminization">
+                                        <div class="form-check form-switch">
+                                            <input id="femwear-enabled" type="checkbox" role="switch"
+                                                class="form-check-input input-feminization" onchange="setOptions()"
+                                                checked>
+                                            <label for="femwear-enabled" class="form-check-label">Feminine Wear</label>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item border-feminization">
+                                        <div class="form-check form-switch">
+                                            <input id="makeup-enabled" type="checkbox" role="switch"
+                                                class="form-check-input input-feminization" onchange="setOptions()"
+                                                checked>
+                                            <label for="makeup-enabled" class="form-check-label">Makeup</label>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item border-feminization">
+                                        <div class="form-check form-switch">
+                                            <input id="hygiene-enabled" type="checkbox" role="switch"
+                                                class="form-check-input input-feminization" onchange="setOptions()"
+                                                checked>
+                                            <label for="hygiene-enabled" class="form-check-label">Hygiene</label>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item border-feminization">
+                                        <div class="form-check form-switch">
+                                            <input id="shaving-enabled" type="checkbox" role="switch"
+                                                class="form-check-input input-feminization" onchange="setOptions()"
+                                                checked>
+                                            <label for="shaving-enabled" class="form-check-label">Shaving</label>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item border-feminization">
+                                        <div class="form-check form-switch">
+                                            <input id="nails-enabled" type="checkbox" role="switch"
+                                                class="form-check-input input-feminization" onchange="setOptions()"
+                                                checked>
+                                            <label for="nails-enabled" class="form-check-label">Nail Care</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-6 text-center">
+                                <h5 class="text-sexuality">Sexuality</h5>
+                                <ul class="list-group d-inline-flex">
+                                    <li class="list-group-item border-sexuality">
+                                        <div class="form-check form-switch">
+                                            <input id="plugging-enabled" type="checkbox" role="switch"
+                                                class="form-check-input input-sexuality" onchange="setOptions()"
+                                                checked>
+                                            <label for="plugging-enabled" class="form-check-label">Plugging</label>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item border-sexuality">
+                                        <div class="form-check form-switch">
+                                            <input id="submission-enabled" type="checkbox" role="switch"
+                                                class="form-check-input input-sexuality" onchange="setOptions()"
+                                                checked>
+                                            <label for="submission-enabled" class="form-check-label">Submission</label>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item border-sexuality">
+                                        <div class="form-check form-switch">
+                                            <input id="chastity-enabled" type="checkbox" role="switch"
+                                                class="form-check-input input-sexuality" onchange="setOptions()"
+                                                checked>
+                                            <label for="chastity-enabled" class="form-check-label">Chastity</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row my-2 justify-content-center">
+                            <h4 class="text-center">Habit Options</h4>
+                            <ul class="list-group list-group-horizontal w-75">
+                                <li class="list-group-item d-flex">
+                                    <h5 class="mx-auto my-auto">Discretion</h5>
+                                </li>
+                                <li class="list-group-item flex-grow-1 d-flex justify-content-center">
+                                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                        <input type="radio" class="btn-check" name="discretion-radio"
+                                            id="discretion-private" autocomplete="off" onchange="setOptions()" checked>
+                                        <label class="btn btn-outline-private" for="discretion-private">Private</label>
+
+                                        <input type="radio" class="btn-check" name="discretion-radio"
+                                            id="discretion-discrete" autocomplete="off" onchange="setOptions()">
+                                        <label class="btn btn-outline-discrete"
+                                            for="discretion-discrete">Discrete</label>
+
+                                        <input type="radio" class="btn-check" name="discretion-radio"
+                                            id="discretion-public" autocomplete="off" onchange="setOptions()">
+                                        <label class="btn btn-outline-public" for="discretion-public">Public</label>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul class="list-group list-group-horizontal mt-2 w-75">
+                                <li class="list-group-item d-flex">
+                                    <h5 class="mx-auto my-auto">Point Allocation</h5>
+                                </li>
+                                <li class="list-group-item flex-grow-1 d-flex justify-content-center">
+                                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                        <input type="radio" class="btn-check" name="allocation-radio"
+                                            id="allocation-choice" autocomplete="off" onchange="setOptions()" checked>
+                                        <label class="btn btn-outline-primary" for="allocation-choice">Choice</label>
+
+                                        <input type="radio" class="btn-check" name="allocation-radio"
+                                            id="allocation-random" autocomplete="off" onchange="setOptions()">
+                                        <label class="btn btn-outline-primary" for="allocation-random">Random</label>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul class="list-group list-group-horizontal mt-2 w-75">
+                                <li class="list-group-item d-flex">
+                                    <h5 class="mx-auto my-auto">Benchmarks</h5>
+                                </li>
+                                <li class="list-group-item d-flex flex-grow-1 justify-content-center">
+                                    <div class="form-check form-switch fs-4 d-flex justify-content-center">
+                                        <input id="benchmarks-enabled" type="checkbox" role="switch"
+                                            class="form-check-input" onchange="setOptions()" checked>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul class="list-group list-group-horizontal mt-2 w-75">
+                                <li class="list-group-item d-flex">
+                                    <h5 class="mx-auto my-auto">Points</h5>
+                                </li>
+                                <li class="list-group-item d-flex">
+                                    <h5 id="points" class="mx-auto my-auto">1</h5>
+                                </li>
+                                <li class="list-group-item d-flex flex-grow-1 justify-content-center">
+                                    <input id="point-range" type="range" class="form-range" min="1" max="8" step="1"
+                                        onload="this.max = numAreas" onchange="setOptions()">
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="row justify-content-center mx-auto">
+                            <h4 class="text-center">Import / Export</h4>
+                            <div class="input-group  w-75">
+                                <label class="input-group-text text-bg-primary" for="import-save">Import Save</label>
+                                <input type="file" class="form-control border-primary" id="import-save">
+                            </div>
+                            <button class="btn btn-primary w-25" onclick="exportSave()">Export Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js" crossorigin></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
+    <script>var Alert = ReactBootstrap.Alert;</script>
+    <script src="bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
+        integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous"
+        async></script>
+    <!-- https://github.com/timmywil/panzoom -->
+    <script src="js/utility.js"></script>
+    <script src="js/info.js"></script>
+    <script src="js/game.js"></script>
+    <script>fileUpload()</script>
+</body>
+
+</html>
