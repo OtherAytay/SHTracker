@@ -38,7 +38,7 @@
                     <div class="card-body">
                         <h4 class="text-center">Lifestyle Areas</h4>
                         <div class="row">
-                            <div class="col-6 text-center">
+                            <div class="col-sm-6 col-12 text-center">
                                 <h5 class="text-feminization">Feminization</h5>
                                 <ul class="list-group d-inline-flex ">
                                     <li class="list-group-item border-feminization">
@@ -83,7 +83,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-6 text-center">
+                            <div class="col-sm-6 col-12 text-center">
                                 <h5 class="text-sexuality">Sexuality</h5>
                                 <ul class="list-group d-inline-flex">
                                     <li class="list-group-item border-sexuality">
@@ -113,9 +113,9 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="row my-2 justify-content-center">
+                        <div class="row my-2 justify-content-center overflow-auto">
                             <h4 class="text-center">Habit Options</h4>
-                            <ul class="list-group list-group-horizontal w-75">
+                            <ul class="list-group list-group-horizontal w-100 px-4">
                                 <li class="list-group-item d-flex">
                                     <h5 class="mx-auto my-auto">Discretion</h5>
                                 </li>
@@ -136,9 +136,9 @@
                                     </div>
                                 </li>
                             </ul>
-                            <ul class="list-group list-group-horizontal mt-2 w-75">
+                            <ul class="list-group list-group-horizontal mt-2 w-100 px-4">
                                 <li class="list-group-item d-flex">
-                                    <h5 class="mx-auto my-auto">Point Allocation</h5>
+                                    <h5 class="mx-auto my-auto">Allocation</h5>
                                 </li>
                                 <li class="list-group-item flex-grow-1 d-flex justify-content-center">
                                     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
@@ -152,7 +152,7 @@
                                     </div>
                                 </li>
                             </ul>
-                            <ul class="list-group list-group-horizontal mt-2 w-75">
+                            <ul class="list-group list-group-horizontal mt-2 w-100 px-4">
                                 <li class="list-group-item d-flex">
                                     <h5 class="mx-auto my-auto">Benchmarks</h5>
                                 </li>
@@ -163,7 +163,7 @@
                                     </div>
                                 </li>
                             </ul>
-                            <ul class="list-group list-group-horizontal mt-2 w-75">
+                            <ul class="list-group list-group-horizontal mt-2 w-100 px-4">
                                 <li class="list-group-item d-flex">
                                     <h5 class="mx-auto my-auto">Points</h5>
                                 </li>
@@ -171,8 +171,20 @@
                                     <h5 id="points" class="mx-auto my-auto">1</h5>
                                 </li>
                                 <li class="list-group-item d-flex flex-grow-1 justify-content-center">
-                                    <input id="point-range" type="range" class="form-range" min="1" max="8" step="1"
+                                    <input id="point-range" type="range" class="form-range mx-auto my-auto" min="1" max="8" step="1"
                                         onload="this.max = numAreas" onchange="setOptions()">
+                                </li>
+                            </ul>
+                            <ul class="list-group list-group-horizontal mt-2 w-100 px-4">
+                                <li class="list-group-item d-flex flex-shrink-0">
+                                    <h5 class="mx-auto my-auto ">Interval</h5>
+                                </li>
+                                <li class="list-group-item d-flex">
+                                    <h5 id="alloc-interval" class="text-center mx-auto my-auto">1 Day</h5>
+                                </li>
+                                <li class="list-group-item d-flex flex-grow-1 justify-content-center">
+                                    <input id="alloc-interval-range" type="range" class="form-range mx-auto my-auto" min="1" max="5"
+                                        step="1" onchange="setOptions()">
                                 </li>
                             </ul>
                         </div>
@@ -201,8 +213,7 @@
     <!-- https://github.com/timmywil/panzoom -->
     <script src="js/utility.js"></script>
     <script src="js/info.js"></script>
-    <script src="js/game.js"></script>
-    <script>fileUpload()</script>
+    <script>fileUpload(); loadLocal(); updateOptionElements();</script>
 </body>
 
 </html>

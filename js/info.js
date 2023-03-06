@@ -1,27 +1,16 @@
 /*--- Constants ---*/
 // Encode benchmark boundaries
 const benchmarks = 4; // number of benchmarks
-const bench1 = { "Feminine Wear": 2, Makeup: 2, Hygiene: 3, Shaving: 1, "Nail Care": 2, Plugging: 3, Submission: 2, Chastity: 2 }
-const bench2 = { "Feminine Wear": 4, Makeup: 4, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 4, Submission: 5, Chastity: 4 }
-const bench3 = { "Feminine Wear": 7, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 5, Submission: 6, Chastity: 6 }
-const bench4 = { "Feminine Wear": 9, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 8, Submission: 9, Chastity: 8 }
+const bench1 = { "Feminine Wear": 2, Makeup: 2, Hygiene: 3, Shaving: 1, "Nail Care": 2, Plugging: 3, Submission: 2, Chastity: 2 };
+const bench2 = { "Feminine Wear": 4, Makeup: 4, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 4, Submission: 5, Chastity: 4 };
+const bench3 = { "Feminine Wear": 7, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 5, Submission: 6, Chastity: 6 };
+const bench4 = { "Feminine Wear": 9, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 8, Submission: 9, Chastity: 8 };
 
 // Encode discretion boundaries
-const private_bounds = { "Feminine Wear": 5, Makeup: 4, Hygiene: 5, Shaving: 2, "Nail Care": 1, Plugging: 5, Submission: 7, Chastity: 6 }
-const discrete_bounds = { "Feminine Wear": 6, Makeup: 4, Hygiene: 5, Shaving: 3, "Nail Care": 3, Plugging: 8, Submission: 8, Chastity: 7 }
-const public_bounds =  { "Feminine Wear": 9, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 8, Submission: 9, Chastity: 8 }
+const private_bounds = { "Feminine Wear": 5, Makeup: 4, Hygiene: 5, Shaving: 2, "Nail Care": 1, Plugging: 5, Submission: 7, Chastity: 6 };
+const discrete_bounds = { "Feminine Wear": 6, Makeup: 4, Hygiene: 5, Shaving: 3, "Nail Care": 3, Plugging: 8, Submission: 8, Chastity: 7 };
+const public_bounds = { "Feminine Wear": 9, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 8, Submission: 9, Chastity: 8 };
 
-// Lifestyle Area variables
-// const areaNames = [
-//     "Feminine Wear", 
-//     "Makeup",       
-//     "Hygiene",      
-//     "Shaving",      
-//     "Nail Care",    
-//     "Plugging",     
-//     "Submission",   
-//     "Chastity"       
-// ];
 const areaNames = [
     "Feminine Wear", 
     "Makeup",       
@@ -32,130 +21,29 @@ const areaNames = [
     "Plugging", 
     "Nail Care",      
 ];
-
 const numAreas = areaNames.length; // number of lifestyle areas
 
 /* User Data */
 var userDataFlag = true;
 var prog = { "Feminine Wear": 0, Makeup: 0, Hygiene: 0, Shaving: 0, "Nail Care": 0, Plugging: 0, Submission: 0, Chastity: 0 }; // progress level of each area
-prog = { "Feminine Wear": 9, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 8, Submission: 9, Chastity: 8 };
 var discretion = "Public";
 var benchmarked = true;
 var random = true;
 var enabledAreas = { "Feminine Wear": true, Makeup: true, Hygiene: true, Shaving: true, "Nail Care": true, Plugging: true, Submission: true, Chastity: true};
 var allocPoints = 1;
+var allocInterval = 1; // 1: 1 day, 2: 2 days, 3: 3 days, 4: 7 days, 5: 14 days
+var lastAlloc = false;
+var allocsRemaining = allocPoints;
 
-function viewHabits() {
-    for (var area = 0; area < numAreas; area++) {
-        if (enabledAreas[area]) {
-            var habitDetails = areaNames[area];
-            for (var level = 1; level <= prog[area]; level++) {
-                habitDetails += "\n" + level + ". " + getTaskDetails(area, level);
-            }
-            setVariable("habit-details", habitDetails);
-            callAction({ "type": "updateTease", "part": "text", "location": "main", "delay": "none", "text": { "ops": [{ "insert": "{habit-details}" }, { "attributes": { "align": "center" }, "insert": "\n" }] } }, true);
-        }
-    }
-
-    // Provide button to return the main menu
-    callAction({ "type": "updateTease", "part": "input", "inputType": "buttons", "buttons": [{ "name": "Main Menu", "action": null, "setVariable": true, "variable": "main-menu", "variableValue": true }] }, true);
-    if (getVariable("main-menu")) {
-        setVariable("main-menu", false);
-        mainMenu();
-    }
-}
-
-function allocatePoints() {
-    // Show instructions text
-    callAction({ "type": "updateTease", "part": "text", "location": "main", "delay": "none", "text": { "ops": [{ "insert": "You have chosen to allocate your next {points} points. If your points are being allocated randomly, your new point allocations will show below. If you are choosing your points, use the buttons that will appear below. The areas that points can be allocated to are determined according to benchmarks (if enabled) and discretion." }, { "attributes": { "align": "center" }, "insert": "\n\n" }] }, "clear": true }, true);
-
-    var areasAllocated = [];
-
-    if (getVariable("progress-method") == "Choice") {
-        areasAllocated = choiceAllocation(getVariable("points"));
-    } else { // Progress method is random
-        areasAllocated = randomAllocation(getVariable("points"));
-    }
-
-    if (areasAllocated != null) {
-        areasAllocated.sort();
-    } else {
-        // Provide button to return the main menu
-        callAction({ "type": "updateTease", "part": "input", "inputType": "buttons", "buttons": [{ "name": "Main Menu", "action": null, "setVariable": true, "variable": "main-menu", "variableValue": true }] }, true);
-        if (getVariable("main-menu")) {
-            setVariable("main-menu", false);
-            mainMenu();
-        }
-        return;
-    }
-
-    var allocationDetails = "";
-
-    var currArea = -1;
-    var areaPoints = 0;
-    for (var i = 0; i < areasAllocated.length; i++) {
-        if (areasAllocated[i] != currArea) {
-            if (currArea != -1) {
-                allocationDetails += areaNames[currArea] + " +" + areaPoints + ", ";
-            }
-
-            currArea = areasAllocated[i];
-            areaPoints = 1;
-
-            // If last in list
-            if (i + 1 == areasAllocated.length && currArea != -1) {
-                allocationDetails += areaNames[currArea] + " +" + areaPoints;
-            }
-        } else {
-            areaPoints++;
-        }
-    }
-    // Show allocation details text
-    setVariable("allocation-details", allocationDetails);
-    callAction({ "type": "updateTease", "part": "text", "location": "main", "delay": "none", "text": { "ops": [{ "insert": "Your points have been allocated as follows: {allocation-details}" }, { "attributes": { "align": "center" }, "insert": "\n" }] } }, true);
-
-    encodeSave(); // sets the Xtoys variable automatically
-    callAction({ "type": "updateTease", "part": "text", "location": "main", "delay": "none", "text": { "ops": [{ "insert": "Your updated save string is: {save-string}. Keep this somewhere safe!" }, { "attributes": { "align": "center" }, "insert": "\n" }] } }, true);
-
-    // Provide button to return the main menu
-    callAction({ "type": "updateTease", "part": "input", "inputType": "buttons", "buttons": [{ "name": "Main Menu", "action": null, "setVariable": true, "variable": "main-menu", "variableValue": true }] }, true);
-    if (getVariable("main-menu")) {
-        setVariable("main-menu", false);
-        mainMenu();
-    }
-}
-
-function choiceAllocation(points) {
-    var availableAreas = getAvailableAreas();
-    var areasAllocated = [];
-
-    if (availableAreas.length == 0) {
-        callAction({ "type": "updateTease", "part": "text", "location": "main", "delay": "none", "text": { "ops": [{ "insert": "You have completed all possible habits available based on your settings!" }, { "attributes": { "align": "center" }, "insert": "\n" }] } }, true);
-        return [-1];
-    }
-
-    // Set meta variables for Xtoys
-    setVariable("femwear-available", availableAreas.indexOf(0) >= 0);
-    setVariable("makeup-available", availableAreas.indexOf(1) >= 0);
-    setVariable("hygiene-available", availableAreas.indexOf(2) >= 0);
-    setVariable("shaving-available", availableAreas.indexOf(3) >= 0);
-    setVariable("nails-available", availableAreas.indexOf(4) >= 0);
-    setVariable("plugging-available", availableAreas.indexOf(5) >= 0);
-    setVariable("submission-available", availableAreas.indexOf(6) >= 0);
-    setVariable("chastity-available", availableAreas.indexOf(7) >= 0);
-
-    // Present choice buttons to user
-    callAction({ "type": "updateTease", "part": "input", "inputType": "buttons", "buttons": [{ "name": "Feminine Wear", "action": null, "setVariable": true, "goToPage": null, "canHide": true, "showIf": "{femwear-available}", "variable": "allocation-area", "variableValue": "0" }, { "name": "Makeup", "action": null, "setVariable": true, "canHide": true, "variable": "allocation-area", "variableValue": "1", "showIf": "{makeup-available}" }, { "name": "Hygiene", "action": null, "setVariable": true, "variable": "allocation-area", "variableValue": "2", "canHide": true, "showIf": "{hygiene-available}" }, { "name": "Shaving", "action": null, "setVariable": true, "variable": "allocation-area", "variableValue": "3", "canHide": true, "showIf": "{shaving-available}" }, { "name": "Nail Care", "action": null, "setVariable": true, "canHide": true, "variable": "allocation-area", "variableValue": "4", "showIf": "{nails-available}" }, { "name": "Plugging", "action": null, "setVariable": true, "variable": "allocation-area", "variableValue": "5", "canHide": true, "showIf": "{plugging-available}" }, { "name": "Submission", "action": null, "setVariable": true, "variable": "allocation-area", "variableValue": "6", "canHide": true, "showIf": "{submission-available}" }, { "name": "Chastity", "action": null, "setVariable": true, "canHide": true, "variable": "allocation-area", "variableValue": "7", "showIf": "{chastity-available}" }] }, true);
-
+function allocatePoint(area) {
     // Allocate point to the chosen area
-    prog[getVariable("allocation-area")] += 1;
-    areasAllocated.push(getVariable("allocation-area"));
-
-    // If there are still points to allocate, go again.
-    if (points - 1 > 0) {
-        return areasAllocated.concat(choiceAllocation(points - 1));
+    prog[area] += 1;
+    generateHabitCards();
+    if (--allocsRemaining == 0) {
+        lastAlloc = (new Date()).getTime();
+        setAllocState();
     }
-    return areasAllocated;
+    saveLocal();
 }
 
 function randomAllocation(points) {
@@ -163,7 +51,9 @@ function randomAllocation(points) {
     var areasAllocated = [];
 
     if (availableAreas.length == 0) {
-        return [-1];
+        document.getElementById("alloc-areas").innerHTML = "No more points can be assigned!";
+        generateHabitCards();
+        return;
     }
 
     while (availableAreas.length > 0 && points > 0) {
@@ -179,34 +69,49 @@ function randomAllocation(points) {
     if (points > 0) {
         return areasAllocated.concat(randomAllocation(points - availableAreas.length));
     }
-    return areasAllocated;
+
+    lastAlloc = (new Date()).getTime();
+    setAllocState();
+
+    allocText = areasAllocated[0];
+    for (var i = 1; i < areasAllocated.length; i++) {
+        allocText += ", " + areasAllocated[i];
+    }
+
+    document.getElementById("alloc-areas").innerHTML = allocText;
+    generateHabitCards();
+    saveLocal();
 }
 
 function getAvailableAreas() {
     // Determine current boundaries
-    var boundaries = getDiscretionBoundaries().slice();
+    var boundaries = JSON.parse(JSON.stringify(getDiscretionBoundaries())); // creates a shallow copy of the boundary
 
     // If all areas are at the discretion boundary
-    if (prog == boundaries) {
 
-    }
 
     // Merge discretion and benchmark boundaries, if relevant
     if (benchmarked) {
         var currentBench = determineBenchmark();
         for (var i = 0; i < numAreas; i++) {
-            boundaries[i] = Math.min(boundaries[i], currentBench[i]);
+            area = areaNames[i]
+            boundaries[area] = Math.min(boundaries[area], currentBench[area]);
         }
+    }
+
+    if (objsEqual(prog, boundaries)) {
+        
     }
 
     // Determine which areas that can be allocated to
     var availableAreas = [];
     for (var i = 0; i < numAreas; i++) {
-        if (enabledAreas[i] && prog[i] < boundaries[i]) {
+        area = areaNames[i]
+        if (enabledAreas[area] && prog[area] < boundaries[area]) {
             // Add the area once for every level it is below a boundary.
             // This allows for multiple point allocations in a cycle.
-            for (var j = prog[i]; j < boundaries[i]; j++) {
-                availableAreas.push(i);
+            for (var j = prog[area]; j < boundaries[area]; j++) {
+                availableAreas.push(area);
             }
         }
     }
@@ -226,7 +131,6 @@ function getDiscretionBoundaries() {
 }
 
 function determineBenchmark() {
-    var discretionBoundaries = getDiscretionBoundaries();
     // Determine current benchmark by stepping up at benchmark divisions
     var benches = [bench1, bench2, bench3, bench4]
 
@@ -235,13 +139,13 @@ function determineBenchmark() {
     while (stepUp == true && benchIdx < 4) {
         var targetBench = benches[benchIdx]
         for (var i = 0; i < numAreas; i++) {
-            if (enabledAreas[i] && prog[i] != discretionBoundaries[i] && prog[i] < targetBench[i]) {
+            area = areaNames[i]
+            if (enabledAreas[area] && prog[area] < targetBench[area]) {
                 stepUp = false;
                 break;
             }
         }
         benchIdx++;
-
     }
     return targetBench;
 }
@@ -254,28 +158,48 @@ function randRange(min, max, integer) {
     }
 }
 
-/* Data Retrieval */
 
-function getTaskDetails(area, level) {
+function getHabit(area, level) {
     switch (area) {
-        case 0:
-            return getFemWear(level);
-        case 1:
-            return getMakeup(level);
-        case 2:
-            return getHygiene(level);
-        case 3:
-            return getShaving(level);
-        case 4:
-            return getNails(level);
-        case 5:
-            return getPlugging(level);
-        case 6:
-            return getSubmission(level);
-        case 7:
-            return getChastity(level);
+        case "Feminine Wear": return getFemWear(level);
+        case "Makeup": return getMakeup(level);
+        case "Hygiene": return getHygiene(level);
+        case "Shaving": return getShaving(level);
+        case "Nail Care": return getNails(level);
+        case "Plugging": return getPlugging(level);
+        case "Submission": return getSubmission(level);
+        case "Chastity": return getChastity(level);
     }
 }
+
+function getAllDiscretionBoundaries() {
+    var disc_bounds = []
+    if (discretion == "Private") {
+        disc_bounds.push(private_bounds);
+    } else if (discretion == "Discrete") {
+        disc_bounds.push(private_bounds);
+        disc_bounds.push(discrete_bounds);
+    } else {
+        disc_bounds.push(private_bounds);
+        disc_bounds.push(discrete_bounds);
+        disc_bounds.push(public_bounds);
+    }
+    return disc_bounds;
+}
+
+function boundCoding(boundType) {
+    if (boundType.startsWith("Benchmark")) {
+        return "benchmark";
+    } else if (boundType == "Private") {
+        return "private";
+    } else if (boundType == "Discrete") {
+        return "discrete";
+    } else if (boundType == "Public") {
+        return "public";
+    }
+}
+
+/* Data Retrieval */
 
 function getFemWear(level) {
     switch (level) {

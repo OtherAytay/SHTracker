@@ -11,27 +11,44 @@ function randRange(min, max, integer) {
 }
 
 function saveLocal() {
-    localStorage["prog"] = JSON.stringify(prog);
-    localStorage["discretion"] = discretion;
-    localStorage["benchmarked"] = benchmarked;
-    localStorage["random"] = random;
-    localStorage["enabledAreas"] = JSON.stringify(enabledAreas);
-    localStorage["allocPoints"] = allocPoints;
+    localStorage["SHTracker-prog"] = JSON.stringify(prog);
+    localStorage["SHTracker-discretion"] = discretion;
+    localStorage["SHTracker-benchmarked"] = benchmarked;
+    localStorage["SHTracker-random"] = random;
+    localStorage["SHTracker-enabledAreas"] = JSON.stringify(enabledAreas);
+    localStorage["SHTracker-allocPoints"] = allocPoints;
+    localStorage["SHTracker-allocInterval"] = allocInterval;
+    localStorage["SHTracker-lastAlloc"] = lastAlloc;
+    localStorage["SHTracker-allocsRemaining"] = allocsRemaining;
 }
 
 function loadLocal() {
     if (localStorage.length >= 6) {
-        prog = JSON.parse(localStorage["prog"]);
-        discretion = localStorage["discretion"];
-        benchmarked = JSON.parse(localStorage["benchmarked"]);
-        random = JSON.parse(localStorage["random"]);
-        enabledAreas = JSON.parse(localStorage["enabledAreas"]);
-        allocPoints = JSON.parse(localStorage["allocPoints"]);
+        prog = JSON.parse(localStorage["SHTracker-prog"]);
+        discretion = localStorage["SHTracker-discretion"];
+        benchmarked = JSON.parse(localStorage["SHTracker-benchmarked"]);
+        random = JSON.parse(localStorage["SHTracker-random"]);
+        enabledAreas = JSON.parse(localStorage["SHTracker-enabledAreas"]);
+        allocPoints = JSON.parse(localStorage["SHTracker-allocPoints"]);
+        allocInterval = JSON.parse(localStorage["SHTracker-allocInterval"]);
+        lastAlloc = JSON.parse(localStorage["SHTracker-lastAlloc"]);
+        allocsRemaining = JSON.parse(localStorage["SHTracker-allocsRemaining"]);
     } else {
         userDataFlag = false;
         saveLocal(); // Create fresh save using defaults
     }
-    updateOptionElements();
+}
+
+function clearSave() {
+    localStorage.removeItem("SHTracker-prog");
+    localStorage.removeItem("SHTracker-discretion");
+    localStorage.removeItem("SHTracker-benchmarked");
+    localStorage.removeItem("SHTracker-random");
+    localStorage.removeItem("SHTracker-enabledAreas");
+    localStorage.removeItem("SHTracker-allocPoints");
+    localStorage.removeItem("SHTracker-allocInterval");
+    localStorage.removeItem("SHTracker-lastAlloc");
+    localStorage.removeItem("SHTracker-allocsRemaining");
 }
 
 function exportSave() {
@@ -50,15 +67,15 @@ function exportSave() {
 
 function areaCoding(area) {
     switch (area) {
-        case areaNames.indexOf("Feminine Wear"):
-        case areaNames.indexOf("Makeup"):
-        case areaNames.indexOf("Hygiene"):
-        case areaNames.indexOf("Shaving"):
-        case areaNames.indexOf("Nail Care"):
+        case "Feminine Wear":
+        case "Makeup":
+        case "Hygiene":
+        case "Shaving":
+        case "Nail Care":
             return "feminization";
-        case areaNames.indexOf("Plugging"):
-        case areaNames.indexOf("Submission"):
-        case areaNames.indexOf("Chastity"):
+        case "Plugging":
+        case "Submission":
+        case "Chastity":
             return "sexuality";
     }
 }
@@ -82,8 +99,20 @@ function setOptions() {
     }
     random = document.getElementById('allocation-random').checked;
     benchmarked = document.getElementById('benchmarks-enabled').checked;
-    allocPoints = document.getElementById('point-range').value;
-    changePoints();
+    allocPoints = JSON.parse(document.getElementById('point-range').value);
+    document.getElementById('points').innerHTML = document.getElementById('point-range').value;
+    
+    intText = "";
+    allocInterval = JSON.parse(document.getElementById('alloc-interval-range').value);
+    switch (allocInterval) {
+        case 1: intText = "1 Day"; break;
+        case 2: intText = "2 Days"; break;
+        case 3: intText = "3 Days"; break;
+        case 4: intText = "7 Days"; break;
+        case 5: intText = "14 Days"; break;
+    }
+    
+    document.getElementById('alloc-interval').innerHTML = intText;
     saveLocal();
 }
 
@@ -108,11 +137,57 @@ function updateOptionElements() {
     document.getElementById('allocation-random').checked = random;
     document.getElementById('benchmarks-enabled').checked = benchmarked;
     document.getElementById('point-range').value = allocPoints;
-    changePoints();
+    document.getElementById('alloc-interval-range').value = allocInterval;
+
+    document.getElementById('points').innerHTML = document.getElementById('point-range').value;
+    
+    intText = "";
+    allocInterval = JSON.parse(document.getElementById('alloc-interval-range').value);
+    switch (allocInterval) {
+        case 1: intText = "1 Day"; break;
+        case 2: intText = "2 Days"; break;
+        case 3: intText = "3 Days"; break;
+        case 4: intText = "7 Days"; break;
+        case 5: intText = "14 Days"; break;
+    }
+    
+    document.getElementById('alloc-interval').innerHTML = intText;
 }
 
-function changePoints() {
-    document.getElementById('points').innerHTML = document.getElementById('point-range').value;
+// returns boolean for whether enough time has passed to allocate points.
+function isAllocTime() {
+    time = new Date()
+    
+    interval = 24 * 60 * 60 * 1000;
+    switch (allocInterval) {
+        case 1: break;
+        case 2: interval *= 2; break;
+        case 3: interval *= 3; break;
+        case 4: interval *= 7; break;
+        case 5: interval *= 14; break;
+    }
+    
+    return lastAlloc + interval <= time.getTime();
+}
+
+function setAllocState() {
+    if (!isAllocTime()) {
+        if (random) {
+            document.getElementById("alloc-button").disabled = true;
+        }
+
+        var interval = 24 * 60 * 60 * 1000;
+        switch (allocInterval) {
+            case 1: break;
+            case 2: interval *= 2; break;
+            case 3: interval *= 3; break;
+            case 4: interval *= 7; break;
+            case 5: interval *= 14; break;
+        }
+        var nextAlloc = new Date(lastAlloc + interval)
+        nextAlloc = nextAlloc.toISOString().slice(0, 10) + " " + nextAlloc.toTimeString().slice(0, 8)
+        document.getElementById("alloc-areas").innerHTML = "Your next allocation becomes available: " + nextAlloc;
+    }
 }
 
 /** 
@@ -130,9 +205,12 @@ function importSave() {
     fr.onload = function () {
         saveData = JSON.parse(fr.result);
         for (const [key, value] of Object.entries(saveData)) {
-            localStorage[key] = value;
+            if (key.startsWith("SHTracker")) {
+                localStorage[key] = value;
+            }
         }
         loadLocal();
+        updateOptionElements();
     }
 }
 
@@ -149,4 +227,13 @@ function saveAs(content, fileName) {
     if (isBlob) {
         window.URL.revokeObjectURL(url);
     }
+}
+
+function objsEqual(obj1, obj2) {
+    for (const key of Object.keys(obj1)) {
+        if (obj1[key] !== obj2[key]) {
+            return false;
+        }
+    }
+    return true;
 }
