@@ -49,6 +49,17 @@ function clearSave() {
     localStorage.removeItem("SHTracker-allocInterval");
     localStorage.removeItem("SHTracker-lastAlloc");
     localStorage.removeItem("SHTracker-allocsRemaining");
+
+    prog = { "Feminine Wear": 0, Makeup: 0, Hygiene: 0, Shaving: 0, "Nail Care": 0, Plugging: 0, Submission: 0, Chastity: 0 }; // progress level of each area
+    discretion = "Public";
+    benchmarked = true;
+    random = true;
+    enabledAreas = { "Feminine Wear": true, Makeup: true, Hygiene: true, Shaving: true, "Nail Care": true, Plugging: true, Submission: true, Chastity: true };
+    allocPoints = 1;
+    allocInterval = 1; // 1: 1 day, 2: 2 days, 3: 3 days, 4: 7 days, 5: 14 days
+    lastAlloc = false;
+    allocsRemaining = allocPoints;
+    updateOptionElements();
 }
 
 function exportSave() {
@@ -101,7 +112,7 @@ function setOptions() {
     benchmarked = document.getElementById('benchmarks-enabled').checked;
     allocPoints = JSON.parse(document.getElementById('point-range').value);
     document.getElementById('points').innerHTML = document.getElementById('point-range').value;
-    
+
     intText = "";
     allocInterval = JSON.parse(document.getElementById('alloc-interval-range').value);
     switch (allocInterval) {
@@ -111,7 +122,7 @@ function setOptions() {
         case 4: intText = "7 Days"; break;
         case 5: intText = "14 Days"; break;
     }
-    
+
     document.getElementById('alloc-interval').innerHTML = intText;
     saveLocal();
 }
@@ -140,7 +151,7 @@ function updateOptionElements() {
     document.getElementById('alloc-interval-range').value = allocInterval;
 
     document.getElementById('points').innerHTML = document.getElementById('point-range').value;
-    
+
     intText = "";
     allocInterval = JSON.parse(document.getElementById('alloc-interval-range').value);
     switch (allocInterval) {
@@ -150,14 +161,14 @@ function updateOptionElements() {
         case 4: intText = "7 Days"; break;
         case 5: intText = "14 Days"; break;
     }
-    
+
     document.getElementById('alloc-interval').innerHTML = intText;
 }
 
 // returns boolean for whether enough time has passed to allocate points.
 function isAllocTime() {
     time = new Date()
-    
+
     interval = 24 * 60 * 60 * 1000;
     switch (allocInterval) {
         case 1: break;
@@ -166,7 +177,7 @@ function isAllocTime() {
         case 4: interval *= 7; break;
         case 5: interval *= 14; break;
     }
-    
+
     return lastAlloc + interval <= time.getTime();
 }
 

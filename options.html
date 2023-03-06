@@ -189,13 +189,15 @@
                             </ul>
                         </div>
                         <div class="row justify-content-center mx-auto">
-                            <h4 class="text-center">Import / Export</h4>
-                            <div class="input-group  w-75">
-                                <label class="input-group-text text-bg-primary" for="import-save">Import Save</label>
-                                <input type="file" class="form-control border-primary" id="import-save">
-                            </div>
-                            <button class="btn btn-primary w-25" onclick="exportSave()">Export Save</button>
+                            <h4 class="text-center">Save Management</h4>
+                                <div class="input-group w-75">
+                                    <label class="input-group-text text-bg-primary" for="import-save">Import</label>
+                                    <input type="file" class="form-control border-primary" id="import-save">
+                                </div>
+                                <button class="btn btn-primary w-25" onclick="exportSave()">Export</button>
+                            <button class="btn btn-danger mt-2 w-50" onclick="clearSave()">Clear Save</button>
                         </div>
+                        
                     </div>
                 </div>
             </div>

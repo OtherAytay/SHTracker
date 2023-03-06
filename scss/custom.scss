@@ -5,7 +5,8 @@ $theme-colors: (
     "benchmark": #619eff,
     "private": #50dc4b,
     "discrete": #ffc107,
-    "public": #c80000
+    "public": #c80000,
+    "danger": #dc3545,
 );
 
 @import "../bootstrap/scss/bootstrap";
