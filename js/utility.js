@@ -116,6 +116,7 @@ function setOptions() {
     intText = "";
     allocInterval = JSON.parse(document.getElementById('alloc-interval-range').value);
     switch (allocInterval) {
+        case 0: intText = "Open"; break;
         case 1: intText = "1 Day"; break;
         case 2: intText = "2 Days"; break;
         case 3: intText = "3 Days"; break;
@@ -155,6 +156,7 @@ function updateOptionElements() {
     intText = "";
     allocInterval = JSON.parse(document.getElementById('alloc-interval-range').value);
     switch (allocInterval) {
+        case 0: intText = "Open"; break;
         case 1: intText = "1 Day"; break;
         case 2: intText = "2 Days"; break;
         case 3: intText = "3 Days"; break;
@@ -167,6 +169,10 @@ function updateOptionElements() {
 
 // returns boolean for whether enough time has passed to allocate points.
 function isAllocTime() {
+    if (allocInterval == 0) {
+        return true;
+    }
+    
     time = new Date()
 
     interval = 24 * 60 * 60 * 1000;
@@ -182,6 +188,9 @@ function isAllocTime() {
 }
 
 function setAllocState() {
+    if (!allocAvailable()) {
+        return;
+    }
     if (!isAllocTime()) {
         if (random) {
             document.getElementById("alloc-button").disabled = true;

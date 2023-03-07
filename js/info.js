@@ -50,9 +50,7 @@ function randomAllocation(points) {
     var availableAreas = getAvailableAreas();
     var areasAllocated = [];
 
-    if (availableAreas.length == 0) {
-        document.getElementById("alloc-areas").innerHTML = "No more points can be assigned!";
-        generateHabitCards();
+    if (!allocAvailable()) {
         return;
     }
 
@@ -63,11 +61,6 @@ function randomAllocation(points) {
         prog[chosenArea] += 1;
         points--;
         availableAreas.splice(chosenIdx, 1); // remove that area from the list once
-    }
-
-    // Available areas exhausted before points, boundary reached - run again.
-    if (points > 0) {
-        return areasAllocated.concat(randomAllocation(points - availableAreas.length));
     }
 
     lastAlloc = (new Date()).getTime();
@@ -81,6 +74,22 @@ function randomAllocation(points) {
     document.getElementById("alloc-areas").innerHTML = allocText;
     generateHabitCards();
     saveLocal();
+
+    // Available areas exhausted before points, boundary reached - run again.
+    if (points > 0) {
+        return areasAllocated.concat(randomAllocation(points - availableAreas.length));
+    }
+}
+
+function allocAvailable() {
+    if (getAvailableAreas().length == 0) {
+        document.getElementById("alloc-areas").innerHTML = "No more points can be assigned!";
+        document.getElementById("alloc-button").disabled = true; 
+        generateHabitCards();
+        return false;
+    } else {
+        return true;
+    }
 }
 
 function getAvailableAreas() {
@@ -239,7 +248,7 @@ function getMakeup(level) {
             return "Apply lipstick & lip gloss for 3 hours each day in private and during sexual activities.";
             break;
         case 2:
-            return "Apply eye primer, eyeshadow, eye liner and mascara for 3 hours each day in private and during sexual activities. (Benchmark #1)";
+            return "Apply eye primer, eyeshadow, eye liner and mascara for 3 hours each day in private and during sexual activities.";
             break;
         case 3:
             return "Apply foundation, concealer, and blush for 3 hours each day in private and during sexual activities.";
@@ -374,7 +383,7 @@ function getSubmission(level) {
 function getChastity(level) {
     switch (level) {
         case 1:
-            return "Stay in chastity for 1 hour each day in private. Max 4 orgasms per week. Orgasm from anal does not count against your restrictions for all chastity tasks in this area!";
+            return "Stay in chastity for 1 hour each day in private. Max 4 orgasms per week. Orgasm from anal does not count against your restrictions for all habits in this area!";
             break;
         case 2:
             return "Stay in chastity for 2 hours each day in private. Max 2 orgasms per week.";

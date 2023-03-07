@@ -4951,7 +4951,7 @@ textarea.form-control-lg {
 }
 
 .list-group-item-action {
-  width: 100%;
+  /* width: 100%; */
   color: var(--bs-list-group-action-color);
   text-align: inherit;
 }

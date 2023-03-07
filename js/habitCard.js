@@ -44,7 +44,7 @@ function habitCard({ area, prog }) {
     return (
         React.createElement(
             'div',
-            { class: "col-xl-3 col-lg-4 col-md-6 col-sm-12" },
+            { class: "col-xxl-3 col-xl-4 col-sm-6 col-12" }, 
             React.createElement(
                 'div',
                 { class: "card mb-3 border-" + areaCode },
@@ -66,7 +66,7 @@ function habitCard({ area, prog }) {
 
 function habitList({ area, prog }) {
     var disc_bounds = getAllDiscretionBoundaries();
-    var areaCode = areaCoding()
+    var areaCode = areaCoding(area);
     var benches = [bench1, bench2, bench3]
     var allBounds = []
 
@@ -102,13 +102,21 @@ function habitList({ area, prog }) {
     var habitList = [];
     var habit = 1;
     var currBound = 0;
+    var currDisc = "private";
     while (habit <= prog) {
         var habitGroup = []
+
+        if (allBounds[currBound].type == "Discrete") {
+            currDisc = "discrete";
+        } else if (allBounds[currBound].type == "Public") {
+            currDisc = "public";
+        }
+        
         for (habit; habit <= allBounds[currBound].bound && habit <= prog; habit++) {
             habitGroup.push(
                 React.createElement(
                     'li',
-                    { class: "list-group-item border-" + areaCode },
+                    { class: "list-group-item border-" + currDisc },
                     getHabit(area, habit)
                 )
             )
@@ -127,6 +135,7 @@ function habitList({ area, prog }) {
                 {class: "separator fs-4 text-" + boundCoding(allBounds[currBound].type)},
                 allBounds[currBound].type
             ))
+
             currBound++;
         }
         
