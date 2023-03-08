@@ -50,11 +50,11 @@ function clearSave() {
     localStorage.removeItem("SHTracker-lastAlloc");
     localStorage.removeItem("SHTracker-allocsRemaining");
 
-    prog = { "Feminine Wear": 0, Makeup: 0, Hygiene: 0, Shaving: 0, "Nail Care": 0, Plugging: 0, Submission: 0, Chastity: 0 }; // progress level of each area
+    prog = { "Feminine Wear": 0, Makeup: 0, Hygiene: 0, Shaving: 0, "Nail Care": 0, Plugging: 0, Submission: 0, Chastity: 0, Exercise: 0, Diet: 0 };
     discretion = "Public";
     benchmarked = true;
     random = true;
-    enabledAreas = { "Feminine Wear": true, Makeup: true, Hygiene: true, Shaving: true, "Nail Care": true, Plugging: true, Submission: true, Chastity: true };
+    enabledAreas = { "Feminine Wear": true, Makeup: true, Hygiene: true, Shaving: true, "Nail Care": true, Plugging: true, Submission: true, Chastity: true, Exercise: true, Diet: true};
     allocPoints = 1;
     allocInterval = 1; // 1: 1 day, 2: 2 days, 3: 3 days, 4: 7 days, 5: 14 days
     lastAlloc = false;
@@ -80,10 +80,13 @@ function areaCoding(area) {
     switch (area) {
         case "Feminine Wear":
         case "Makeup":
-        case "Hygiene":
-        case "Shaving":
         case "Nail Care":
             return "feminization";
+        case "Exercise":
+        case "Diet":
+        case "Hygiene":
+        case "Shaving":
+            return "physique"
         case "Plugging":
         case "Submission":
         case "Chastity":
@@ -100,6 +103,8 @@ function setOptions() {
     enabledAreas["Plugging"] = document.getElementById('plugging-enabled').checked
     enabledAreas["Submission"] = document.getElementById('submission-enabled').checked
     enabledAreas["Chastity"] = document.getElementById('chastity-enabled').checked
+    enabledAreas["Exercise"] = document.getElementById('exercise-enabled').checked
+    enabledAreas["Diet"] = document.getElementById('diet-enabled').checked
 
     if (document.getElementById('discretion-private').checked) {
         discretion = "Public";
@@ -137,6 +142,8 @@ function updateOptionElements() {
     document.getElementById('plugging-enabled').checked = enabledAreas["Plugging"];
     document.getElementById('submission-enabled').checked = enabledAreas["Submission"];
     document.getElementById('chastity-enabled').checked = enabledAreas["Chastity"];
+    document.getElementById('exercise-enabled').checked = enabledAreas["Exercise"];
+    document.getElementById('diet-enabled').checked = enabledAreas["Diet"];
 
     if (discretion == "Private") {
         document.getElementById('discretion-private').checked = true;

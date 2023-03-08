@@ -27,6 +27,11 @@
   border-color: var(--bs-sexuality);
 }
 
+.form-check-input.input-physique:checked {
+  background-color: var(--bs-physique);
+  border-color: var(--bs-physique);
+}
+
 /* Text Gradients */
 .text-fusion-OS {
 	background: -webkit-linear-gradient(315deg, #0d6efd 25%, #d63384 75%);

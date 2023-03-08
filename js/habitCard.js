@@ -67,7 +67,7 @@ function habitCard({ area, prog }) {
 function habitList({ area, prog }) {
     var disc_bounds = getAllDiscretionBoundaries();
     var areaCode = areaCoding(area);
-    var benches = [bench1, bench2, bench3]
+    var benches = [bench1, bench2, bench3, bench4]
     var allBounds = []
 
     // Add discretion boundaries
@@ -97,6 +97,8 @@ function habitList({ area, prog }) {
     allBounds = allBounds.sort((a, b) => {
         return a.bound - b.bound;
      });
+    console.log(area)
+    console.log(allBounds)
 
     // Build habit list with groups separated by boundaries
     var habitList = [];
@@ -135,7 +137,6 @@ function habitList({ area, prog }) {
                 {class: "separator fs-4 text-" + boundCoding(allBounds[currBound].type)},
                 allBounds[currBound].type
             ))
-
             currBound++;
         }
         

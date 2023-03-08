@@ -1,15 +1,15 @@
 /*--- Constants ---*/
 // Encode benchmark boundaries
 const benchmarks = 4; // number of benchmarks
-const bench1 = { "Feminine Wear": 2, Makeup: 2, Hygiene: 3, Shaving: 1, "Nail Care": 2, Plugging: 3, Submission: 2, Chastity: 2 };
-const bench2 = { "Feminine Wear": 4, Makeup: 4, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 4, Submission: 5, Chastity: 4 };
-const bench3 = { "Feminine Wear": 7, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 5, Submission: 6, Chastity: 6 };
-const bench4 = { "Feminine Wear": 9, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 8, Submission: 9, Chastity: 8 };
+const bench1 = { "Feminine Wear": 2, Makeup: 2, Hygiene: 3, Shaving: 1, "Nail Care": 2, Plugging: 3, Submission: 2, Chastity: 2, Exercise: 2, Diet: 2 };
+const bench2 = { "Feminine Wear": 4, Makeup: 4, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 4, Submission: 5, Chastity: 4, Exercise: 4, Diet: 4 };
+const bench3 = { "Feminine Wear": 7, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 5, Submission: 6, Chastity: 6, Exercise: 6, Diet: 6 };
+const bench4 = { "Feminine Wear": 9, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 8, Submission: 9, Chastity: 8, Exercise: 8, Diet: 8 };
 
 // Encode discretion boundaries
-const private_bounds = { "Feminine Wear": 5, Makeup: 4, Hygiene: 5, Shaving: 2, "Nail Care": 1, Plugging: 5, Submission: 7, Chastity: 6 };
-const discrete_bounds = { "Feminine Wear": 6, Makeup: 4, Hygiene: 5, Shaving: 3, "Nail Care": 3, Plugging: 8, Submission: 8, Chastity: 7 };
-const public_bounds = { "Feminine Wear": 9, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 8, Submission: 9, Chastity: 8 };
+const private_bounds = { "Feminine Wear": 5, Makeup: 4, Hygiene: 5, Shaving: 2, "Nail Care": 1, Plugging: 5, Submission: 7, Chastity: 6, Exercise: 8, Diet: 8 };
+const discrete_bounds = { "Feminine Wear": 6, Makeup: 4, Hygiene: 5, Shaving: 3, "Nail Care": 3, Plugging: 8, Submission: 8, Chastity: 7, Exercise: 8, Diet: 8 };
+const public_bounds = { "Feminine Wear": 9, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 8, Submission: 9, Chastity: 8, Exercise: 8, Diet: 8 };
 
 const areaNames = [
     "Feminine Wear", 
@@ -19,17 +19,19 @@ const areaNames = [
     "Chastity",   
     "Submission",  
     "Plugging", 
-    "Nail Care",      
+    "Nail Care",
+    "Exercise",
+    "Diet"      
 ];
 const numAreas = areaNames.length; // number of lifestyle areas
 
 /* User Data */
 var userDataFlag = true;
-var prog = { "Feminine Wear": 0, Makeup: 0, Hygiene: 0, Shaving: 0, "Nail Care": 0, Plugging: 0, Submission: 0, Chastity: 0 }; // progress level of each area
-var discretion = "Public";
+var prog = { "Feminine Wear": 0, Makeup: 0, Hygiene: 0, Shaving: 0, "Nail Care": 0, Plugging: 0, Submission: 0, Chastity: 0, Exercise: 0, Diet: 0 }; // progress level of each area
+var discretion = "Private";
 var benchmarked = true;
 var random = true;
-var enabledAreas = { "Feminine Wear": true, Makeup: true, Hygiene: true, Shaving: true, "Nail Care": true, Plugging: true, Submission: true, Chastity: true};
+var enabledAreas = { "Feminine Wear": true, Makeup: true, Hygiene: true, Shaving: true, "Nail Care": true, Plugging: true, Submission: true, Chastity: true, Exercise: true, Diet: true};
 var allocPoints = 1;
 var allocInterval = 1; // 1: 1 day, 2: 2 days, 3: 3 days, 4: 7 days, 5: 14 days
 var lastAlloc = false;
@@ -42,6 +44,7 @@ function allocatePoint(area) {
     if (--allocsRemaining == 0) {
         lastAlloc = (new Date()).getTime();
         setAllocState();
+        allocsRemaining = allocPoints;
     }
     saveLocal();
 }
@@ -178,6 +181,8 @@ function getHabit(area, level) {
         case "Plugging": return getPlugging(level);
         case "Submission": return getSubmission(level);
         case "Chastity": return getChastity(level);
+        case "Exercise": return getExercise(level);
+        case "Diet": return getDiet(level);
     }
 }
 
@@ -405,6 +410,64 @@ function getChastity(level) {
             break;
         case 8:
             return "Stay in chastity at all times. No non-anal orgasms allowed."
+            break;
+    }
+}
+
+function getExercise(level) {
+    switch (level) {
+        case 1:
+            return "Do 120 minutes of cardio per week.";
+            break;
+        case 2:
+            return "Complete 2 sets of 3 different butt popping exercises.";
+            break;
+        case 3:
+            return "Do 150 minutes of cardio workout per week.";
+            break;
+        case 4:
+            return "Complete 3 sets of 3 different butt popping exercises. ";
+            break;
+        case 5:
+            return "Do 180 minutes of cardio per week.";
+            break;
+        case 6:
+            return "Complete 3 sets of 4 different butt popping exercises. "
+            break;
+        case 7:
+            return "Do 240 minutes of cardio per week."
+            break;
+        case 8:
+            return "Complete 3 sets of 5 different butt popping exercises. "
+            break;
+    }
+}
+
+function getDiet(level) {
+    switch (level) {
+        case 1:
+            return "Limit sweets and sugary beverages to 4 times per week each.";
+            break;
+        case 2:
+            return "Eat only vegetarian meals 2 days per week.";
+            break;
+        case 3:
+            return "Limit sweets and sugary beverages to 2 times per week each.";
+            break;
+        case 4:
+            return "Change all unhealthy snacks for healthier alternatives (such as fruits or vegetables).";
+            break;
+        case 5:
+            return "Limit sweets and sugary beverages to 1 time per week each.";
+            break;
+        case 6:
+            return "Limit red meat to 1 meal per week."
+            break;
+        case 7:
+            return "Do not eat between dinner / dessert and breakfast."
+            break;
+        case 8:
+            return "Cut out sugary beverages and alcohol, drink only water or seltzer."
             break;
     }
 }
