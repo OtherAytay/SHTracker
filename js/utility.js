@@ -41,6 +41,7 @@ function loadLocal() {
 }
 
 function clearSave() {
+    localStorage.removeItem("SHTracker-userData");
     localStorage.removeItem("SHTracker-prog");
     localStorage.removeItem("SHTracker-discretion");
     localStorage.removeItem("SHTracker-benchmarked");
@@ -51,6 +52,7 @@ function clearSave() {
     localStorage.removeItem("SHTracker-lastAlloc");
     localStorage.removeItem("SHTracker-allocsRemaining");
 
+    // Reset to defaults
     prog = { "Feminine Wear": 0, Makeup: 0, Hygiene: 0, Shaving: 0, "Nail Care": 0, Plugging: 0, Submission: 0, Chastity: 0, Exercise: 0, Diet: 0 };
     discretion = "Public";
     benchmarked = true;
