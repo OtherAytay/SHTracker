@@ -11,6 +11,7 @@ function randRange(min, max, integer) {
 }
 
 function saveLocal() {
+    localStorage["SHTracker-userData"] = true;
     localStorage["SHTracker-prog"] = JSON.stringify(prog);
     localStorage["SHTracker-discretion"] = discretion;
     localStorage["SHTracker-benchmarked"] = benchmarked;
@@ -23,7 +24,7 @@ function saveLocal() {
 }
 
 function loadLocal() {
-    if (localStorage.length >= 9) {
+    if (localStorage["SHTracker-userData"] == "true") {
         prog = JSON.parse(localStorage["SHTracker-prog"]);
         discretion = localStorage["SHTracker-discretion"];
         benchmarked = JSON.parse(localStorage["SHTracker-benchmarked"]);
