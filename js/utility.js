@@ -11,7 +11,7 @@ function randRange(min, max, integer) {
 }
 
 function saveLocal() {
-    localStorage["SHTracker-userData"] = true;
+    localStorage["SHTracker-localSave"] = true;
     localStorage["SHTracker-prog"] = JSON.stringify(prog);
     localStorage["SHTracker-discretion"] = discretion;
     localStorage["SHTracker-benchmarked"] = benchmarked;
@@ -24,7 +24,7 @@ function saveLocal() {
 }
 
 function loadLocal() {
-    if (localStorage["SHTracker-userData"] == "true") {
+    if (localStorage["SHTracker-localSave"] == "true") {
         prog = JSON.parse(localStorage["SHTracker-prog"]);
         discretion = localStorage["SHTracker-discretion"];
         benchmarked = JSON.parse(localStorage["SHTracker-benchmarked"]);
@@ -41,7 +41,7 @@ function loadLocal() {
 }
 
 function clearSave() {
-    localStorage.removeItem("SHTracker-userData");
+    localStorage.removeItem("SHTracker-localSave");
     localStorage.removeItem("SHTracker-prog");
     localStorage.removeItem("SHTracker-discretion");
     localStorage.removeItem("SHTracker-benchmarked");
