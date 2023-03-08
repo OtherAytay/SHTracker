@@ -23,7 +23,7 @@ function saveLocal() {
 }
 
 function loadLocal() {
-    if (localStorage.length >= 6) {
+    if (localStorage.length >= 9) {
         prog = JSON.parse(localStorage["SHTracker-prog"]);
         discretion = localStorage["SHTracker-discretion"];
         benchmarked = JSON.parse(localStorage["SHTracker-benchmarked"]);
@@ -115,7 +115,10 @@ function setOptions() {
     }
     random = document.getElementById('allocation-random').checked;
     benchmarked = document.getElementById('benchmarks-enabled').checked;
+    var oldAllocPoints = allocPoints;
     allocPoints = JSON.parse(document.getElementById('point-range').value);
+    // new allocsRemaining will be the new allocPoints - points used already.
+    allocsRemaining = Math.max(0, allocPoints - (oldAllocPoints - allocsRemaining));  
     document.getElementById('points').innerHTML = document.getElementById('point-range').value;
 
     intText = "";

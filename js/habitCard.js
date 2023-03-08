@@ -1,5 +1,5 @@
 function generateHabitCards() {
-    const habitRoot = ReactDOM.createRoot(document.getElementById("habits"));
+    //const habitRoot = ReactDOM.createRoot(document.getElementById("habits"));
     
     var habitCards = []
     for (var area = 0; area < numAreas; area++) {
@@ -97,9 +97,6 @@ function habitList({ area, prog }) {
     allBounds = allBounds.sort((a, b) => {
         return a.bound - b.bound;
      });
-    console.log(area)
-    console.log(allBounds)
-
     // Build habit list with groups separated by boundaries
     var habitList = [];
     var habit = 1;
