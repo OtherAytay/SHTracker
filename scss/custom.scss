@@ -1,0 +1,17 @@
+$primary: #6610f2;
+
+$theme-colors: (
+    "primary": #6610f2,
+    "feminization": #d63384,
+    "sexuality": #fd7e14,
+    "physique": #0d6efd,
+    "benchmark": #619eff,
+    "private": #50dc4b,
+    "discrete": #ffc107,
+    "public": #c80000,
+    "danger": #dc3545
+);
+
+@import "../bootstrap/scss/bootstrap";
+
+

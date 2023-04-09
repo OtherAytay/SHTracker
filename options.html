@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sissy Habit Tracker</title>
+    <link href="scss/custom.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+</head>
+
+<body>
+    <div class="container-fluid overflow-hidden">
+        <div class="row">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
+                <div class="container-fluid">
+                    <a class="navbar-brand text-fusion-OS" href="#">Sissy Habit Tracker</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item"><a class="nav-link" aria-current="page" href="index.html">Home</a></li>
+                            <li class="nav-item"><a class="nav-link active" href="options.html">Options</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="row overflow-auto">
+            <div
+                class="h-100 col-xxl-5 offset-xxl-1 col-lg-6 offset-lg-0 order-lg-0 col-md-8 offset-md-2 col-sm-10 offset-sm-1 col-12 order-1 my-2 pb-3">
+                <div id="about" class="card">
+                    <h2 class="card-header text-center">About</h2>
+                    <div class="card-body overflow-scroll">
+                        <h4 class="fw-bold">Overview</h4>
+                        <p>
+                            Build and track habits that are directly or indirectly related to the Sissy lifestyle! This
+                            tracker keeps a running list of habits you will and have developed across a variety of
+                            lifestyle areas relating to <span class="text-feminization">feminization</span>, <span
+                                class="text-physique">physique</span>,
+                            and <span class="text-sexuality">sexuality</span>!
+                        </p>
+                        <p>
+                            On your home page, you will see a card for each lifestyle area enabled. Inside the card, you will see a box containing a habit for each habit you have built in that area. When you reach a boundary for a benchmark or discretion type, you will see a visual separator.
+                        </p>
+                        <p>Find a detailed spreadsheet of all available habits <a
+                                href="https://docs.google.com/spreadsheets/d/1fk5VAWWTmiGTBd7H3oXLDOszmQdDjp7XBJeWvmnBR3A/edit?usp=sharing">here</a>.
+                        </p>
+                        <h4 class="fw-bold">Getting Started</h4>
+                        To get started, check out the options panel and configure the habit tracker to best suit you.
+                        Changes you make to the options are saved automatically! If you are entirely sure what an option
+                        does, scroll down for an in-depth explanation.
+                        <br /> <br />
+                        The first time you use the tracker, you should do the following:
+                        <ol>
+                            <li>Use the switches next to the various lifestyle areas to choose the categories of habit
+                                you would like to build.</li>
+                            <li>Determine what level of discretion you need when building these habits.
+                            </li>
+                            <li>Choose an allocation method. This will dictate whether you have control over point
+                                distribution.
+                            <li>
+                                Choose whether you want to use benchmarks or not. See below for an explanation!
+                            </li>
+                            <li>Choose your allocation interval. This is how often you can assign points to habits.</li>
+                            <li>Choose how many points will be available to allocate each interval.
+                        </ol>
+                        <hr>
+                        <h4 class="fw-bold">Option Explanations</h4>
+                        <h5 class="fw-semibold">Discretion</h5>
+                        <ul>
+                            <li><span class="text-private">Private</span> will limit the habits you build to only occur
+                                in a place you can maintain privacy.</li>
+                            <li><span class="text-discrete">Discrete</span> allows for some habits to occur in public
+                                spaces, but they will generally be easier to hide or may not draw attention of others.
+                            </li>
+                            <li><span class="text-public">Public</span> removes any restrictions on habits, meaning the
+                                habits may be outwardly and immediately visible to others in public. This is most
+                                suitable to individuals that have publicly declared their identity and are comfortable
+                                with Sissy presentation in public spaces. </li>
+                        </ul>
+                        <h5 class="fw-semibold">Allocation Method</h5>
+                        <p><span class="text-primary">Choice</span> allows you the freedom
+                            to choose which lifestlye areas each of your available habit points will go. <span
+                                class="text-primary">Random</span> will show a button on the habit page that will
+                            distribute your available points randomly across your enabled areas.</li>
+                        </p>
+                        <h5 class="fw-semibold">Benchmarks</h5>
+                        <p>Benchmarks are specific levels of each
+                            lifestyle area that represent a natural stopping point in your habit progress. When a
+                            lifestyle area reaches a benchmark, you will not be able to allocate further points into
+                            that lifestyle area until all other enabled areas have also reached that same benchmark.
+                            This is best used if you want to more evenly distribute points across your different
+                            lifestyle areas.</p>
+                        <h5 class="fw-semibold">Allocation Interval</h5>
+                        <p>This is how often you will be able to allocate points.
+                            When you finish allocating points, a waiting period will trigger until you can allocate
+                            points again. Please note that the allocation waiting period will begin after the <span
+                                class="fst-italic">last point</span> available
+                            has been allocated.</li> <span class="text-primary">Open</span> allows you allocate points
+                            whenever you want!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xxl-5 col-lg-6 offset-lg-0 col-md-8 offset-md-2 col-sm-10 offset-sm-1 col-12 my-2">
+                <div id="options" class="card">
+                    <h2 class="card-header text-center">Options</h2>
+                    <div class="card-body">
+                        <h4 class="text-center">Lifestyle Areas</h4>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 col-12 text-center">
+                                <h5 class="text-feminization">Feminization</h5>
+                                <ul class="list-group d-inline-flex ">
+                                    <li class="list-group-item border-feminization">
+                                        <div class="form-check form-switch">
+                                            <input id="femwear-enabled" type="checkbox" role="switch"
+                                                class="form-check-input input-feminization" onchange="setOptions()"
+                                                checked>
+                                            <label for="femwear-enabled" class="form-check-label">Feminine Wear</label>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item border-feminization">
+                                        <div class="form-check form-switch">
+                                            <input id="makeup-enabled" type="checkbox" role="switch"
+                                                class="form-check-input input-feminization" onchange="setOptions()"
+                                                checked>
+                                            <label for="makeup-enabled" class="form-check-label">Makeup</label>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item border-feminization">
+                                        <div class="form-check form-switch">
+                                            <input id="nails-enabled" type="checkbox" role="switch"
+                                                class="form-check-input input-feminization" onchange="setOptions()"
+                                                checked>
+                                            <label for="nails-enabled" class="form-check-label">Nail Care</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div
+                                class="col-lg-4 offset-lg-0 order-lg-0 col-md-6 offset-md-3 order-1 col-12 text-center">
+                                <h5 class="text-physique">Physique</h5>
+                                <ul class="list-group d-inline-flex">
+                                    <li class="list-group-item border-physique">
+                                        <div class="form-check form-switch">
+                                            <input id="exercise-enabled" type="checkbox" role="switch"
+                                                class="form-check-input input-physique" onchange="setOptions()" checked>
+                                            <label for="exercise-enabled" class="form-check-label">Exercise</label>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item border-physique">
+                                        <div class="form-check form-switch">
+                                            <input id="diet-enabled" type="checkbox" role="switch"
+                                                class="form-check-input input-physique" onchange="setOptions()" checked>
+                                            <label for="diet-enabled" class="form-check-label">Diet</label>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item border-physique">
+                                        <div class="form-check form-switch">
+                                            <input id="hygiene-enabled" type="checkbox" role="switch"
+                                                class="form-check-input input-physique" onchange="setOptions()" checked>
+                                            <label for="hygiene-enabled" class="form-check-label">Hygiene</label>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item border-physique">
+                                        <div class="form-check form-switch">
+                                            <input id="shaving-enabled" type="checkbox" role="switch"
+                                                class="form-check-input input-physique" onchange="setOptions()" checked>
+                                            <label for="shaving-enabled" class="form-check-label">Shaving</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-12 text-center">
+                                <h5 class="text-sexuality">Sexuality</h5>
+                                <ul class="list-group d-inline-flex">
+                                    <li class="list-group-item border-sexuality">
+                                        <div class="form-check form-switch">
+                                            <input id="plugging-enabled" type="checkbox" role="switch"
+                                                class="form-check-input input-sexuality" onchange="setOptions()"
+                                                checked>
+                                            <label for="plugging-enabled" class="form-check-label">Plugging</label>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item border-sexuality">
+                                        <div class="form-check form-switch">
+                                            <input id="submission-enabled" type="checkbox" role="switch"
+                                                class="form-check-input input-sexuality" onchange="setOptions()"
+                                                checked>
+                                            <label for="submission-enabled" class="form-check-label">Submission</label>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item border-sexuality">
+                                        <div class="form-check form-switch">
+                                            <input id="chastity-enabled" type="checkbox" role="switch"
+                                                class="form-check-input input-sexuality" onchange="setOptions()"
+                                                checked>
+                                            <label for="chastity-enabled" class="form-check-label">Chastity</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row my-2 justify-content-center overflow-auto">
+                            <h4 class="text-center">Habit Options</h4>
+                            <ul class="list-group list-group-horizontal w-100 px-4">
+                                <a class="list-group-item list-group-item-action d-flex" data-bs-toggle="popover"
+                                    data-bs-title="Discretion"
+                                    data-bs-content="Limit the exposure level of the habits you will build. Private will confine habits to your private domain. Discrete will limit habits to ones that may be maintained in public, but are either invisible (such as plugging) or non-critical (such as nail polish). Public removes any restrictions on habits - this is intended for individuals comfortable with their outward presentation."
+                                    data-bs-placement="left">
+                                    <h5 class="mx-auto my-auto">Discretion</h5>
+                                </a>
+                                <li class="list-group-item flex-grow-1 d-flex justify-content-center">
+                                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                        <input type="radio" class="btn-check" name="discretion-radio"
+                                            id="discretion-private" autocomplete="off" onchange="setOptions()" checked>
+                                        <label class="btn btn-outline-private" for="discretion-private">Private</label>
+
+                                        <input type="radio" class="btn-check" name="discretion-radio"
+                                            id="discretion-discrete" autocomplete="off" onchange="setOptions()">
+                                        <label class="btn btn-outline-discrete"
+                                            for="discretion-discrete">Discrete</label>
+
+                                        <input type="radio" class="btn-check" name="discretion-radio"
+                                            id="discretion-public" autocomplete="off" onchange="setOptions()">
+                                        <label class="btn btn-outline-public" for="discretion-public">Public</label>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul class="list-group list-group-horizontal mt-2 w-100 px-4">
+                                <a class="list-group-item list-group-item-action d-flex" data-bs-toggle="popover"
+                                    data-bs-title="Allocation Method"
+                                    data-bs-content="The method by which habit points will be allocated. Choice allows you to directly choose the lifestyle area each point will go. Random will provide a button that will allocate all available points randomly, respecting benchmarks and discretion."
+                                    data-bs-placement="left">
+                                    <h5 class="mx-auto my-auto">Allocation Method</h5>
+                                </a>
+                                <li class="list-group-item flex-grow-1 d-flex justify-content-center">
+                                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                        <input type="radio" class="btn-check" name="allocation-radio"
+                                            id="allocation-choice" autocomplete="off" onchange="setOptions()" checked>
+                                        <label class="btn btn-outline-primary my-auto"
+                                            for="allocation-choice">Choice</label>
+
+                                        <input type="radio" class="btn-check" name="allocation-radio"
+                                            id="allocation-random" autocomplete="off" onchange="setOptions()">
+                                        <label class="btn btn-outline-primary my-auto"
+                                            for="allocation-random">Random</label>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul class="list-group list-group-horizontal mt-2 w-100 px-4">
+                                <a class="list-group-item list-group-item-action d-flex" data-bs-toggle="popover"
+                                    data-bs-title="Habit Benchmarks"
+                                    data-bs-content="Enables stopping points at certain levels in each lifestyle area. At each benchmark, you will not be able to allocate points into that lifestyle area until all other lifestyle areas reach the same benchmark level."
+                                    data-bs-placement="left">
+                                    <h5 class="mx-auto my-auto">Benchmarks</h5>
+                                </a>
+                                <li class="list-group-item d-flex flex-grow-1 justify-content-center">
+                                    <div class="form-check form-switch fs-4 d-flex justify-content-center">
+                                        <input id="benchmarks-enabled" type="checkbox" role="switch"
+                                            class="form-check-input" onchange="setOptions()" checked>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul class="list-group list-group-horizontal mt-2 w-100 px-4 d-flex">
+                                <a class="list-group-item list-group-item-action d-flex" data-bs-toggle="popover"
+                                    data-bs-title="Allocation Interval"
+                                    data-bs-content="The amount of time (in days) you will need to wait between allocating habit points. Open means there is no wait time and you can allocate points whenever you like."
+                                    data-bs-placement="left">
+                                    <h5 class="mx-auto my-auto">Interval</h5>
+                                </a>
+                                <li class="list-group-item d-flex">
+                                    <h5 id="alloc-interval" class="text-center mx-auto my-auto">1 Day</h5>
+                                </li>
+                                <li class="list-group-item d-flex flex-grow-1 justify-content-center">
+                                    <input id="alloc-interval-range" type="range" class="form-range mx-auto my-auto"
+                                        min="0" max="5" step="1" onchange="setOptions()">
+                                </li>
+                            </ul>
+                            <ul class="list-group list-group-horizontal mt-2 w-100 px-4">
+                                <a class="list-group-item list-group-item-action d-flex" data-bs-toggle="popover"
+                                    data-bs-title="Allocation Points"
+                                    data-bs-content="The number of habit points that will be available each time you can allocate points."
+                                    data-bs-placement="left">
+                                    <h5 class="mx-auto my-auto">Points</h5>
+                                </a>
+                                <li class="list-group-item d-flex">
+                                    <h5 id="points" class="mx-auto my-auto">1</h5>
+                                </li>
+                                <li class="list-group-item d-flex flex-grow-1 justify-content-center">
+                                    <input id="point-range" type="range" class="form-range mx-auto my-auto" min="1"
+                                        max="8" step="1" onload="this.max = numAreas" onchange="setOptions()">
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="row justify-content-center mx-auto">
+                            <h4 class="text-center">Save Management</h4>
+                            <div class="input-group w-75">
+                                <label class="input-group-text text-bg-primary" for="import-save">Import</label>
+                                <input type="file" class="form-control border-primary" id="import-save">
+                            </div>
+                            <button class="btn btn-primary w-25" onclick="exportSave()">Export</button>
+                            <button class="btn btn-danger mt-2 w-50" onclick="clearSave()">Clear Save</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js" crossorigin></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
+    <script>var Alert = ReactBootstrap.Alert;</script>
+    <script src="bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
+        integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous"
+        async></script>
+    <!-- https://github.com/timmywil/panzoom -->
+    <script src="js/utility.js"></script>
+    <script src="js/info.js"></script>
+    <script>fileUpload(); loadLocal(); updateOptionElements();</script>
+    <script>
+        const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+        const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl,
+            { container: "body", trigger: "click hover" }))
+    </script>
+    <script>
+        document.getElementById("about").style.height = document.getElementById("options").offsetHeight + "px";
+    </script>
+</body>
+
+</html>

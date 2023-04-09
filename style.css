@@ -1,0 +1,61 @@
+:root {
+    /* Specializations */
+    --oral: #0d6efd;
+    --anal: #dc3545;
+    --sissy: #d63384;
+    --bondage: #000000;
+
+    /* Regional Markets */
+    --anglo: #a4c2f4;
+
+    /* Fusion Gradients */
+    --fusion-OA: linear-gradient(135deg, #0d6efd 25%, #dc3545 75%) !important;
+    --fusion-OS: linear-gradient(135deg, #0d6efd 25%, #d63384 75%) !important;
+    --fusion-OB: linear-gradient(135deg, #0d6efd 25%, #000000 75%) !important;
+    --fusion-AS: linear-gradient(135deg, #dc3545 25%, #d63384 75%) !important;
+    --fusion-AB: linear-gradient(135deg, #dc3545 25%, #000000 75%) !important;
+    --fusion-SB: linear-gradient(135deg, #d63384 25%, #000000 75%) !important;
+}
+
+.form-check-input.input-feminization:checked {
+  background-color: var(--bs-feminization);
+  border-color: var(--bs-feminization);
+}
+
+.form-check-input.input-sexuality:checked {
+  background-color: var(--bs-sexuality);
+  border-color: var(--bs-sexuality);
+}
+
+.form-check-input.input-physique:checked {
+  background-color: var(--bs-physique);
+  border-color: var(--bs-physique);
+}
+
+/* Text Gradients */
+.text-fusion-OS {
+	background: -webkit-linear-gradient(315deg, #0d6efd 25%, #d63384 75%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .separator::before,
+  .separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #000;
+  }
+  
+  .separator:not(:empty)::before {
+    margin-right: .25em;
+  }
+  
+  .separator:not(:empty)::after {
+    margin-left: .25em;
+  }
