@@ -89,7 +89,10 @@ function randomAllocation(points) {
 function allocAvailable() {
     if (getAvailableAreas().length == 0) {
         document.getElementById("alloc-areas").innerHTML = "No more points can be assigned!";
-        document.getElementById("alloc-button").disabled = true; 
+        if (random) {
+            document.getElementById("alloc-button").disabled = true; 
+        }
+        
         generateHabitCards();
         return false;
     } else {
