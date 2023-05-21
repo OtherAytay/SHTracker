@@ -1,16 +1,16 @@
 function generateHabitCards() {
     //const habitRoot = ReactDOM.createRoot(document.getElementById("habits"));
-    
+
     var habitCards = []
     for (var area = 0; area < numAreas; area++) {
         if (enabledAreas[areaNames[area]]) {
             habitCards.push(React.createElement(
-                habitCard, {area: areaNames[area], prog: prog[areaNames[area]]} 
+                habitCard, { area: areaNames[area], prog: prog[areaNames[area]] }
             ))
         }
     }
 
-    ReactDOM.render(habitCards, document.getElementById("habits"), function() {
+    ReactDOM.render(habitCards, document.getElementById("habits"), function () {
         msnry.reloadItems();
         msnry.layout();
     });
@@ -44,7 +44,7 @@ function habitCard({ area, prog }) {
     return (
         React.createElement(
             'div',
-            { class: "col-xxl-3 col-xl-4 col-sm-6 col-12" }, 
+            { class: "col-xxl-3 col-xl-4 col-sm-6 col-12" },
             React.createElement(
                 'div',
                 { class: "card mb-3 border-" + areaCode },
@@ -56,7 +56,12 @@ function habitCard({ area, prog }) {
                 React.createElement(
                     'div',
                     { class: "card-body" },
-                    habits
+                    React.createElement(
+                        'ul',
+                        { class: 'list-group' },
+                        habits
+                    )
+
                 ),
                 alloc
             )
@@ -81,63 +86,77 @@ function habitList({ area, prog }) {
 
     // Add benchmark boundaries
     if (benchmarked) {
-        for (var i = 0; i < benches.length-1; i++) {
-            if (benches[i][area] == benches[i+1][area]) {
+        for (var i = 0; i < benches.length - 1; i++) {
+            if (benches[i][area] == benches[i + 1][area]) {
                 break;
             }
-    
+
             allBounds.push({
                 type: "Benchmark #" + (i + 1),
                 bound: benches[i][area]
             })
         }
     }
-    
+
     // Sort boundaries
     allBounds = allBounds.sort((a, b) => {
         return a.bound - b.bound;
-     });
+    });
+
     // Build habit list with groups separated by boundaries
     var habitList = [];
     var habit = 1;
     var currBound = 0;
     var currDisc = "private";
-    while (habit <= prog) {
-        var habitGroup = []
 
+    // for (var habit = 0; habit < prog; habit++) {
+
+
+    //     // Badges
+    //     while (allBounds[currBound].bound == habit) {
+
+    //     }
+    // }
+    console.log(allBounds)
+
+    while (habit <= prog) {
         if (allBounds[currBound].type == "Discrete") {
             currDisc = "discrete";
         } else if (allBounds[currBound].type == "Public") {
             currDisc = "public";
         }
-        
-        for (habit; habit <= allBounds[currBound].bound && habit <= prog; habit++) {
-            habitGroup.push(
-                React.createElement(
-                    'li',
-                    { class: "list-group-item border-" + currDisc },
-                    getHabit(area, habit)
+
+        var bench = null;
+        for (var i = 0; i < allBounds.length; i++) {
+            if (habit == allBounds[i].bound && allBounds[i].type.includes("Benchmark")) {
+                bench = React.createElement(
+                    'span',
+                    { class: "me-2 badge bg-benchmark" },
+                    allBounds[i].type
                 )
-            )
+            }
         }
         
-        habitList.push(React.createElement(
-            'ul',
-            { class: "list-group" },
-            habitGroup
+
+        habitList.push(
+            React.createElement(
+                'li',
+                { class: "list-group-item border-" + currDisc },
+                React.createElement(
+                    'span',
+                    { class: "me-2 badge bg-" + currDisc },
+                    currDisc.slice(0, 1).toUpperCase() + currDisc.slice(1)
+                ),
+                bench,
+                React.createElement('p', {class: 'mb-0'}, getHabit(area, habit))
             )
         )
 
         while (currBound < allBounds.length && habit - 1 == allBounds[currBound].bound) {
-            habitList.push(React.createElement(
-                'div',
-                {class: "separator fs-4 text-" + boundCoding(allBounds[currBound].type)},
-                allBounds[currBound].type
-            ))
             currBound++;
         }
-        
+        habit++;
     }
-    
+
     return habitList;
 }
