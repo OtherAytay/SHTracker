@@ -59,3 +59,8 @@
   .separator:not(:empty)::after {
     margin-left: .25em;
   }
+
+  #navbarSupportedContent {
+    font-weight: bold;
+    font-size: 1.25rem;
+  }

@@ -31,10 +31,11 @@
             </nav>
         </div>
 
+        <!-- About Card -->
         <div class="row overflow-auto">
             <div
                 class="h-100 col-xxl-5 offset-xxl-1 col-lg-6 offset-lg-0 order-lg-0 col-md-8 offset-md-2 col-sm-10 offset-sm-1 col-12 order-1 my-2 pb-3">
-                <div id="about" class="card">
+                <div id="about" class="card shadow">
                     <h2 class="card-header text-center">About</h2>
                     <div class="card-body overflow-scroll">
                         <h4 class="fw-bold">Overview</h4>
@@ -109,8 +110,9 @@
                 </div>
             </div>
 
+            <!-- Options Card -->
             <div class="col-xxl-5 col-lg-6 offset-lg-0 col-md-8 offset-md-2 col-sm-10 offset-sm-1 col-12 my-2">
-                <div id="options" class="card">
+                <div id="options" class="card shadow">
                     <h2 class="card-header text-center">Options</h2>
                     <div class="card-body">
                         <h4 class="text-center">Lifestyle Areas</h4>
@@ -211,13 +213,13 @@
                         <div class="row my-2 justify-content-center overflow-auto">
                             <h4 class="text-center">Habit Options</h4>
                             <ul class="list-group list-group-horizontal w-100 px-4">
-                                <a class="list-group-item list-group-item-action d-flex" data-bs-toggle="popover"
+                                <a class="w-50 list-group-item list-group-item-action d-inline-flex" data-bs-toggle="popover"
                                     data-bs-title="Discretion"
                                     data-bs-content="Limit the exposure level of the habits you will build. Private will confine habits to your private domain. Discrete will limit habits to ones that may be maintained in public, but are either invisible (such as plugging) or non-critical (such as nail polish). Public removes any restrictions on habits - this is intended for individuals comfortable with their outward presentation."
                                     data-bs-placement="left">
                                     <h5 class="mx-auto my-auto">Discretion</h5>
                                 </a>
-                                <li class="list-group-item flex-grow-1 d-flex justify-content-center">
+                                <li class="w-50 list-group-item d-flex justify-content-center">
                                     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                                         <input type="radio" class="btn-check" name="discretion-radio"
                                             id="discretion-private" autocomplete="off" onchange="setOptions()" checked>
@@ -235,13 +237,13 @@
                                 </li>
                             </ul>
                             <ul class="list-group list-group-horizontal mt-2 w-100 px-4">
-                                <a class="list-group-item list-group-item-action d-flex" data-bs-toggle="popover"
+                                <a class="w-50 list-group-item list-group-item-action d-flex" data-bs-toggle="popover"
                                     data-bs-title="Allocation Method"
                                     data-bs-content="The method by which habit points will be allocated. Choice allows you to directly choose the lifestyle area each point will go. Random will provide a button that will allocate all available points randomly, respecting benchmarks and discretion."
                                     data-bs-placement="left">
                                     <h5 class="mx-auto my-auto">Allocation Method</h5>
                                 </a>
-                                <li class="list-group-item flex-grow-1 d-flex justify-content-center">
+                                <li class="w-50 list-group-item flex-grow-1 d-flex justify-content-center">
                                     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                                         <input type="radio" class="btn-check" name="allocation-radio"
                                             id="allocation-choice" autocomplete="off" onchange="setOptions()" checked>
@@ -256,13 +258,13 @@
                                 </li>
                             </ul>
                             <ul class="list-group list-group-horizontal mt-2 w-100 px-4">
-                                <a class="list-group-item list-group-item-action d-flex" data-bs-toggle="popover"
+                                <a class="w-50 list-group-item list-group-item-action d-flex" data-bs-toggle="popover"
                                     data-bs-title="Habit Benchmarks"
                                     data-bs-content="Enables stopping points at certain levels in each lifestyle area. At each benchmark, you will not be able to allocate points into that lifestyle area until all other lifestyle areas reach the same benchmark level."
                                     data-bs-placement="left">
                                     <h5 class="mx-auto my-auto">Benchmarks</h5>
                                 </a>
-                                <li class="list-group-item d-flex flex-grow-1 justify-content-center">
+                                <li class="w-50 list-group-item d-flex flex-grow-1 justify-content-center">
                                     <div class="form-check form-switch fs-4 d-flex justify-content-center">
                                         <input id="benchmarks-enabled" type="checkbox" role="switch"
                                             class="form-check-input" onchange="setOptions()" checked>
@@ -270,33 +272,33 @@
                                 </li>
                             </ul>
                             <ul class="list-group list-group-horizontal mt-2 w-100 px-4 d-flex">
-                                <a class="list-group-item list-group-item-action d-flex" data-bs-toggle="popover"
+                                <a class="w-auto list-group-item list-group-item-action flex-grow-1 d-flex" data-bs-toggle="popover"
                                     data-bs-title="Allocation Interval"
                                     data-bs-content="The amount of time (in days) you will need to wait between allocating habit points. Open means there is no wait time and you can allocate points whenever you like."
                                     data-bs-placement="left">
-                                    <h5 class="mx-auto my-auto">Interval</h5>
+                                    <h5 class="w-auto mx-auto my-auto">Interval</h5>
                                 </a>
-                                <li class="list-group-item d-flex">
+                                <li class="w-auto list-group-item d-flex">
                                     <h5 id="alloc-interval" class="text-center mx-auto my-auto">1 Day</h5>
                                 </li>
-                                <li class="list-group-item d-flex flex-grow-1 justify-content-center">
+                                <li class="w-50 list-group-item d-flex justify-content-center">
                                     <input id="alloc-interval-range" type="range" class="form-range mx-auto my-auto"
-                                        min="0" max="5" step="1" onchange="setOptions()">
+                                        min="0" max="5" step="1" oninput="setOptions()">
                                 </li>
                             </ul>
                             <ul class="list-group list-group-horizontal mt-2 w-100 px-4">
-                                <a class="list-group-item list-group-item-action d-flex" data-bs-toggle="popover"
+                                <a class="w-auto list-group-item list-group-item-action flex-grow-1 d-flex" data-bs-toggle="popover"
                                     data-bs-title="Allocation Points"
                                     data-bs-content="The number of habit points that will be available each time you can allocate points."
                                     data-bs-placement="left">
-                                    <h5 class="mx-auto my-auto">Points</h5>
+                                    <h5 class="w-auto mx-auto my-auto">Points</h5>
                                 </a>
-                                <li class="list-group-item d-flex">
+                                <li class="w-auto list-group-item d-flex">
                                     <h5 id="points" class="mx-auto my-auto">1</h5>
                                 </li>
-                                <li class="list-group-item d-flex flex-grow-1 justify-content-center">
+                                <li class="w-50 list-group-item d-flex justify-content-center">
                                     <input id="point-range" type="range" class="form-range mx-auto my-auto" min="1"
-                                        max="8" step="1" onload="this.max = numAreas" onchange="setOptions()">
+                                        max="8" step="1" onload="this.max = numAreas" oninput="setOptions()">
                                 </li>
                             </ul>
                         </div>
