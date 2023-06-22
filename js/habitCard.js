@@ -169,9 +169,11 @@ function habitList({ area, prog }) {
         )
     }
 
+    var nextHabit = null;
     if (preview != null) {
         nextHabit = React.createElement('p', {class: "text-center fs-5 mb-1"}, "Next Habit");
     }
+    
     return [
         React.createElement(
             'ul',
