@@ -56,12 +56,7 @@ function habitCard({ area, prog }) {
                 React.createElement(
                     'div',
                     { class: "card-body" },
-                    React.createElement(
-                        'ul',
-                        { class: 'list-group' },
-                        habits
-                    )
-
+                    habits
                 ),
                 alloc
             )
@@ -105,18 +100,11 @@ function habitList({ area, prog }) {
 
     // Build habit list with groups separated by boundaries
     var habitList = [];
+    var preview;
     var habit = 1;
     var currBound = 0;
     var currDisc = "private";
 
-    // for (var habit = 0; habit < prog; habit++) {
-
-
-    //     // Badges
-    //     while (allBounds[currBound].bound == habit) {
-
-    //     }
-    // }
     console.log(allBounds)
 
     while (habit <= prog) {
@@ -136,7 +124,6 @@ function habitList({ area, prog }) {
                 )
             }
         }
-        
 
         habitList.push(
             React.createElement(
@@ -148,15 +135,50 @@ function habitList({ area, prog }) {
                     currDisc.slice(0, 1).toUpperCase() + currDisc.slice(1)
                 ),
                 bench,
-                React.createElement('p', {class: 'mb-0'}, getHabit(area, habit))
+                React.createElement('p', { class: 'mb-0' }, getHabit(area, habit))
             )
         )
 
-        while (currBound < allBounds.length && habit - 1 == allBounds[currBound].bound) {
+        while (currBound < allBounds.length && habit == allBounds[currBound].bound) {
             currBound++;
         }
         habit++;
     }
 
-    return habitList;
+    // Display preview of next habit
+    if (habit == prog + 1 && prog < public_bounds[area]) {
+        preview = React.createElement(
+            'ul',
+            { class: 'list-group' },
+            React.createElement(
+                'li',
+                { class: "list-group-item border-secondary" },
+                React.createElement(
+                    'span',
+                    { class: "me-2 badge bg-secondary" },
+                    "Preview"
+                ),
+                React.createElement(
+                    'span',
+                    { class: "me-2 badge bg-" + currDisc },
+                    currDisc.slice(0, 1).toUpperCase() + currDisc.slice(1)
+                ),
+                bench,
+                React.createElement('p', { class: 'mb-0' }, getHabit(area, habit))
+            )
+        )
+    }
+
+    if (preview != null) {
+        nextHabit = React.createElement('p', {class: "text-center fs-5 mb-1"}, "Next Habit");
+    }
+    return [
+        React.createElement(
+            'ul',
+            { class: 'list-group' },
+            habitList
+        ),
+        nextHabit,
+        preview
+    ]
 }
