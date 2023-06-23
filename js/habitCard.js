@@ -47,7 +47,7 @@ function habitCard({ area, prog }) {
             { class: "col-xxl-3 col-xl-4 col-sm-6 col-12" },
             React.createElement(
                 'div',
-                { class: "card mb-3 border-" + areaCode },
+                { class: "card shadow-sm mb-3 border-" + areaCode },
                 React.createElement(
                     'h3',
                     { class: "card-title card-header text-center border-" + areaCode + " text-bg-" + areaCode },
@@ -105,8 +105,6 @@ function habitList({ area, prog }) {
     var currBound = 0;
     var currDisc = "private";
 
-    console.log(allBounds)
-
     while (habit <= prog) {
         if (allBounds[currBound].type == "Discrete") {
             currDisc = "discrete";
@@ -129,6 +127,11 @@ function habitList({ area, prog }) {
             React.createElement(
                 'li',
                 { class: "list-group-item border-" + currDisc },
+                React.createElement(
+                    'span',
+                    { class: "me-2 badge bg-info" },
+                    habit + "/" + public_bounds[area]
+                ),
                 React.createElement(
                     'span',
                     { class: "me-2 badge bg-" + currDisc },
