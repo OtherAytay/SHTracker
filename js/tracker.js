@@ -1,10 +1,11 @@
 function initializeTrackers() {
     for (const [area, p] of Object.entries(prog)) {
-        for (const habit of Daily.filter((i) => i.area == area && i.prog <= p)) {
-            channel = habit.channel || 1
+        if (enabledAreas[area]) {
+            for (const habit of Daily.filter((i) => i.area == area && i.prog <= p)) {
+                channel = habit.channel || 1
 
-            id = areaCodeMapping[area] + '_' + channel
-                dailyTrackers[id] = dailyTrackers[id] || {'habit': habit}
+                id = areaCodeMapping[area] + '_' + channel
+                dailyTrackers[id] = dailyTrackers[id] || { 'habit': habit }
                 if (habit.type == 'timer') {
                     if (!('time' in dailyTrackers[id]) || dailyTrackers[id]['habit']['prog'] < habit.prog) {
                         dailyTrackers[id]['time'] = habit.duration * 60 * 60 * 1000
@@ -15,15 +16,16 @@ function initializeTrackers() {
                 } else {
                     dailyTrackers[id]['complete'] = dailyTrackers[id]['complete'] || false
                 }
-        }
-        for (const habit of Periodic.filter((i) => i.area == area && i.prog <= p)) {
-            channel = habit.channel || 1
-            id = areaCodeMapping[area] + '_' + channel
+            }
+            for (const habit of Periodic.filter((i) => i.area == area && i.prog <= p)) {
+                channel = habit.channel || 1
+                id = areaCodeMapping[area] + '_' + channel
 
-            periodicTrackers[id] = {}
+                periodicTrackers[id] = {}
 
-            // charge based stuff
-            // periodicTrackers[id]['']
+                // charge based stuff
+                // periodicTrackers[id]['']
+            }
         }
     }
     localStorage['SHTracker-dailyTrackers'] = JSON.stringify(dailyTrackers)
@@ -42,7 +44,7 @@ function generateTrackers() {
         for (const completion of document.querySelectorAll('input.btn-check')) {
             id = completion.id.match(/button_(\w+)/)[1]
             label = document.querySelector('#button_' + id + ' + label')
-            
+
             if (!dailyTrackers[id]['complete']) {
                 label.classList.add('btn-outline-danger')
                 label.classList.remove('btn-outline-success')
@@ -75,13 +77,13 @@ function habitTracker(id, tracker) {
 
     return React.createElement(
         'ul',
-        {class: 'list-group list-group-horizontal-sm mt-2 w-100'},
+        { class: 'list-group list-group-horizontal-sm mt-2 w-100' },
         React.createElement(
             'li',
-            {class: 'list-group-item col-sm-6 col-12 border-' + areaCoding(habit.area)},
+            { class: 'list-group-item col-sm-6 col-12 border-' + areaCoding(habit.area) },
             React.createElement(
                 'span',
-                {class: 'me-2 fs-6 badge bg-' + areaCoding(habit.area)},
+                { class: 'me-2 fs-6 badge bg-' + areaCoding(habit.area) },
                 habit.area
             ),
             React.createElement('br'),
@@ -93,7 +95,7 @@ function habitTracker(id, tracker) {
 
 function timer(id, tracker) {
     habit = tracker.habit
-    
+
     return React.createElement(
         'li',
         {
@@ -114,15 +116,15 @@ function timer(id, tracker) {
                 id: 'button_' + id,
                 class: 'text-white fw-semibold btn btn-' + areaCoding(habit.area),
                 hidden: tracker['active'],
-                onClick: () => {manageTimer(id, tracker)}
+                onClick: () => { manageTimer(id, tracker) }
             },
-            React.createElement('i', {class: 'bi bi-play-fill'}),
+            React.createElement('i', { class: 'bi bi-play-fill' }),
             'Start'
         ),
         React.createElement(
             'div',
             {
-                class: 'align-items-center ' + (tracker['active'] ? 'd-flex': ''), 
+                class: 'align-items-center ' + (tracker['active'] ? 'd-flex' : ''),
                 hidden: !tracker['active']
             },
             React.createElement(
@@ -130,14 +132,14 @@ function timer(id, tracker) {
                 {
                     class: 'progress flex-fill me-2',
                     role: 'progressbar',
-                    style: {height: '2rem'}
+                    style: { height: '2rem' }
                 },
                 React.createElement(
                     'div',
                     {
                         id: 'progress_' + id,
                         class: 'progress-bar progress-bar-striped progress-bar-animated bg-' + areaCoding(habit.area),
-                        style: {width: (tracker['remaining'] / tracker['time']) * 100 + '%'}
+                        style: { width: (tracker['remaining'] / tracker['time']) * 100 + '%' }
                     }
                 )
             ),
@@ -146,9 +148,9 @@ function timer(id, tracker) {
                 {
                     id: 'button_' + id,
                     class: 'fw-semibold btn btn-outline-' + areaCoding(habit.area),
-                    onClick: () => {manageTimer(id, tracker)}
+                    onClick: () => { manageTimer(id, tracker) }
                 },
-                React.createElement('i', {class: 'bi bi-pause-fill'}),    
+                React.createElement('i', { class: 'bi bi-pause-fill' }),
             ),
         )
     )
@@ -193,8 +195,8 @@ function updateTimer(id, tracker) {
     } else {
         time.innerText = formatTime(tracker['remaining']);
     }
-    
-    progress = document.getElementById('progress_' + id); 
+
+    progress = document.getElementById('progress_' + id);
     progress.style.width = (tracker['remaining'] / tracker['time']) * 100 + '%'
     localStorage['SHTracker-dailyTrackers'] = JSON.stringify(dailyTrackers)
 }
@@ -214,7 +216,7 @@ function charge(charges, recharge, cooldown) {
 
 function completion(id, tracker) {
     habit = tracker.habit
-    
+
     return React.createElement(
         'li',
         {
@@ -227,7 +229,7 @@ function completion(id, tracker) {
                 id: 'button_' + id,
                 type: 'checkbox',
                 class: 'btn-check',
-                onChange: () => {manageCompletion(id, tracker)}
+                onChange: () => { manageCompletion(id, tracker) }
             }
         ),
         React.createElement(
@@ -236,7 +238,7 @@ function completion(id, tracker) {
                 class: 'fw-bold fs-2 my-auto mx-auto btn btn-outline-danger',
                 for: 'button_' + id,
             },
-            React.createElement('i', {class: 'bi bi-x'})
+            React.createElement('i', { class: 'bi bi-x' })
         )
     )
 }
@@ -292,14 +294,16 @@ const Daily = [
     {
         'area': 'Hygiene',
         'prog': 2,
-        'habit': 'Use facial cleanser, face and hand moisturizer',
+        'habit': 'Use face and hand moisturizer',
         'type': 'completion',
+        'channel': 2,
     },
     {
         'area': 'Hygiene',
         'prog': 5,
-        'habit': 'Use facial cleanser, face and hand moisturizer, and eye cream',
+        'habit': 'Use eye cream',
         'type': 'completion',
+        'channel': 3,
     },
 
     // Plugging
@@ -331,7 +335,7 @@ const Daily = [
         'type': 'timer',
         'duration': 8,
     },
-    
+
     // Chastity
     {
         'area': 'Chastity',
