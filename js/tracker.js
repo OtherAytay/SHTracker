@@ -9,6 +9,7 @@ function initializeTrackers() {
                     if (dailyTrackers[id]['habit']['prog'] < habit.prog) {
                         dailyTrackers[id]['time'] = habit.duration * 60 * 60
                         dailyTrackers[id]['remaining'] = habit.duration * 60 * 60
+                        dailyTrackers[id]['habit'] = habit
                     }
                 } else {
                     dailyTrackers[id]['complete'] = dailyTrackers[id]['complete'] || false
