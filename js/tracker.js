@@ -52,7 +52,6 @@ function generateTrackers() {
                 label.classList.remove('btn-outline-danger')
                 label.classList.add('btn-outline-success')
                 label.innerHTML = "<i class='bi bi-check'></i>"
-
             }
         }
 
@@ -138,7 +137,7 @@ function timer(id, tracker) {
                     {
                         id: 'progress_' + id,
                         class: 'progress-bar progress-bar-striped progress-bar-animated bg-' + areaCoding(habit.area),
-                        style: {width: '100%'}
+                        style: {width: (tracker['remaining'] / tracker['time']) * 100 + '%'}
                     }
                 )
             ),
