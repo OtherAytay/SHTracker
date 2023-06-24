@@ -6,10 +6,11 @@ function initializeTrackers() {
             id = areaCodeMapping[area] + '_' + channel
                 dailyTrackers[id] = dailyTrackers[id] || {'habit': habit}
                 if (habit.type == 'timer') {
-                    if (dailyTrackers[id]['habit']['prog'] < habit.prog) {
-                        dailyTrackers[id]['time'] = habit.duration * 60 * 60
-                        dailyTrackers[id]['remaining'] = habit.duration * 60 * 60
+                    if (!('time' in dailyTrackers[id]) || dailyTrackers[id]['habit']['prog'] < habit.prog) {
+                        dailyTrackers[id]['time'] = habit.duration * 60 * 60 * 1000
+                        dailyTrackers[id]['remaining'] = habit.duration * 60 * 60 * 1000
                         dailyTrackers[id]['habit'] = habit
+                        dailyTrackers[id]['active'] = false
                     }
                 } else {
                     dailyTrackers[id]['complete'] = dailyTrackers[id]['complete'] || false
@@ -42,7 +43,6 @@ function generateTrackers() {
             id = completion.id.match(/button_(\w+)/)[1]
             label = document.querySelector('#button_' + id + ' + label')
             
-            console.log(id)
             if (!dailyTrackers[id]['complete']) {
                 label.classList.add('btn-outline-danger')
                 label.classList.remove('btn-outline-success')
@@ -54,6 +54,10 @@ function generateTrackers() {
                 label.innerHTML = "<i class='bi bi-check'></i>"
 
             }
+        }
+
+        for (const tracker of Object.values(dailyTrackers).filter((i) => i.active)) {
+            tracker['intervalID'] = setInterval(updateTimer, 1000, id, tracker)
         }
     })
 }
@@ -110,6 +114,7 @@ function timer(id, tracker) {
             {
                 id: 'button_' + id,
                 class: 'text-white fw-semibold btn btn-' + areaCoding(habit.area),
+                hidden: tracker['active'],
                 onClick: () => {manageTimer(id, tracker)}
             },
             React.createElement('i', {class: 'bi bi-play-fill'}),
@@ -117,7 +122,10 @@ function timer(id, tracker) {
         ),
         React.createElement(
             'div',
-            {class: 'align-items-center', hidden: true},
+            {
+                class: 'align-items-center ' + (tracker['active'] ? 'd-flex': ''), 
+                hidden: !tracker['active']
+            },
             React.createElement(
                 'div',
                 {
@@ -151,12 +159,24 @@ function manageTimer(id, tracker) {
     button = document.getElementById('button_' + id)
     progress = document.getElementById('progress_' + id);
 
+    if (tracker['remaining'] <= 0) {
+        tracker['intervalID'] = clearInterval(tracker['intervalID'])
+        tracker['active'] = false
+        progress.parentElement.parentElement.hidden = true;
+        progress.parentElement.parentElement.classList.remove('d-flex');
+        button.hidden = true;
+    }
+
     if (progress.parentElement.parentElement.hidden) { // start timer
-        tracker['intervalID'] = setInterval(updateTimer, 1000, id)
+        tracker['start'] = (new Date()).getTime()
+        tracker['active'] = true
+        tracker['intervalID'] = setInterval(updateTimer, 1000, id, tracker)
         progress.parentElement.parentElement.classList.add('d-flex');
         progress.parentElement.parentElement.hidden = false;
         button.hidden = true;
     } else { // pause timer
+        tracker['remaining'] -= (new Date()).getTime() - tracker['start']
+        tracker['active'] = false
         progress.parentElement.parentElement.hidden = true;
         progress.parentElement.parentElement.classList.remove('d-flex');
         button.hidden = false;
@@ -165,25 +185,26 @@ function manageTimer(id, tracker) {
     localStorage['SHTracker-dailyTrackers'] = JSON.stringify(dailyTrackers)
 }
 
-function updateTimer(id) {
-    dailyTrackers[id]['remaining'] -= 1;
+function updateTimer(id, tracker) {
+    tracker['remaining'] -= (new Date()).getTime() - tracker['start']
+    tracker['start'] = (new Date()).getTime()
     time = document.getElementById('time_' + id);
-    if (dailyTrackers[id]['remaining'] <= 0) {
-        time.innerText = "Complete"
+    if (tracker['remaining'] <= 0) {
+        manageTimer(id, tracker)
     } else {
-        time.innerText = formatTime(dailyTrackers[id]['remaining'])
+        time.innerText = formatTime(tracker['remaining']);
     }
     
     progress = document.getElementById('progress_' + id); 
-    progress.style.width = (dailyTrackers[id]['remaining'] / dailyTrackers[id]['time'] * 100) + '%'
+    progress.style.width = (tracker['remaining'] / tracker['time']) * 100 + '%'
     localStorage['SHTracker-dailyTrackers'] = JSON.stringify(dailyTrackers)
 }
 
-function formatTime(timeS) {
-    // timeD = Math.floor(timeS / (60 * 60 * 24))
-    timeH = Math.floor((timeS / (60 * 60)) % 24)
-    timeM = Math.floor((timeS / 60) % 60)
-    timeS = Math.floor((timeS) % 60)
+function formatTime(timeMS) {
+    // timeD = Math.floor(timeS / (1000 * 60 * 60 * 24))
+    timeH = Math.floor((timeMS / (1000 * 60 * 60)) % 24)
+    timeM = Math.floor((timeMS / (1000 * 60)) % 60)
+    timeS = Math.floor((timeMS / 1000) % 60)
 
     return timeH + ':' + timeM.toString().padStart(2, 0) + ':' + timeS.toString().padStart(2, 0)
 }

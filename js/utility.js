@@ -65,6 +65,8 @@ function clearSave() {
     localStorage.removeItem("SHTracker-allocInterval");
     localStorage.removeItem("SHTracker-lastAlloc");
     localStorage.removeItem("SHTracker-allocsRemaining");
+    localStorage.removeItem("SHTracker-dailyTrackers");
+    localStorage.removeItem("SHTracker-periodicTrackers")
 
     // Reset to defaults
     prog = { "Feminine Wear": 0, Makeup: 0, Hygiene: 0, Shaving: 0, "Nail Care": 0, Plugging: 0, Submission: 0, Chastity: 0, Exercise: 0, Diet: 0 };
@@ -76,6 +78,8 @@ function clearSave() {
     allocInterval = 1; // 1: 1 day, 2: 2 days, 3: 3 days, 4: 7 days, 5: 14 days
     lastAlloc = false;
     allocsRemaining = allocPoints;
+    dailyTrackers = {}
+    periodicTrackers = {};
     updateOptionElements();
 }
 
