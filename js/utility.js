@@ -21,6 +21,8 @@ function saveLocal() {
     localStorage["SHTracker-allocInterval"] = allocInterval;
     localStorage["SHTracker-lastAlloc"] = lastAlloc;
     localStorage["SHTracker-allocsRemaining"] = allocsRemaining;
+    localStorage["SHTracker-dailyTrackers"] = JSON.stringify(dailyTrackers);
+    localStorage["SHTracker-periodicTrackers"] = JSON.stringify(periodicTrackers);
 }
 
 function loadLocal() {
@@ -34,6 +36,8 @@ function loadLocal() {
         allocInterval = JSON.parse(localStorage["SHTracker-allocInterval"]);
         lastAlloc = JSON.parse(localStorage["SHTracker-lastAlloc"]);
         allocsRemaining = JSON.parse(localStorage["SHTracker-allocsRemaining"]);
+        dailyTrackers = JSON.parse(localStorage['SHTracker-dailyTrackers'])
+        periodicTrackers = JSON.parse(localStorage['SHTracker-periodicTrackers'])
     } else {
         userDataFlag = false;
         saveLocal(); // Create fresh save using defaults

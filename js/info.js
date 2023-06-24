@@ -23,6 +23,18 @@ const areaNames = [
     "Exercise",
     "Diet"      
 ];
+const areaCodeMapping = {
+    "Feminine Wear": "femwear", 
+    "Makeup": "makeup",       
+    "Hygiene": "hygiene",      
+    "Shaving": "shaving",
+    "Chastity": "chastity",   
+    "Submission": "submission",  
+    "Plugging": "plugging", 
+    "Nail Care": "nails",
+    "Exercise": "exercise",
+    "Diet": "diet" 
+}
 const numAreas = areaNames.length; // number of lifestyle areas
 
 /* User Data */
@@ -38,6 +50,8 @@ var allocPoints = 1;
 var allocInterval = 1; // 1: 1 day, 2: 2 days, 3: 3 days, 4: 7 days, 5: 14 days
 var lastAlloc = false;
 var allocsRemaining = allocPoints;
+var dailyTrackers = {}
+var periodicTrackers = {}
 
 function allocatePoint(area) {
     // Allocate point to the chosen area
@@ -490,267 +504,3 @@ function getDiet(level) {
   'duration': (timer only) # of hours to count down
 }
 */
-const Daily = [
-    // Makeup
-    {
-        'area': 'Makeup',
-        'prog': 1,
-        'habit': 'Apply lip makeup for 3 hours',
-        'type': 'timer',
-        'duration': 3,
-    },
-    {
-        'area': 'Makeup',
-        'prog': 2,
-        'habit': 'Apply lip and eye makeup for 3 hours',
-        'type': 'timer',
-        'duration': 3,
-    },
-    {
-        'area': 'Makeup',
-        'prog': 3,
-        'habit': 'Apply lip, eye, and face makeup for 3 hours',
-        'type': 'timer',
-        'duration': 3,
-    },
-    // Hygiene
-    {
-        'area': 'Hygiene',
-        'prog': 1,
-        'habit': 'Use facial cleanser',
-        'type': 'completion',
-    },
-    {
-        'area': 'Hygiene',
-        'prog': 2,
-        'habit': 'Use facial cleanser, face and hand moisturizer',
-        'type': 'completion',
-    },
-    {
-        'area': 'Hygiene',
-        'prog': 5,
-        'habit': 'Use facial cleanser, face and hand moisturizer, and eye cream',
-        'type': 'completion',
-    },
-
-    // Plugging
-    {
-        'area': 'Plugging',
-        'prog': 1,
-        'habit': 'Stay plugged for 2 hour',
-        'type': 'timer',
-        'duration': 1,
-    },
-    {
-        'area': 'Plugging',
-        'prog': 2,
-        'habit': 'Stay plugged for 2 hours',
-        'type': 'timer',
-        'duration': 2,
-    },
-    {
-        'area': 'Plugging',
-        'prog': 3,
-        'habit': 'Stay plugged for 4 hours',
-        'type': 'timer',
-        'duration': 4,
-    },
-    {
-        'area': 'Plugging',
-        'prog': 4,
-        'habit': 'Stay plugged for 8 hours',
-        'type': 'timer',
-        'duration': 8,
-    },
-    // Chastity
-    {
-        'area': 'Chastity',
-        'prog': 1,
-        'habit': 'Stay in chastity for 1 hour',
-        'type': 'timer',
-        'duration': 1,
-    },
-    {
-        'area': 'Chastity',
-        'prog': 2,
-        'habit': 'Stay in chastity for 2 hours',
-        'type': 'timer',
-        'duration': 2,
-    },
-    {
-        'area': 'Chastity',
-        'prog': 3,
-        'habit': 'Stay in chastity for 4 hours',
-        'type': 'timer',
-        'duration': 4,
-    },
-    {
-        'area': 'Chastity',
-        'prog': 4,
-        'habit': 'Stay in chastity for 8 hours',
-        'type': 'timer',
-        'duration': 8,
-    },
-]
-
-/* Prototype Periodic Tracker Entry
-{
-  'area': lifestyle area
-  'prog': min progress in area to unlock this task
-  'habit': abridged habit text to display
-  'period': (periodic only) time to replenish a charge
-  'charges': (periodic only) max # of charges
-  'cooldown': (periodic only) min amount of time between charge uses
-  'channel': order to list habits if multiple need to be listed for 1 area
-}
-*/
-
-const Periodic = [
-    // Nail Care
-    {
-        'area': 'Nail Care',
-        'prog': 1,
-        'habit': 'File nails round 1 time per week',
-        'recharge': 7,
-        'charges': 1,
-        'cooldown': 6,
-    },
-    {
-        'area': 'Nail Care',
-        'prog': 2,
-        'habit': 'File nails round and apply clear polish 1 time per week',
-        'recharge': 7,
-        'charges': 1,
-        'cooldown': 6,
-    },
-    {
-        'area': 'Nail Care',
-        'prog': 3,
-        'habit': 'File nails round and apply colored polish 1 time per week',
-        'recharge': 7,
-        'charges': 1,
-        'cooldown': 6,
-    },
-    {
-        'area': 'Nail Care',
-        'prog': 4,
-        'habit': 'File nails round and apply traditionally feminine-colored polish 1 time per week',
-        'recharge': 7,
-        'charges': 1,
-        'cooldown': 6,
-    },
-    // Hygiene
-    {
-        'area': 'Hygiene',
-        'prog': 3,
-        'habit': 'Use face exfoliating scrub 3 times per week',
-        'recharge': 7,
-        'charges': 3,
-        'cooldown': 2,
-        'channel': 1,
-    },
-    {
-        'area': 'Hygiene',
-        'prog': 4,
-        'habit': 'Use full-body moisturizer 2 times per week',
-        'recharge': 7,
-        'charges': 2,
-        'cooldown': 3,
-        'channel': 2,
-    },
-    {
-        'area': 'Hygiene',
-        'prog': 6,
-        'habit': 'Use face mask 1 time per week',
-        'recharge': 7,
-        'charges': 1,
-        'cooldown': 1,
-        'channel': 3,
-    },
-    // Shaving
-    {
-        'area': 'Shaving',
-        'prog': 1,
-        'habit': 'Shave groin and butt 3 times per week',
-        'recharge': 7,
-        'charges': 3,
-        'cooldown': 2,
-        'channel': 1,
-    },
-    {
-        'area': 'Shaving',
-        'prog': 2,
-        'habit': 'Shave chest and back 1 time per week',
-        'recharge': 7,
-        'charges': 1,
-        'cooldown': 1,
-        'channel': 2,
-    },
-    {
-        'area': 'Shaving',
-        'prog': 4,
-        'habit': 'Shave everything below the eyes 1 time per week',
-        'recharge': 7,
-        'charges': 1,
-        'cooldown': 1,
-        'channel': 2,
-    },
-
-    // Chastity
-    {
-        'area': 'Chastity',
-        'prog': 1,
-        'habit': 'Allowed at most 4 orgasms per week',
-        'recharge': 7,
-        'charges': 4,
-        'cooldown': 1,
-    },
-    {
-        'area': 'Chastity',
-        'prog': 2,
-        'habit': 'Allowed at most 2 orgasms per week',
-        'recharge': 7,
-        'charges': 2,
-        'cooldown': 1,
-    },
-    {
-        'area': 'Chastity',
-        'prog': 3,
-        'habit': 'Allowed at most 1 orgasm per week',
-        'recharge': 7,
-        'charges': 1,
-        'cooldown': 1,
-    },
-    {
-        'area': 'Chastity',
-        'prog': 4,
-        'habit': 'Allowed at most 1 orgasm per 2 weeks',
-        'recharge': 14,
-        'charges': 1,
-        'cooldown': 1,
-    },
-    {
-        'area': 'Chastity',
-        'prog': 5,
-        'habit': 'Allowed at most 1 orgasm per 2 weeks',
-        'recharge': 14,
-        'charges': 1,
-        'cooldown': 1,
-    },
-    {
-        'area': 'Chastity',
-        'prog': 6,
-        'habit': 'Allowed at most 1 orgasm per month',
-        'recharge': 30,
-        'charges': 1,
-        'cooldown': 1,
-    },
-    {
-        'area': 'Chastity',
-        'prog': 7,
-        'habit': 'Allowed at most 1 orgasm per month',
-        'recharge': 30,
-        'charges': 1,
-        'cooldown': 1,
-    },
-]
