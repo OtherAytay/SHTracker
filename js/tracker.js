@@ -4,17 +4,15 @@ function initializeTrackers() {
             channel = habit.channel || 1
 
             id = areaCodeMapping[area] + '_' + channel
-            if (!dailyTrackers[id]) {
-                dailyTrackers[id] = {}
+                dailyTrackers[id] = dailyTrackers[id] || {'habit': habit}
                 if (habit.type == 'timer') {
-                    dailyTrackers[id]['time'] = habit.duration * 60 * 60
-                    dailyTrackers[id]['remaining'] = habit.duration * 60 * 60
+                    if (dailyTrackers[id]['habit']['prog'] < habit.prog) {
+                        dailyTrackers[id]['time'] = habit.duration * 60 * 60
+                        dailyTrackers[id]['remaining'] = habit.duration * 60 * 60
+                    }
                 } else {
-                    dailyTrackers[id]['complete'] = false
+                    dailyTrackers[id]['complete'] = dailyTrackers[id]['complete'] || false
                 }
-            }
-            
-            dailyTrackers[id]['habit'] = habit
         }
         for (const habit of Periodic.filter((i) => i.area == area && i.prog <= p)) {
             channel = habit.channel || 1
@@ -38,13 +36,30 @@ function generateTrackers() {
         habitElements.push(habitTracker(id, tracker))
     }
 
-    ReactDOM.render(habitElements, document.getElementById("daily-habits"))
+    ReactDOM.render(habitElements, document.getElementById("daily-habits"), function () {
+        for (const completion of document.querySelectorAll('input.btn-check')) {
+            id = completion.id.match(/button_(\w+)/)[1]
+            label = document.querySelector('#button_' + id + ' + label')
+            
+            console.log(id)
+            if (!dailyTrackers[id]['complete']) {
+                label.classList.add('btn-outline-danger')
+                label.classList.remove('btn-outline-success')
+                label.innerHTML = "<i class='bi bi-x'></i>"
+            } else {
+                completion.checked = true
+                label.classList.remove('btn-outline-danger')
+                label.classList.add('btn-outline-success')
+                label.innerHTML = "<i class='bi bi-check'></i>"
+
+            }
+        }
+    })
 }
 
 function habitTracker(id, tracker) {
     habit = tracker.habit
-    console.log(habit)
-    
+
     tracking = null
     if (habit.type == 'timer') {
         tracking = timer(id, tracker)
@@ -134,7 +149,7 @@ function timer(id, tracker) {
 function manageTimer(id, tracker) {
     button = document.getElementById('button_' + id)
     progress = document.getElementById('progress_' + id);
-    console.log(tracker)
+
     if (progress.parentElement.parentElement.hidden) { // start timer
         tracker['intervalID'] = setInterval(updateTimer, 1000, id)
         progress.parentElement.parentElement.classList.add('d-flex');
