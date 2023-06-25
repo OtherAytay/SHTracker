@@ -152,7 +152,7 @@ function setOptions() {
     enabledAreas["Diet"] = document.getElementById('diet-enabled').checked
 
     if (document.getElementById('discretion-private').checked) {
-        discretion = "Public";
+        discretion = "Private";
     } else if (document.getElementById('discretion-discrete').checked) {
         discretion = "Discrete";
     } else {
