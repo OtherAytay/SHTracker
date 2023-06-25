@@ -16,6 +16,7 @@ function saveLocal() {
     localStorage["SHTracker-discretion"] = discretion;
     localStorage["SHTracker-benchmarked"] = benchmarked;
     localStorage["SHTracker-random"] = random;
+    localStorage["SHTracker-previews"] = previews;
     localStorage["SHTracker-enabledAreas"] = JSON.stringify(enabledAreas);
     localStorage["SHTracker-allocPoints"] = allocPoints;
     localStorage["SHTracker-allocInterval"] = allocInterval;
@@ -23,6 +24,8 @@ function saveLocal() {
     localStorage["SHTracker-allocsRemaining"] = allocsRemaining;
     localStorage["SHTracker-dailyTrackers"] = JSON.stringify(dailyTrackers);
     localStorage["SHTracker-periodicTrackers"] = JSON.stringify(periodicTrackers);
+    localStorage["SHTracker-dailyResetTime"] = dailyResetTime;
+    localStorage["SHTracker-nextReset"] = nextReset;
 }
 
 function loadLocal() {
@@ -31,6 +34,7 @@ function loadLocal() {
         discretion = localStorage["SHTracker-discretion"];
         benchmarked = JSON.parse(localStorage["SHTracker-benchmarked"]);
         random = JSON.parse(localStorage["SHTracker-random"]);
+        previews = JSON.parse(localStorage["SHTracker-previews"]);
         enabledAreas = JSON.parse(localStorage["SHTracker-enabledAreas"]);
         allocPoints = JSON.parse(localStorage["SHTracker-allocPoints"]);
         allocInterval = JSON.parse(localStorage["SHTracker-allocInterval"]);
@@ -38,6 +42,8 @@ function loadLocal() {
         allocsRemaining = JSON.parse(localStorage["SHTracker-allocsRemaining"]);
         dailyTrackers = JSON.parse(localStorage['SHTracker-dailyTrackers'])
         periodicTrackers = JSON.parse(localStorage['SHTracker-periodicTrackers'])
+        dailyResetTime = JSON.parse(localStorage['SHTracker-dailyResetTime'])
+        nextReset = new Date(localStorage['SHTracker-nextReset'])
     } else {
         userDataFlag = false;
         saveLocal(); // Create fresh save using defaults
@@ -66,13 +72,15 @@ function clearSave() {
     localStorage.removeItem("SHTracker-lastAlloc");
     localStorage.removeItem("SHTracker-allocsRemaining");
     localStorage.removeItem("SHTracker-dailyTrackers");
-    localStorage.removeItem("SHTracker-periodicTrackers")
+    localStorage.removeItem("SHTracker-periodicTrackers");
+    localStorage.removeItem("SHTracker-dailyResetTime");
+    localStorage.removeItem("SHTracker-nextReset");
 
     // Reset to defaults
     prog = { "Feminine Wear": 0, Makeup: 0, Hygiene: 0, Shaving: 0, "Nail Care": 0, Plugging: 0, Submission: 0, Chastity: 0, Exercise: 0, Diet: 0 };
-    discretion = "Public";
+    discretion = "Private";
     benchmarked = true;
-    random = true;
+    random = false;
     enabledAreas = { "Feminine Wear": true, Makeup: true, Hygiene: true, Shaving: true, "Nail Care": true, Plugging: true, Submission: true, Chastity: true, Exercise: true, Diet: true};
     allocPoints = 1;
     allocInterval = 1; // 1: 1 day, 2: 2 days, 3: 3 days, 4: 7 days, 5: 14 days
@@ -80,6 +88,8 @@ function clearSave() {
     allocsRemaining = allocPoints;
     dailyTrackers = {}
     periodicTrackers = {};
+    dailyResetTime = 24;
+    newReset();
     updateOptionElements();
 }
 
@@ -115,6 +125,20 @@ function areaCoding(area) {
     }
 }
 
+function newReset() {
+    reset = (new Date()); reset.setHours(dailyResetTime); reset.setMinutes(0); reset.setSeconds(0);
+    
+    // Push back a day if it is currently after that date
+    if (reset < (new Date())) { 
+        nextDay = new Date(reset)
+        nextDay.setDate(nextDay.getDate() + 1)
+        reset = nextDay
+    }
+    nextReset = reset;
+
+    localStorage['SHTracker-nextReset'] = nextReset
+}
+
 function setOptions() {
     enabledAreas["Feminine Wear"] = document.getElementById('femwear-enabled').checked
     enabledAreas["Makeup"] = document.getElementById('makeup-enabled').checked
@@ -136,10 +160,19 @@ function setOptions() {
     }
     random = document.getElementById('allocation-random').checked;
     benchmarked = document.getElementById('benchmarks-enabled').checked;
+    previews = document.getElementById('previews-enabled').checked;
     var oldAllocPoints = allocPoints;
     allocPoints = JSON.parse(document.getElementById('point-range').value);
     // new allocsRemaining will be the new allocPoints - points used already.
-    allocsRemaining = Math.max(0, allocPoints - (oldAllocPoints - allocsRemaining));  
+    allocsRemaining = Math.max(0, allocPoints - (oldAllocPoints - allocsRemaining)); 
+
+    dailyResetTime = 24 + JSON.parse(document.getElementById('daily-reset-range').value);
+    newReset()
+
+    var timeTarget = dailyResetTime % 12
+    resetTimeString = (timeTarget == 0 ? '12' : timeTarget) + (dailyResetTime >= 24 ? ' AM' : ' PM')
+    document.getElementById('daily-reset-time').innerHTML = resetTimeString;
+
     document.getElementById('points').innerHTML = document.getElementById('point-range').value;
 
     intText = "";
@@ -179,8 +212,14 @@ function updateOptionElements() {
 
     document.getElementById('allocation-random').checked = random;
     document.getElementById('benchmarks-enabled').checked = benchmarked;
+    document.getElementById('previews-enabled').checked = previews;
+    document.getElementById('daily-reset-range').value = dailyResetTime - 24
     document.getElementById('point-range').value = allocPoints;
     document.getElementById('alloc-interval-range').value = allocInterval;
+
+    var timeTarget = dailyResetTime % 12
+    resetTimeString = (timeTarget == 0 ? '12' : timeTarget) + (dailyResetTime >= 24 ? ' AM' : ' PM')
+    document.getElementById('daily-reset-time').innerHTML = resetTimeString;
 
     document.getElementById('points').innerHTML = document.getElementById('point-range').value;
 
@@ -236,6 +275,7 @@ function setAllocState() {
             case 5: interval *= 14; break;
         }
         var nextAlloc = new Date(lastAlloc + interval)
+        nextAlloc.setHours(dailyResetTime); nextAlloc.setMinutes(0); nextAlloc.setSeconds(0)
         nextAlloc = nextAlloc.toISOString().slice(0, 10) + " " + nextAlloc.toTimeString().slice(0, 8)
         document.getElementById("alloc-areas").innerHTML = "Your next allocation becomes available: " + nextAlloc;
     }

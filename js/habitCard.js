@@ -149,7 +149,7 @@ function habitList({ area, prog }) {
     }
 
     // Display preview of next habit
-    if (habit == prog + 1 && prog < public_bounds[area]) {
+    if (previews && habit == prog + 1 && prog < public_bounds[area]) {
         preview = React.createElement(
             'ul',
             { class: 'list-group' },

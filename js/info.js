@@ -43,7 +43,8 @@ const initProg = { "Feminine Wear": 0, Makeup: 0, Hygiene: 0, Shaving: 0, "Nail 
 var prog = initProg; // progress level of each areas
 var discretion = "Private";
 var benchmarked = true;
-var random = true;
+var random = false;
+var previews = true;
 const initEnabledAreas = { "Feminine Wear": true, Makeup: true, Hygiene: true, Shaving: true, "Nail Care": true, Plugging: true, Submission: true, Chastity: true, Exercise: true, Diet: true};
 var enabledAreas = initEnabledAreas;
 var allocPoints = 1;
@@ -52,6 +53,8 @@ var lastAlloc = false;
 var allocsRemaining = allocPoints;
 var dailyTrackers = {}
 var periodicTrackers = {}
+var dailyResetTime = 24 // default to next midnight
+var nextReset = null;
 
 function allocatePoint(area) {
     // Allocate point to the chosen area

@@ -1,4 +1,6 @@
 function initializeTrackers() {
+    if (nextReset == null) { newReset() }
+        
     for (const [area, p] of Object.entries(prog)) {
         if (enabledAreas[area]) {
             for (const habit of Daily.filter((i) => i.area == area && i.prog <= p)) {
@@ -7,7 +9,7 @@ function initializeTrackers() {
                 id = areaCodeMapping[area] + '_' + channel
                 dailyTrackers[id] = dailyTrackers[id] || { 'habit': habit }
                 if (habit.type == 'timer') {
-                    if (!('time' in dailyTrackers[id]) || dailyTrackers[id]['habit']['prog'] < habit.prog) {
+                    if (!('time' in dailyTrackers[id]) || dailyTrackers[id]['habit']['prog'] < habit.prog || nextReset < (new Date())) {
                         dailyTrackers[id]['time'] = habit.duration * 60 * 60 * 1000
                         dailyTrackers[id]['remaining'] = habit.duration * 60 * 60 * 1000
                         dailyTrackers[id]['habit'] = habit
@@ -57,8 +59,8 @@ function generateTrackers() {
             }
         }
 
-        for (const tracker of Object.values(dailyTrackers).filter((i) => i.active)) {
-            tracker['intervalID'] = setInterval(updateTimer, 1000, id, tracker)
+        for (const id of Object.keys(dailyTrackers).filter((key) => dailyTrackers[key].active)) {
+            dailyTrackers[id]['intervalID'] = setInterval(updateTimer, 1000, id, dailyTrackers[id])
         }
     })
 }
@@ -108,7 +110,7 @@ function timer(id, tracker) {
                 id: 'time_' + id,
                 class: 'text-center fw-semibold fs-4 mb-1'
             },
-            formatTime(tracker['remaining'])
+            tracker['remaining'] > 0 ? formatTime(tracker['remaining']) : 'Complete'
         ),
         React.createElement(
             'button',
