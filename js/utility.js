@@ -128,7 +128,7 @@ function areaCoding(area) {
 function newReset() {
     reset = (new Date()); reset.setHours(dailyResetTime); reset.setMinutes(0); reset.setSeconds(0);
     
-    // Push back a day if it is currently after that date
+    // Push back a day if it is currently after that time today
     if (reset < (new Date())) { 
         nextDay = new Date(reset)
         nextDay.setDate(nextDay.getDate() + 1)
@@ -254,7 +254,15 @@ function isAllocTime() {
         case 5: interval *= 14; break;
     }
 
-    return lastAlloc + interval <= time.getTime();
+    var nextAlloc = new Date(lastAlloc + interval)
+    nextAlloc.setHours(dailyResetTime - 24); nextAlloc.setMinutes(0); nextAlloc.setSeconds(0)
+    if (nextAlloc < time) { 
+        nextDay = new Date(nextAlloc)
+        nextDay.setDate(nextDay.getDate() + 1)
+        nextAlloc = nextDay
+    }
+
+    return nextAlloc <= time;
 }
 
 function setAllocState() {
@@ -275,7 +283,12 @@ function setAllocState() {
             case 5: interval *= 14; break;
         }
         var nextAlloc = new Date(lastAlloc + interval)
-        nextAlloc.setHours(dailyResetTime); nextAlloc.setMinutes(0); nextAlloc.setSeconds(0)
+        nextAlloc.setHours(dailyResetTime - 24); nextAlloc.setMinutes(0); nextAlloc.setSeconds(0)
+        if (nextAlloc < time) { 
+            nextDay = new Date(nextAlloc)
+            nextDay.setDate(nextDay.getDate() + 1)
+            nextAlloc = nextDay
+        }
         nextAlloc = nextAlloc.toISOString().slice(0, 10) + " " + nextAlloc.toTimeString().slice(0, 8)
         document.getElementById("alloc-areas").innerHTML = "Your next allocation becomes available: " + nextAlloc;
     }
