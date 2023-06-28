@@ -40,10 +40,10 @@ function loadLocal() {
         allocInterval = JSON.parse(localStorage["SHTracker-allocInterval"]);
         lastAlloc = JSON.parse(localStorage["SHTracker-lastAlloc"]);
         allocsRemaining = JSON.parse(localStorage["SHTracker-allocsRemaining"]);
-        dailyTrackers = JSON.parse(localStorage['SHTracker-dailyTrackers'])
-        periodicTrackers = JSON.parse(localStorage['SHTracker-periodicTrackers'])
-        dailyResetTime = JSON.parse(localStorage['SHTracker-dailyResetTime'])
-        nextReset = new Date(localStorage['SHTracker-nextReset'])
+        dailyTrackers = JSON.parse(localStorage["SHTracker-dailyTrackers"])
+        periodicTrackers = JSON.parse(localStorage["SHTracker-periodicTrackers"])
+        dailyResetTime = JSON.parse(localStorage["SHTracker-dailyResetTime"])
+        if (localStorage["SHTracker-nextReset"] != "null") { nextReset = new Date(localStorage["SHTracker-nextReset"])}
     } else {
         userDataFlag = false;
         saveLocal(); // Create fresh save using defaults
@@ -242,10 +242,8 @@ function isAllocTime() {
     if (allocInterval == 0) {
         return true;
     }
-    
-    time = new Date()
 
-    interval = 24 * 60 * 60 * 1000;
+    interval = 1 // 24 * 60 * 60 * 1000;
     switch (allocInterval) {
         case 1: break;
         case 2: interval *= 2; break;
@@ -253,16 +251,15 @@ function isAllocTime() {
         case 4: interval *= 7; break;
         case 5: interval *= 14; break;
     }
+    var lastAllocReset = new Date(lastAlloc); lastAllocReset.setHours(dailyResetTime); lastAllocReset.setMinutes(0); lastAllocReset.setSeconds(0)
 
-    var nextAlloc = new Date(lastAlloc + interval)
-    nextAlloc.setHours(dailyResetTime - 24); nextAlloc.setMinutes(0); nextAlloc.setSeconds(0)
-    if (nextAlloc < time) { 
-        nextDay = new Date(nextAlloc)
-        nextDay.setDate(nextDay.getDate() + 1)
-        nextAlloc = nextDay
+    var nextAlloc = new Date(lastAllocReset)
+    if (lastAlloc < lastAllocReset) { // last allocation occured before the reset on its day
+        interval--
     }
+    nextAlloc.setDate(nextAlloc.getDate() + interval )
 
-    return nextAlloc <= time;
+    return nextAlloc <= (new Date());
 }
 
 function setAllocState() {
@@ -274,7 +271,7 @@ function setAllocState() {
             document.getElementById("alloc-button").disabled = true;
         }
 
-        var interval = 24 * 60 * 60 * 1000;
+        interval = 1 // 24 * 60 * 60 * 1000;
         switch (allocInterval) {
             case 1: break;
             case 2: interval *= 2; break;
@@ -282,15 +279,15 @@ function setAllocState() {
             case 4: interval *= 7; break;
             case 5: interval *= 14; break;
         }
-        var nextAlloc = new Date(lastAlloc + interval)
-        nextAlloc.setHours(dailyResetTime - 24); nextAlloc.setMinutes(0); nextAlloc.setSeconds(0)
-        if (nextAlloc < time) { 
-            nextDay = new Date(nextAlloc)
-            nextDay.setDate(nextDay.getDate() + 1)
-            nextAlloc = nextDay
+        var lastAllocReset = new Date(lastAlloc); lastAllocReset.setHours(dailyResetTime); lastAllocReset.setMinutes(0); lastAllocReset.setSeconds(0)
+
+        var nextAlloc = new Date(lastAllocReset)
+        if (lastAlloc < lastAllocReset) { // last allocation occured before the reset on its day
+            interval--
         }
-        nextAlloc = nextAlloc.toISOString().slice(0, 10) + " " + nextAlloc.toTimeString().slice(0, 8)
-        document.getElementById("alloc-areas").innerHTML = "Your next allocation becomes available: " + nextAlloc;
+        nextAlloc.setDate(nextAlloc.getDate() + interval)
+    
+        document.getElementById("alloc-areas").innerHTML = "Your next allocation becomes available: " + nextAlloc.toLocaleString();
     }
 }
 

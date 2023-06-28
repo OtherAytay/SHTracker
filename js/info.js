@@ -8,7 +8,7 @@ const bench4 = { "Feminine Wear": 9, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Ca
 
 // Encode discretion boundaries
 const private_bounds = { "Feminine Wear": 5, Makeup: 4, Hygiene: 5, Shaving: 2, "Nail Care": 1, Plugging: 5, Submission: 7, Chastity: 6, Exercise: 8, Diet: 8 };
-const discrete_bounds = { "Feminine Wear": 6, Makeup: 4, Hygiene: 5, Shaving: 3, "Nail Care": 3, Plugging: 8, Submission: 8, Chastity: 7, Exercise: 8, Diet: 8 };
+const discrete_bounds = { "Feminine Wear": 6, Makeup: 4, Hygiene: 5, Shaving: 3, "Nail Care": 2, Plugging: 8, Submission: 8, Chastity: 7, Exercise: 8, Diet: 8 };
 const public_bounds = { "Feminine Wear": 9, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 8, Submission: 9, Chastity: 8, Exercise: 8, Diet: 8 };
 
 const areaNames = [
@@ -252,7 +252,7 @@ function getFemWear(level) {
             return "Wear women's jewelry at all times in private.";
             break;
         case 5:
-            return "Wear a matching lingerie set during sexual activities.";
+            return "Wear breast forms at all times in private.";
             break;
         case 6:
             return "Wear panties at all times. Optional: Get your ears pierced and wear earrings.";
@@ -321,7 +321,7 @@ function getShaving(level) {
             return "Shave groin and butt 3 times per week.";
             break;
         case 2:
-            return "Shave chest and back 2 times per week.";
+            return "Shave chest 3 times per week.";
             break;
         case 3:
             return "Shave facial hair every day.";
@@ -387,10 +387,10 @@ function getSubmission(level) {
             return "Wear light wrist and ankle cuffs at all times in private.";
             break;
         case 3:
-            return "Bind yourself in a tight body harness (on torso and crotch) during sexual activities.";
+            return "Practice self-bondage rope body ties 3 times per week.";
             break;
         case 4:
-            return "Use a mouth gag and nipple clamps as appropriate during sexual activities.";
+            return "Wear a mouth gag and nipple clamps for 15 minutes every day";
             break;
         case 5:
             return "Wear a heavy collar at all times in private.";

@@ -168,23 +168,24 @@ function manageTimer(id, tracker) {
         progress.parentElement.parentElement.hidden = true;
         progress.parentElement.parentElement.classList.remove('d-flex');
         button.hidden = true;
+    } else {
+        if (progress.parentElement.parentElement.hidden) { // start timer
+            tracker['start'] = (new Date()).getTime()
+            tracker['active'] = true
+            tracker['intervalID'] = setInterval(updateTimer, 1000, id, tracker)
+            progress.parentElement.parentElement.classList.add('d-flex');
+            progress.parentElement.parentElement.hidden = false;
+            button.hidden = true;
+        } else { // pause timer
+            tracker['remaining'] -= (new Date()).getTime() - tracker['start']
+            tracker['active'] = false
+            progress.parentElement.parentElement.hidden = true;
+            progress.parentElement.parentElement.classList.remove('d-flex');
+            button.hidden = false;
+            tracker['intervalID'] = clearInterval(tracker['intervalID']);
+        }
     }
 
-    if (progress.parentElement.parentElement.hidden) { // start timer
-        tracker['start'] = (new Date()).getTime()
-        tracker['active'] = true
-        tracker['intervalID'] = setInterval(updateTimer, 1000, id, tracker)
-        progress.parentElement.parentElement.classList.add('d-flex');
-        progress.parentElement.parentElement.hidden = false;
-        button.hidden = true;
-    } else { // pause timer
-        tracker['remaining'] -= (new Date()).getTime() - tracker['start']
-        tracker['active'] = false
-        progress.parentElement.parentElement.hidden = true;
-        progress.parentElement.parentElement.classList.remove('d-flex');
-        button.hidden = false;
-        tracker['intervalID'] = clearInterval(tracker['intervalID']);
-    }
     localStorage['SHTracker-dailyTrackers'] = JSON.stringify(dailyTrackers)
 }
 
