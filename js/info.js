@@ -4,12 +4,12 @@ const benchmarks = 4; // number of benchmarks
 const bench1 = { "Feminine Wear": 2, Makeup: 2, Hygiene: 3, Shaving: 1, "Nail Care": 2, Plugging: 3, Submission: 2, Chastity: 2, Exercise: 2, Diet: 2 };
 const bench2 = { "Feminine Wear": 4, Makeup: 4, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 4, Submission: 5, Chastity: 4, Exercise: 4, Diet: 4 };
 const bench3 = { "Feminine Wear": 7, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 5, Submission: 6, Chastity: 6, Exercise: 6, Diet: 6 };
-const bench4 = { "Feminine Wear": 9, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 8, Submission: 9, Chastity: 8, Exercise: 8, Diet: 8 };
+const bench4 = { "Feminine Wear": 10, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 8, Submission: 9, Chastity: 8, Exercise: 8, Diet: 8 };
 
 // Encode discretion boundaries
 const private_bounds = { "Feminine Wear": 5, Makeup: 4, Hygiene: 5, Shaving: 2, "Nail Care": 1, Plugging: 5, Submission: 7, Chastity: 6, Exercise: 8, Diet: 8 };
 const discrete_bounds = { "Feminine Wear": 6, Makeup: 4, Hygiene: 5, Shaving: 3, "Nail Care": 2, Plugging: 8, Submission: 8, Chastity: 7, Exercise: 8, Diet: 8 };
-const public_bounds = { "Feminine Wear": 9, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 8, Submission: 9, Chastity: 8, Exercise: 8, Diet: 8 };
+const public_bounds = { "Feminine Wear": 10, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 8, Submission: 9, Chastity: 8, Exercise: 8, Diet: 8 };
 
 const areaNames = [
     "Feminine Wear", 
@@ -47,6 +47,8 @@ var random = false;
 var previews = true;
 const initEnabledAreas = { "Feminine Wear": true, Makeup: true, Hygiene: true, Shaving: true, "Nail Care": true, Plugging: true, Submission: true, Chastity: true, Exercise: true, Diet: true};
 var enabledAreas = initEnabledAreas;
+const initSkipped = { "Feminine Wear": [], Makeup: [], Hygiene: [], Shaving: [], "Nail Care": [], Plugging: [], Submission: [], Chastity: [], Exercise: [], Diet: []};
+var skipped = initSkipped
 var allocPoints = 1;
 var allocInterval = 1; // 1: 1 day, 2: 2 days, 3: 3 days, 4: 7 days, 5: 14 days
 var lastAlloc = false;
@@ -121,9 +123,6 @@ function getAvailableAreas() {
     // Determine current boundaries
     var boundaries = JSON.parse(JSON.stringify(getDiscretionBoundaries())); // creates a shallow copy of the boundary
 
-    // If all areas are at the discretion boundary
-
-
     // Merge discretion and benchmark boundaries, if relevant
     if (benchmarked) {
         var currentBench = determineBenchmark();
@@ -133,18 +132,20 @@ function getAvailableAreas() {
         }
     }
 
-    if (objsEqual(prog, boundaries)) {
-        
-    }
+    if (objsEqual(prog, boundaries)) {}
 
     // Determine which areas that can be allocated to
     var availableAreas = [];
     for (var i = 0; i < numAreas; i++) {
         area = areaNames[i]
-        if (enabledAreas[area] && prog[area] < boundaries[area]) {
+        var areaProg = prog[area]
+        for (const skip of skipped[area]) {
+            if (areaProg >= skip) { areaProg++ }
+        }
+        if (enabledAreas[area] && areaProg < boundaries[area]) {
             // Add the area once for every level it is below a boundary.
             // This allows for multiple point allocations in a cycle.
-            for (var j = prog[area]; j < boundaries[area]; j++) {
+            for (var j = prog[area] + skipped[area].filter((s) => s <= prog[area]).length; j < boundaries[area]; j++) {
                 availableAreas.push(area);
             }
         }
@@ -174,7 +175,7 @@ function determineBenchmark() {
         var targetBench = benches[benchIdx]
         for (var i = 0; i < numAreas; i++) {
             area = areaNames[i]
-            if (enabledAreas[area] && prog[area] < targetBench[area]) {
+            if (prog[area] != getDiscretionBoundaries()[area] && enabledAreas[area] && prog[area] < targetBench[area]) {
                 stepUp = false;
                 break;
             }
@@ -246,13 +247,13 @@ function getFemWear(level) {
             return "Wear a bra at all times in private.";
             break;
         case 3:
-            return "Wear a feminine top and bottom at all times in private.";
+            return "Wear a feminine top and bottom while not sleeping in private.";
             break;
         case 4:
-            return "Wear women's jewelry at all times in private.";
+            return "Wear women's jewelry while not sleeping in private.";
             break;
         case 5:
-            return "Wear breast forms at all times in private.";
+            return "Wear breast forms while not sleeping in private.";
             break;
         case 6:
             return "Wear panties at all times. Optional: Get your ears pierced and wear earrings.";
@@ -261,11 +262,13 @@ function getFemWear(level) {
             return "Wear a bra at all times.";
             break;
         case 8:
-            return "Wear women's jewelry at all times.";
+            return "Wear women's jewelry while not sleeping.";
             break;
         case 9:
-            return "Wear a feminine top and bottom at all times.";
+            return "Wear a feminine top and bottom while not sleeping.";
             break;
+        case 10:
+            return "Wear breast forms while not sleeping."
     }
 }
 

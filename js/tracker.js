@@ -3,6 +3,9 @@ function initializeTrackers() {
         
     for (const [area, p] of Object.entries(prog)) {
         if (enabledAreas[area]) {
+            for (const skip of skipped[area]) {
+                if (p >= skip) { p++ }
+            }
             for (const habit of Daily.filter((i) => i.area == area && i.prog <= p)) {
                 channel = habit.channel || 1
 
