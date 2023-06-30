@@ -32,11 +32,11 @@
             </nav>
         </div>
     </div>
-    <div class="container-xl">
+    <div class="container-xxl">
         <!-- About Card -->
         <div class="row overflow-auto">
-            <div class="h-100 col-lg-6 col-12 order-2 my-2 pb-3">
-                <div id="about" class="card shadow-sm">
+            <div class="h-100 col-lg-6 col-12 order-1 my-2 pb-3">
+                <div id="about" class="card border-primary shadow-sm">
                     <h2 class="card-header text-center">About</h2>
                     <div class="card-body overflow-scroll">
                         <h4 class="fw-bold">Overview</h4>
@@ -116,101 +116,131 @@
             </div>
 
             <!-- Options Card -->
-            <div class="col-lg-6 order-lg-0 col-12 order-1 my-2 pb-3">
-                <div id="options" class="card shadow-sm">
+            <div class="col-lg-6 order-lg-1 col-12 order-0 my-2 pb-3">
+                <div id="options" class="card border-primary shadow-sm">
                     <h2 class="card-header text-center">Options</h2>
                     <div class="card-body">
                         <h4 class="text-center">Lifestyle Areas</h4>
                         <div class="row">
-                            <div class="col-lg-4 col-md-6 col-12 text-center">
+                            <div class="col-xl-4 col-md-6 col-12 text-center">
                                 <h5 class="text-feminization">Feminization</h5>
                                 <ul class="list-group d-inline-flex ">
-                                    <li class="list-group-item border-feminization">
-                                        <div class="form-check form-switch">
+                                    <li class="list-group-item border-feminization d-flex align-items-center">
+                                        <div class="form-check form-switch flex-fill">
                                             <input id="femwear-enabled" type="checkbox" role="switch"
-                                                class="form-check-input input-feminization" onchange="setOptions()"
+                                                class="form-check-input input-feminization" onchange="setOptions(); return"
                                                 checked>
-                                            <label for="femwear-enabled" class="form-check-label">Feminine Wear</label>
+                                            <label class="form-check-label">Feminine Wear</label>
                                         </div>
+                                        <button class="btn btn-sm btn-feminization ms-2 float-end" onclick="displayModal('Feminine Wear')">
+                                            <i class="bi bi-gear"></i>
+                                        </button>
                                     </li>
-                                    <li class="list-group-item border-feminization">
-                                        <div class="form-check form-switch">
+                                    <li class="list-group-item border-feminization d-flex align-items-center">
+                                        <div class="form-check form-switch flex-fill">
                                             <input id="makeup-enabled" type="checkbox" role="switch"
                                                 class="form-check-input input-feminization" onchange="setOptions()"
                                                 checked>
                                             <label for="makeup-enabled" class="form-check-label">Makeup</label>
                                         </div>
+                                        <button class="btn btn-sm btn-feminization ms-2" onclick="displayModal('Makeup')">
+                                            <i class="bi bi-gear"></i>
+                                        </button>
                                     </li>
-                                    <li class="list-group-item border-feminization">
-                                        <div class="form-check form-switch">
+                                    <li class="list-group-item border-feminization d-flex align-items-center">
+                                        <div class="form-check form-switch flex-fill">
                                             <input id="nails-enabled" type="checkbox" role="switch"
                                                 class="form-check-input input-feminization" onchange="setOptions()"
                                                 checked>
                                             <label for="nails-enabled" class="form-check-label">Nail Care</label>
                                         </div>
+                                        <button class="btn btn-sm btn-feminization ms-2" onclick="displayModal('Nail Care')">
+                                            <i class="bi bi-gear"></i>
+                                        </button>
                                     </li>
                                 </ul>
                             </div>
                             <div
-                                class="col-lg-4 offset-lg-0 order-lg-0 col-md-6 offset-md-3 order-1 col-12 text-center">
+                                class="col-xl-4 offset-xl-0 order-xl-0 col-md-6 offset-md-3 order-1 col-12 text-center">
                                 <h5 class="text-physique">Physique</h5>
                                 <ul class="list-group d-inline-flex">
-                                    <li class="list-group-item border-physique">
-                                        <div class="form-check form-switch">
+                                    <li class="list-group-item border-physique d-flex align-items-center">
+                                        <div class="form-check form-switch flex-fill">
                                             <input id="exercise-enabled" type="checkbox" role="switch"
                                                 class="form-check-input input-physique" onchange="setOptions()" checked>
                                             <label for="exercise-enabled" class="form-check-label">Exercise</label>
                                         </div>
+                                        <button class="btn btn-sm btn-physique ms-2" onclick="displayModal('Exercise')">
+                                            <i class="bi bi-gear"></i>
+                                        </button>
                                     </li>
-                                    <li class="list-group-item border-physique">
-                                        <div class="form-check form-switch">
+                                    <li class="list-group-item border-physique d-flex align-items-center">
+                                        <div class="form-check form-switch flex-fill">
                                             <input id="diet-enabled" type="checkbox" role="switch"
                                                 class="form-check-input input-physique" onchange="setOptions()" checked>
                                             <label for="diet-enabled" class="form-check-label">Diet</label>
                                         </div>
+                                        <button class="btn btn-sm btn-physique ms-2" onclick="displayModal('Diet')">
+                                            <i class="bi bi-gear"></i>
+                                        </button>
                                     </li>
-                                    <li class="list-group-item border-physique">
-                                        <div class="form-check form-switch">
+                                    <li class="list-group-item border-physique d-flex align-items-center">
+                                        <div class="form-check form-switch flex-fill">
                                             <input id="hygiene-enabled" type="checkbox" role="switch"
                                                 class="form-check-input input-physique" onchange="setOptions()" checked>
                                             <label for="hygiene-enabled" class="form-check-label">Hygiene</label>
                                         </div>
+                                        <button class="btn btn-sm btn-physique ms-2" onclick="displayModal('Hygiene')">
+                                            <i class="bi bi-gear"></i>
+                                        </button>
                                     </li>
-                                    <li class="list-group-item border-physique">
-                                        <div class="form-check form-switch">
+                                    <li class="list-group-item border-physique d-flex align-items-center">
+                                        <div class="form-check form-switch flex-fill">
                                             <input id="shaving-enabled" type="checkbox" role="switch"
                                                 class="form-check-input input-physique" onchange="setOptions()" checked>
                                             <label for="shaving-enabled" class="form-check-label">Shaving</label>
                                         </div>
+                                        <button class="btn btn-sm btn-physique ms-2" onclick="displayModal('Shaving')">
+                                            <i class="bi bi-gear"></i>
+                                        </button>
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-lg-4 col-md-6 col-12 text-center">
+                            <div class="col-xl-4 col-md-6 col-12 text-center">
                                 <h5 class="text-sexuality">Sexuality</h5>
                                 <ul class="list-group d-inline-flex">
-                                    <li class="list-group-item border-sexuality">
-                                        <div class="form-check form-switch">
+                                    <li class="list-group-item border-sexuality d-flex align-items-center">
+                                        <div class="form-check form-switch flex-fill">
                                             <input id="plugging-enabled" type="checkbox" role="switch"
                                                 class="form-check-input input-sexuality" onchange="setOptions()"
                                                 checked>
                                             <label for="plugging-enabled" class="form-check-label">Plugging</label>
                                         </div>
+                                        <button class="btn btn-sm btn-sexuality ms-2" onclick="displayModal('Plugging')">
+                                            <i class="bi bi-gear"></i>
+                                        </button>
                                     </li>
-                                    <li class="list-group-item border-sexuality">
-                                        <div class="form-check form-switch">
+                                    <li class="list-group-item border-sexuality d-flex align-items-center">
+                                        <div class="form-check form-switch flex-fill">
                                             <input id="submission-enabled" type="checkbox" role="switch"
                                                 class="form-check-input input-sexuality" onchange="setOptions()"
                                                 checked>
                                             <label for="submission-enabled" class="form-check-label">Submission</label>
                                         </div>
+                                        <button class="btn btn-sm btn-sexuality ms-2" onclick="displayModal('Submission')">
+                                            <i class="bi bi-gear"></i>
+                                        </button>
                                     </li>
-                                    <li class="list-group-item border-sexuality">
-                                        <div class="form-check form-switch">
+                                    <li class="list-group-item border-sexuality d-flex align-items-center">
+                                        <div class="form-check form-switch flex-fill">
                                             <input id="chastity-enabled" type="checkbox" role="switch"
                                                 class="form-check-input input-sexuality" onchange="setOptions()"
                                                 checked>
                                             <label for="chastity-enabled" class="form-check-label">Chastity</label>
                                         </div>
+                                        <button class="btn btn-sm btn-sexuality ms-2" onclick="displayModal('Chastity')">
+                                            <i class="bi bi-gear"></i>
+                                        </button>
                                     </li>
                                 </ul>
                             </div>
@@ -354,6 +384,10 @@
         </div>
     </div>
 
+    <div id="areaOptionsModal" class="modal" tabindex="-1"></div>
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js" crossorigin></script>
     <script src="https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://cdn.jsdelivr.net/npm/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
@@ -365,6 +399,8 @@
     <!-- https://github.com/timmywil/panzoom -->
     <script src="js/utility.js"></script>
     <script src="js/info.js"></script>
+    <script src="js/habitCard.js"></script>
+    <script src="js/optionsModal.js"></script>
     <script>fileUpload(); loadLocal(); updateOptionElements();</script>
     <script>
         const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')

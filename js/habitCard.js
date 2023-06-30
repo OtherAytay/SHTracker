@@ -99,6 +99,7 @@ function habitList({ area, prog }) {
         ),)
 
         // Benchmark bounds
+        
         var currBench = null
         if (habit == bench1[area]) {
             currBench = 'Benchmark #1'
@@ -108,6 +109,20 @@ function habitList({ area, prog }) {
             currBench = 'Benchmark #3'
         } else if (habit == bench4[area]) {
             currBench = 'Benchmark #4'
+        } else {
+            var benches = [bench1, bench2, bench3, bench4]
+            benchLoop:
+            for (var bench = 0; bench < benches.length; bench++) {
+                //var currBench = null
+                for (var i = benches[bench][area]; i <= habit; i++) {
+                    if (i == habit) {
+                        currBench = "Benchmark #" + (bench + 1)
+                        // break benchLoop
+                    } else if (!skipped[area].includes(i)) {
+                        break
+                    }
+                }
+            }
         }
         if (currBench) {
             habitContent.push(React.createElement(

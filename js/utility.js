@@ -26,6 +26,7 @@ function saveLocal() {
     localStorage["SHTracker-periodicTrackers"] = JSON.stringify(periodicTrackers);
     localStorage["SHTracker-dailyResetTime"] = dailyResetTime;
     localStorage["SHTracker-nextReset"] = nextReset;
+    localStorage['SHTracker-skipped'] = JSON.stringify(skipped)
 }
 
 function loadLocal() {
@@ -44,6 +45,7 @@ function loadLocal() {
         periodicTrackers = JSON.parse(localStorage["SHTracker-periodicTrackers"])
         dailyResetTime = JSON.parse(localStorage["SHTracker-dailyResetTime"])
         if (localStorage["SHTracker-nextReset"] != "null") { nextReset = new Date(localStorage["SHTracker-nextReset"])}
+        skipped = JSON.parse(localStorage["SHTracker-skipped"])
     } else {
         userDataFlag = false;
         saveLocal(); // Create fresh save using defaults
@@ -188,6 +190,18 @@ function setOptions() {
 
     document.getElementById('alloc-interval').innerHTML = intText;
     saveLocal();
+}
+
+function setAreaOptions(area) {
+    skipped[area] = []
+    for (var i = 1; i <= public_bounds[area]; i++) {
+        if (document.getElementById('skip' + i).checked) {
+            skipped[area].push(i)
+        }
+    }
+    ReactDOM.render(habitList({area: area, prog: public_bounds[area]}), document.getElementById('optionsHabitPreview'))
+
+    localStorage['SHTracker-skipped'] = JSON.stringify(skipped)
 }
 
 function updateOptionElements() {
