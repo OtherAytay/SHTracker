@@ -1,9 +1,12 @@
 function displayModal(area) {
     modalElem = document.getElementById('areaOptionsModal')
-    ReactDOM.render(areaOptionsModal(area), modalElem)
+    ReactDOM.render(areaOptionsModal(area), modalElem, function () {
+        for (var i = 1; i <= public_bounds[area]; i++) {
+            document.getElementById('skip' + i).checked = skipped[area].includes(i)
+        }
+    })
     modal = new bootstrap.Modal(modalElem)
-    modal.show()
-
+    modal.show() 
 }
 
 function areaOptionsModal(area) {
@@ -18,7 +21,6 @@ function areaOptionsModal(area) {
                     id: 'skip' + i,
                     class: 'btn-check',
                     type: 'checkbox',
-                    defaultChecked: skipped[area].includes(i),
                     onChange: () => {setAreaOptions(area)}
                 }
             ),
