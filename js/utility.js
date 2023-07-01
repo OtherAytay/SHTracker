@@ -66,6 +66,15 @@ function assimilateSave() {
     }
 }
 
+function clearSaveConfirm(src) {
+    if (src.checked) { // first click
+        src.labels[0].innerText = "Confirm"
+    } else { // second click
+        src.labels[0].innerText = "Clear Save"
+        clearSave()
+    }
+}
+
 function clearSave() {
     localStorage.removeItem("SHTracker-localSave");
     localStorage.removeItem("SHTracker-prog");
