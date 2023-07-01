@@ -8,14 +8,24 @@ function initializeTrackers() {
             }
             for (const habit of Constant.filter((i) => i.area == area && i.prog <= p)) {
                 channel = habit.channel || 1
+                if (habit.nullify) {
+                    delete constantTrackers[id]
+                    continue
+                }
+
                 id = areaCodeMapping[area] + '_' + channel
                 constantTrackers[id] = constantTrackers[id] || { 'habit': habit }
-                if (constantTrackers[id]['complete'] == null || nextReset < (new Date())) {
-                    constantTrackers[id]['complete'] = false 
+                if (constantTrackers[id]['complete'] == null || constantTrackers[id]['habit']['prog'] < habit.prog || nextReset < (new Date())) {
+                    constantTrackers[id]['complete'] = false
+                    constantTrackers[id]['habit'] = habit
                 }
             }
             for (const habit of Daily.filter((i) => i.area == area && i.prog <= p)) {
                 channel = habit.channel || 1
+                if (habit.nullify) {
+                    delete dailyTrackers[id]
+                    continue
+                }
 
                 id = areaCodeMapping[area] + '_' + channel
                 dailyTrackers[id] = dailyTrackers[id] || { 'habit': habit }
@@ -27,8 +37,9 @@ function initializeTrackers() {
                         dailyTrackers[id]['active'] = false
                     }
                 } else { // completion
-                    if (dailyTrackers[id]['complete'] == null || nextReset < (new Date())) {
-                        dailyTrackers[id]['complete'] = false 
+                    if (dailyTrackers[id]['complete'] == null || dailyTrackers[id]['habit']['prog'] < habit.prog || nextReset < (new Date())) {
+                        dailyTrackers[id]['complete'] = false
+                        dailyTrackers[id]['habit'] = habit
                     }
                 }
             }
@@ -102,7 +113,7 @@ function habitTracker(id, tracker) {
         { class: 'list-group list-group-horizontal-sm mt-2 w-100' },
         React.createElement(
             'li',
-            { class: 'list-group-item col-sm-6 col-12 border-' + areaCoding(habit.area) },
+            { class: 'list-group-item col-sm-8 col-12 border-' + areaCoding(habit.area) },
             React.createElement(
                 'span',
                 { class: 'me-2 fs-6 badge bg-' + areaCoding(habit.area) },
@@ -122,7 +133,7 @@ function timer(id, tracker) {
         'li',
         {
             id: 'timer_' + id,
-            class: 'list-group-item col-sm-6 col-12 text-center border-' + areaCoding(habit.area)
+            class: 'list-group-item col-sm-4 col-12 text-center border-' + areaCoding(habit.area)
         },
         React.createElement(
             'p',
@@ -244,7 +255,7 @@ function completion(id, tracker) {
         'li',
         {
             id: 'timer_' + id,
-            class: 'list-group-item col-sm-6 col-12 d-flex border-' + areaCoding(habit.area)
+            class: 'list-group-item col-sm-4 col-12 d-flex border-' + areaCoding(habit.area)
         },
         React.createElement(
             'input',
@@ -354,6 +365,26 @@ const Constant = [
         'channel': 3
     },
 
+    // Plugging
+    {
+        'area': 'Plugging',
+        'prog': 5,
+        'habit': 'Stay plugged while not sleeping in private',
+        'type': 'completion',
+    },
+    {
+        'area': 'Plugging',
+        'prog': 6,
+        'habit': 'Stay plugged while not sleeping in private',
+        'type': 'completion',
+    },
+    {
+        'area': 'Plugging',
+        'prog': 8,
+        'habit': 'Stay plugged at all times',
+        'type': 'completion',
+    },
+
     // Submission
     {
         'area': 'Submission',
@@ -394,7 +425,38 @@ const Constant = [
         'type': 'completion',
         'channel': 3
     },
+
+        // Chastity
+        {
+            'area': 'Chastity',
+            'prog': 5,
+            'habit': 'Stay in chastity while not sleeping in private',
+            'type': 'completion',
+        },
+        {
+            'area': 'Chastity',
+            'prog': 6,
+            'habit': 'Stay in chastity while not sleeping in private',
+            'type': 'completion',
+        },
+        {
+            'area': 'Chastity',
+            'prog': 8,
+            'habit': 'Stay in chastity at all times',
+            'type': 'completion',
+        },
 ]
+
+/* Prototype Daily Tracker Entry
+{
+  'area': lifestyle area
+  'prog': min progress in area to unlock this task
+  'habit': abridged habit text to display
+  'type': timer or completion
+  'channel': order to list habits if multiple need to be listed for 1 area
+  'nullify': disable trackers in this channel at this prog
+}
+*/
 
 const Daily = [
     // Makeup
@@ -470,6 +532,11 @@ const Daily = [
         'type': 'timer',
         'duration': 8,
     },
+    {
+        'area': 'Plugging',
+        'prog': 5,
+        'nullify': true
+    },
 
     // Submission
     {
@@ -508,6 +575,11 @@ const Daily = [
         'habit': 'Stay in chastity for 8 hours',
         'type': 'timer',
         'duration': 8,
+    },
+    {
+        'area': 'Chastity',
+        'prog': 5,
+        'nullify': true
     },
 ]
 
