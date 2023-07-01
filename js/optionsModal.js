@@ -82,7 +82,7 @@ function areaOptionsModal(area) {
                         React.createElement('small', null, "Use a custom discretion rule for this area."),
                         React.createElement(
                             'div',
-                            { class: 'overflow-scroll pb-2' },
+                            { class: 'overflow-scroll text-nowrap pb-2' },
                             React.createElement(
                                 'input',
                                 {
