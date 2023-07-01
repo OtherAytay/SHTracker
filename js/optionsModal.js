@@ -1,5 +1,6 @@
 function displayModal(area) {
     modalElem = document.getElementById('areaOptionsModal')
+    ReactDOM.unmountComponentAtNode(modalElem)
     ReactDOM.render(areaOptionsModal(area), modalElem, function () {
         for (var i = 1; i <= public_bounds[area]; i++) {
             document.getElementById('skip' + i).checked = skipped[area].includes(i)

@@ -1,6 +1,4 @@
 function generateHabitCards() {
-    //const habitRoot = ReactDOM.createRoot(document.getElementById("habits"));
-
     var habitCards = []
     for (var area = 0; area < numAreas; area++) {
         if (enabledAreas[areaNames[area]]) {
@@ -14,7 +12,6 @@ function generateHabitCards() {
         msnry.reloadItems();
         msnry.layout();
     });
-    //habitRoot.render(habitCards);
 
 }
 
