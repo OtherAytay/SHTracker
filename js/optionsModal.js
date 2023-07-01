@@ -6,7 +6,7 @@ function displayModal(area) {
         }
     })
     modal = new bootstrap.Modal(modalElem)
-    modal.show() 
+    modal.show()
 }
 
 function areaOptionsModal(area) {
@@ -21,7 +21,7 @@ function areaOptionsModal(area) {
                     id: 'skip' + i,
                     class: 'btn-check',
                     type: 'checkbox',
-                    onChange: () => {setAreaOptions(area)}
+                    onChange: () => { setAreaOptions(area) }
                 }
             ),
             React.createElement(
@@ -69,12 +69,16 @@ function areaOptionsModal(area) {
                         React.createElement('small', null, "Skip habits that you can not or do not want to complete."),
                         React.createElement(
                             'div',
-                            { class: 'btn-group', role: 'group' },
-                            skips
+                            { class: 'overflow-scroll pb-2' },
+                            React.createElement(
+                                'div',
+                                { class: 'btn-group', role: 'group' },
+                                skips
+                            )
                         )
                     )
-                )
-            ),
+                ),
+            )
         )
     )
 }
