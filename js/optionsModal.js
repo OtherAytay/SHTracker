@@ -54,7 +54,7 @@ function areaOptionsModal(area) {
                     'button',
                     {
                         type: "button",
-                        class: "btn-close",
+                        class: "btn-close btn-close-white",
                         'data-bs-dismiss': "modal"
                     }
                 )

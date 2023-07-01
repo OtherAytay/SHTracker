@@ -68,7 +68,12 @@ function habitList({ area, prog }) {
             if (prog + 1 <= public_bounds[area]) prog++
             continue
         }
-        
+        if (areaDiscretion[area] == "Default") {
+            disc = discretion
+        } else {
+            disc = areaDiscretion[area]
+        }
+
         habitContent = []
 
         // Habit Index
@@ -83,11 +88,15 @@ function habitList({ area, prog }) {
             currDisc = 'public'
         } 
         if (habit <= discrete_bounds[area]) {
-            currDisc = 'discrete'
+            currDisc = 'discrete' 
         } 
         if (habit <= private_bounds[area]) {
             currDisc = 'private'
         }
+        if ((currDisc == 'public' && disc != "Public") || (currDisc == 'discrete' && disc == 'Private')) {
+            continue
+        }
+
 
         habitContent.push(React.createElement(
             'span',
