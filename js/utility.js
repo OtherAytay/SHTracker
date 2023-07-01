@@ -22,6 +22,7 @@ function saveLocal() {
     localStorage["SHTracker-allocInterval"] = allocInterval;
     localStorage["SHTracker-lastAlloc"] = lastAlloc;
     localStorage["SHTracker-allocsRemaining"] = allocsRemaining;
+    localStorage["SHTracker-constantTrackers"] = JSON.stringify(constantTrackers);
     localStorage["SHTracker-dailyTrackers"] = JSON.stringify(dailyTrackers);
     localStorage["SHTracker-periodicTrackers"] = JSON.stringify(periodicTrackers);
     localStorage["SHTracker-dailyResetTime"] = dailyResetTime;
@@ -42,6 +43,7 @@ function loadLocal() {
         allocInterval = JSON.parse(localStorage["SHTracker-allocInterval"]);
         lastAlloc = JSON.parse(localStorage["SHTracker-lastAlloc"]);
         allocsRemaining = JSON.parse(localStorage["SHTracker-allocsRemaining"]);
+        constantTrackers = JSON.parse(localStorage["SHTracker-constantTrackers"])
         dailyTrackers = JSON.parse(localStorage["SHTracker-dailyTrackers"])
         periodicTrackers = JSON.parse(localStorage["SHTracker-periodicTrackers"])
         dailyResetTime = JSON.parse(localStorage["SHTracker-dailyResetTime"])
@@ -75,6 +77,7 @@ function clearSave() {
     localStorage.removeItem("SHTracker-allocInterval");
     localStorage.removeItem("SHTracker-lastAlloc");
     localStorage.removeItem("SHTracker-allocsRemaining");
+    localStorage.removeItem("SHTracker-constantTrackers");
     localStorage.removeItem("SHTracker-dailyTrackers");
     localStorage.removeItem("SHTracker-periodicTrackers");
     localStorage.removeItem("SHTracker-dailyResetTime");

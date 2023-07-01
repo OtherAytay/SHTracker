@@ -6,6 +6,14 @@ function initializeTrackers() {
             for (const skip of skipped[area]) {
                 if (p >= skip) { p++ }
             }
+            for (const habit of Constant.filter((i) => i.area == area && i.prog <= p)) {
+                channel = habit.channel || 1
+                id = areaCodeMapping[area] + '_' + channel
+                constantTrackers[id] = constantTrackers[id] || { 'habit': habit }
+                if (constantTrackers[id]['complete'] == null || nextReset < (new Date())) {
+                    constantTrackers[id]['complete'] = false 
+                }
+            }
             for (const habit of Daily.filter((i) => i.area == area && i.prog <= p)) {
                 channel = habit.channel || 1
 
@@ -18,8 +26,10 @@ function initializeTrackers() {
                         dailyTrackers[id]['habit'] = habit
                         dailyTrackers[id]['active'] = false
                     }
-                } else {
-                    dailyTrackers[id]['complete'] = dailyTrackers[id]['complete'] || false
+                } else { // completion
+                    if (dailyTrackers[id]['complete'] == null || nextReset < (new Date())) {
+                        dailyTrackers[id]['complete'] = false 
+                    }
                 }
             }
             for (const habit of Periodic.filter((i) => i.area == area && i.prog <= p)) {
@@ -40,17 +50,24 @@ function initializeTrackers() {
 function generateTrackers() {
     initializeTrackers()
 
-    habitElements = []
+    var constant = []
+    for (const [id, tracker] of Object.entries(constantTrackers)) {
+        constant.push(habitTracker(id, tracker))
+    }
+    ReactDOM.render(constant, document.getElementById("constant-habits"))
+
+    var daily = []
     for (const [id, tracker] of Object.entries(dailyTrackers)) {
-        habitElements.push(habitTracker(id, tracker))
+        daily.push(habitTracker(id, tracker))
     }
 
-    ReactDOM.render(habitElements, document.getElementById("daily-habits"), function () {
+    ReactDOM.render(daily, document.getElementById("daily-habits"), function () {
         for (const completion of document.querySelectorAll('input.btn-check')) {
             id = completion.id.match(/button_(\w+)/)[1]
             label = document.querySelector('#button_' + id + ' + label')
 
-            if (!dailyTrackers[id]['complete']) {
+            completionTrackers = {...constantTrackers, ...dailyTrackers}
+            if (!completionTrackers[id]['complete']) {
                 label.classList.add('btn-outline-danger')
                 label.classList.remove('btn-outline-success')
                 label.innerHTML = "<i class='bi bi-x'></i>"
@@ -264,8 +281,120 @@ function manageCompletion(id, tracker) {
         label.innerHTML = "<i class='bi bi-check'></i>"
         tracker['complete'] = true
     }
+    localStorage['SHTracker-constantTrackers'] = JSON.stringify(constantTrackers)
     localStorage['SHTracker-dailyTrackers'] = JSON.stringify(dailyTrackers)
 }
+
+const Constant = [
+    //Feminine Wear
+    {
+        'area': 'Feminine Wear',
+        'prog': 1,
+        'habit': 'Wear panties at all times in private',
+        'type': 'completion',
+    },
+    {
+        'area': 'Feminine Wear',
+        'prog': 2,
+        'habit': 'Wear panties and a bra at all times in private',
+        'type': 'completion',
+    },
+    {
+        'area': 'Feminine Wear',
+        'prog': 3,
+        'habit': 'Wear a feminine top and bottom while not sleeping in private',
+        'type': 'completion',
+        'channel': 2
+    },
+    {
+        'area': 'Feminine Wear',
+        'prog': 4,
+        'habit': 'Wear a feminine top and bottom, and women\'s jewelry while not sleeping in private',
+        'type': 'completion',
+        'channel': 2
+    },
+    {
+        'area': 'Feminine Wear',
+        'prog': 5,
+        'habit': 'Wear breast forms while not sleeping in private',
+        'type': 'completion',
+        'channel': 3
+    },
+    {
+        'area': 'Feminine Wear',
+        'prog': 6,
+        'habit': 'Wear panties at all times',
+        'type': 'completion',
+    },
+    {
+        'area': 'Feminine Wear',
+        'prog': 7,
+        'habit': 'Wear panties and a bra at all times in private',
+        'type': 'completion',
+    },
+    {
+        'area': 'Feminine Wear',
+        'prog': 8,
+        'habit': 'Wear a feminine top and bottom while not sleeping',
+        'type': 'completion',
+        'channel': 2
+    },
+    {
+        'area': 'Feminine Wear',
+        'prog': 9,
+        'habit': 'Wear a feminine top and bottom, and women\'s jewelry while not sleeping',
+        'type': 'completion',
+        'channel': 2
+    },
+    {
+        'area': 'Feminine Wear',
+        'prog': 10,
+        'habit': 'Wear breast forms while not sleeping',
+        'type': 'completion',
+        'channel': 3
+    },
+
+    // Submission
+    {
+        'area': 'Submission',
+        'prog': 1,
+        'habit': 'Wear a light collar at all times in private',
+        'type': 'completion',
+    },
+    {
+        'area': 'Submission',
+        'prog': 2,
+        'habit': 'Wear light wrist and ankle cuffs at all times in private',
+        'type': 'completion',
+        'channel': 2
+    },
+    {
+        'area': 'Submission',
+        'prog': 5,
+        'habit': 'Wear a heavy collar at all times in private',
+        'type': 'completion',
+    },
+    {
+        'area': 'Submission',
+        'prog': 6,
+        'habit': 'Wear heavy wrist and ankle cuffs at all times in private',
+        'type': 'completion',
+    },
+    {
+        'area': 'Submission',
+        'prog': 8,
+        'habit': 'Wear a day collar at all times in public',
+        'type': 'completion',
+        'channel': 3
+    },
+    {
+        'area': 'Submission',
+        'prog': 9,
+        'habit': 'Wear a light collar at all times in public',
+        'type': 'completion',
+        'channel': 3
+    },
+]
 
 const Daily = [
     // Makeup
@@ -340,6 +469,15 @@ const Daily = [
         'habit': 'Stay plugged for 8 hours',
         'type': 'timer',
         'duration': 8,
+    },
+
+    // Submission
+    {
+        'area': 'Submission',
+        'prog': 4,
+        'habit': 'Wear a mouth gag and nipple clamps for 15 minutes',
+        'type': 'timer',
+        'duration': 0.25,
     },
 
     // Chastity
@@ -588,6 +726,16 @@ const Periodic = [
         'charges': 1,
         'cooldown': 1,
         'channel': 2,
+    },
+
+    // Submission
+    {
+        'area': 'Submission',
+        'prog': 3,
+        'habit': 'Practice self-bondage rope body ties 3 times per week',
+        'recharge': 7,
+        'charges': 3,
+        'cooldown': 1,
     },
 
     // Chastity

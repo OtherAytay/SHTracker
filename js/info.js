@@ -48,16 +48,17 @@ var previews = true;
 const initEnabledAreas = { "Feminine Wear": true, Makeup: true, Hygiene: true, Shaving: true, "Nail Care": true, Plugging: true, Submission: true, Chastity: true, Exercise: true, Diet: true};
 var enabledAreas = initEnabledAreas;
 const initSkipped = { "Feminine Wear": [], Makeup: [], Hygiene: [], Shaving: [], "Nail Care": [], Plugging: [], Submission: [], Chastity: [], Exercise: [], Diet: []};
-var skipped = initSkipped
+var skipped = initSkipped;
 const initAreaDiscretion = { "Feminine Wear": "Default", Makeup: "Default", Hygiene: "Default", Shaving: "Default", "Nail Care": "Default", Plugging: "Default", Submission: "Default", Chastity: "Default", Exercise: "Default", Diet: "Default"};
-var areaDiscretion = initAreaDiscretion
+var areaDiscretion = initAreaDiscretion;
 var allocPoints = 1;
 var allocInterval = 1; // 1: 1 day, 2: 2 days, 3: 3 days, 4: 7 days, 5: 14 days
 var lastAlloc = false;
 var allocsRemaining = allocPoints;
-var dailyTrackers = {}
-var periodicTrackers = {}
-var dailyResetTime = 24 // default to next midnight
+var constantTrackers = {};
+var dailyTrackers = {};
+var periodicTrackers = {};
+var dailyResetTime = 24; // default to next midnight
 var nextReset = null;
 
 function allocatePoint(area) {
@@ -275,10 +276,10 @@ function getFemWear(level) {
             return "Wear a bra at all times.";
             break;
         case 8:
-            return "Wear women's jewelry while not sleeping.";
+            return "Wear a feminine top and bottom while not sleeping.";
             break;
         case 9:
-            return "Wear a feminine top and bottom while not sleeping.";
+            return "Wear women's jewelry while not sleeping.";
             break;
         case 10:
             return "Wear breast forms while not sleeping."
