@@ -49,6 +49,8 @@ const initEnabledAreas = { "Feminine Wear": true, Makeup: true, Hygiene: true, S
 var enabledAreas = initEnabledAreas;
 const initSkipped = { "Feminine Wear": [], Makeup: [], Hygiene: [], Shaving: [], "Nail Care": [], Plugging: [], Submission: [], Chastity: [], Exercise: [], Diet: []};
 var skipped = initSkipped
+const initAreaDiscretion = { "Feminine Wear": "Default", Makeup: "Default", Hygiene: "Default", Shaving: "Default", "Nail Care": "Default", Plugging: "Default", Submission: "Default", Chastity: "Default", Exercise: "Default", Diet: "Default"};
+var areaDiscretion = initAreaDiscretion
 var allocPoints = 1;
 var allocInterval = 1; // 1: 1 day, 2: 2 days, 3: 3 days, 4: 7 days, 5: 14 days
 var lastAlloc = false;
@@ -156,13 +158,24 @@ function getAvailableAreas() {
 /* --- Helper Functions --- */
 
 function getDiscretionBoundaries() {
-    if (discretion == "Private") {
-        return private_bounds;
-    } else if (discretion == "Discrete") {
-        return discrete_bounds;
-    } else { // discretion is public
-        return public_bounds;
+    custom_bounds = {}
+
+    for (const area of areaNames) {
+        if (areaDiscretion[area] == "Default") {
+            disc = discretion
+        } else {
+            disc = areaDiscretion[area]
+        }
+
+        if (disc == "Private") {
+            custom_bounds[area] =  private_bounds[area];
+        } else if (disc == "Discrete") {
+            custom_bounds[area] =  discrete_bounds[area];
+        } else { // discretdiscion is public
+            custom_bounds[area] =  public_bounds[area];
+        }
     }
+    return custom_bounds    
 }
 
 function determineBenchmark() {
@@ -175,7 +188,7 @@ function determineBenchmark() {
         var targetBench = benches[benchIdx]
         for (var i = 0; i < numAreas; i++) {
             area = areaNames[i]
-            if (prog[area] != getDiscretionBoundaries()[area] && enabledAreas[area] && prog[area] < targetBench[area]) {
+            if (prog[area] != getDiscretionBoundaries(area)[area] && enabledAreas[area] && prog[area] < targetBench[area]) {
                 stepUp = false;
                 break;
             }

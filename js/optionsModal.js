@@ -2,9 +2,9 @@ function displayModal(area) {
     modalElem = document.getElementById('areaOptionsModal')
     ReactDOM.unmountComponentAtNode(modalElem)
     ReactDOM.render(areaOptionsModal(area), modalElem, function () {
-        for (var i = 1; i <= public_bounds[area]; i++) {
-            document.getElementById('skip' + i).checked = skipped[area].includes(i)
-        }
+        // for (var i = 1; i <= public_bounds[area]; i++) {
+        //     document.getElementById('skip' + i).checked = skipped[area].includes(i)
+        // }
     })
     modal = new bootstrap.Modal(modalElem)
     modal.show()
@@ -22,6 +22,7 @@ function areaOptionsModal(area) {
                     id: 'skip' + i,
                     class: 'btn-check',
                     type: 'checkbox',
+                    defaultChecked: skipped[area].includes(i),
                     onChange: () => { setAreaOptions(area) }
                 }
             ),
@@ -76,9 +77,95 @@ function areaOptionsModal(area) {
                                 { class: 'btn-group', role: 'group' },
                                 skips
                             )
+                        ),
+                        React.createElement('h3', { class: 'text-center fs-5 mb-0' }, "Discretion"),
+                        React.createElement('small', null, "Use a custom discretion rule for this area."),
+                        React.createElement(
+                            'div',
+                            { class: 'overflow-scroll pb-2' },
+                            React.createElement(
+                                'input',
+                                {
+                                    type: 'radio',
+                                    class: 'btn-check',
+                                    name: 'area-discretion',
+                                    defaultChecked: areaDiscretion[area] == "Default",
+                                    id: 'area-default',
+                                    onClick: () => { setAreaOptions(area) }
+                                }
+                            ),
+                            React.createElement(
+                                'label',
+                                {
+                                    class: 'btn btn-outline-secondary',
+                                    for: 'area-default',
+                                },
+                                "Default"
+                            ),
+                            React.createElement(
+                                'div',
+                                { class: 'btn-group ms-2', role: 'group' },
+                                React.createElement(
+                                    'input',
+                                    {
+                                        type: 'radio',
+                                        class: 'btn-check',
+                                        name: 'area-discretion',
+                                        defaultChecked: areaDiscretion[area] == "Private",
+                                        id: 'area-private',
+                                        onClick: () => { setAreaOptions(area) }
+                                    }
+                                ),
+                                React.createElement(
+                                    'label',
+                                    {
+                                        class: 'btn btn-outline-private',
+                                        for: 'area-private',
+                                    },
+                                    "Private"
+                                ),
+                                React.createElement(
+                                    'input',
+                                    {
+                                        type: 'radio',
+                                        class: 'btn-check',
+                                        name: 'area-discretion',
+                                        defaultChecked: areaDiscretion[area] == "Discrete",
+                                        id: 'area-discrete',
+                                        onClick: () => { setAreaOptions(area) }
+                                    }
+                                ),
+                                React.createElement(
+                                    'label',
+                                    {
+                                        class: 'btn btn-outline-discrete',
+                                        for: 'area-discrete',
+                                    },
+                                    "Discrete"
+                                ),
+                                React.createElement(
+                                    'input',
+                                    {
+                                        type: 'radio',
+                                        class: 'btn-check',
+                                        name: 'area-discretion',
+                                        defaultChecked: areaDiscretion[area] == "Public",
+                                        id: 'area-public',
+                                        onClick: () => { setAreaOptions(area) }
+                                    }
+                                ),
+                                React.createElement(
+                                    'label',
+                                    {
+                                        class: 'btn btn-outline-public',
+                                        for: 'area-public',
+                                    },
+                                    "Public"
+                                )
+                            ),
                         )
                     )
-                ),
+                )
             )
         )
     )

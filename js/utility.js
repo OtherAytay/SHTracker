@@ -27,6 +27,7 @@ function saveLocal() {
     localStorage["SHTracker-dailyResetTime"] = dailyResetTime;
     localStorage["SHTracker-nextReset"] = nextReset;
     localStorage['SHTracker-skipped'] = JSON.stringify(skipped)
+    localStorage['SHTracker-areaDiscretion'] = JSON.stringify(areaDiscretion)
 }
 
 function loadLocal() {
@@ -46,6 +47,7 @@ function loadLocal() {
         dailyResetTime = JSON.parse(localStorage["SHTracker-dailyResetTime"])
         if (localStorage["SHTracker-nextReset"] != "null") { nextReset = new Date(localStorage["SHTracker-nextReset"])}
         skipped = JSON.parse(localStorage["SHTracker-skipped"])
+        areaDiscretion = JSON.parse(localStorage["SHTracker-areaDiscretion"])
     } else {
         userDataFlag = false;
         saveLocal(); // Create fresh save using defaults
@@ -77,13 +79,14 @@ function clearSave() {
     localStorage.removeItem("SHTracker-periodicTrackers");
     localStorage.removeItem("SHTracker-dailyResetTime");
     localStorage.removeItem("SHTracker-nextReset");
+    localStorage.removeItem("SHTracker-areaDiscretion");
 
     // Reset to defaults
-    prog = { "Feminine Wear": 0, Makeup: 0, Hygiene: 0, Shaving: 0, "Nail Care": 0, Plugging: 0, Submission: 0, Chastity: 0, Exercise: 0, Diet: 0 };
+    prog = initProg;
     discretion = "Private";
     benchmarked = true;
     random = false;
-    enabledAreas = { "Feminine Wear": true, Makeup: true, Hygiene: true, Shaving: true, "Nail Care": true, Plugging: true, Submission: true, Chastity: true, Exercise: true, Diet: true};
+    enabledAreas = initEnabledAreas;
     allocPoints = 1;
     allocInterval = 1; // 1: 1 day, 2: 2 days, 3: 3 days, 4: 7 days, 5: 14 days
     lastAlloc = false;
@@ -93,6 +96,8 @@ function clearSave() {
     dailyResetTime = 24;
     newReset();
     updateOptionElements();
+    skipped = initSkipped;
+    areaDiscretion = initAreaDiscretion;
 }
 
 function exportSave() {
@@ -199,9 +204,21 @@ function setAreaOptions(area) {
             skipped[area].push(i)
         }
     }
+
+    if (document.getElementById('area-default').checked) {
+        areaDiscretion[area] = "Default";
+    } else if (document.getElementById('area-private').checked) {
+        areaDiscretion[area] = "Private";
+    } else if (document.getElementById('area-discrete').checked) {
+        areaDiscretion[area] = "Discrete";
+    } else {
+        areaDiscretion[area] = "Public";
+    }
+    
     ReactDOM.render(habitList({area: area, prog: public_bounds[area]}), document.getElementById('optionsHabitPreview'))
 
     localStorage['SHTracker-skipped'] = JSON.stringify(skipped)
+    localStorage['SHTracker-areaDiscretion'] = JSON.stringify(areaDiscretion)
 }
 
 function updateOptionElements() {
