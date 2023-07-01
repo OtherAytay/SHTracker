@@ -280,6 +280,18 @@ function updateOptionElements() {
     document.getElementById('alloc-interval').innerHTML = intText;
 }
 
+// return the next reset given a time and interval
+function calcReset(last, interval) {
+    var lastReset = new Date(last); lastReset.setHours(dailyResetTime); lastReset.setMinutes(0); lastReset.setSeconds(0)
+
+    var nextReset = new Date(lastReset)
+    if (lastAlloc < lastReset) { // last allocation occured before the reset on its day
+        interval--
+    }
+    nextReset.setDate(nextReset.getDate() + interval )
+    return nextReset
+}
+
 // returns boolean for whether enough time has passed to allocate points.
 function isAllocTime() {
     if (allocInterval == 0) {
@@ -294,13 +306,7 @@ function isAllocTime() {
         case 4: interval *= 7; break;
         case 5: interval *= 14; break;
     }
-    var lastAllocReset = new Date(lastAlloc); lastAllocReset.setHours(dailyResetTime); lastAllocReset.setMinutes(0); lastAllocReset.setSeconds(0)
-
-    var nextAlloc = new Date(lastAllocReset)
-    if (lastAlloc < lastAllocReset) { // last allocation occured before the reset on its day
-        interval--
-    }
-    nextAlloc.setDate(nextAlloc.getDate() + interval )
+    nextAlloc = calcReset(lastAlloc, interval)
 
     return nextAlloc <= (new Date());
 }
@@ -322,13 +328,7 @@ function setAllocState() {
             case 4: interval *= 7; break;
             case 5: interval *= 14; break;
         }
-        var lastAllocReset = new Date(lastAlloc); lastAllocReset.setHours(dailyResetTime); lastAllocReset.setMinutes(0); lastAllocReset.setSeconds(0)
-
-        var nextAlloc = new Date(lastAllocReset)
-        if (lastAlloc < lastAllocReset) { // last allocation occured before the reset on its day
-            interval--
-        }
-        nextAlloc.setDate(nextAlloc.getDate() + interval)
+        nextAlloc = calcReset(lastAlloc, interval)
     
         document.getElementById("alloc-areas").innerHTML = "Your next allocation becomes available: " + nextAlloc.toLocaleString();
     }
