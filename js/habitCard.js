@@ -86,10 +86,10 @@ function habitList({ area, prog }) {
         // Discretion bounds
         if (habit <= public_bounds[area]) {
             currDisc = 'public'
-        } 
+        }
         if (habit <= discrete_bounds[area]) {
-            currDisc = 'discrete' 
-        } 
+            currDisc = 'discrete'
+        }
         if (habit <= private_bounds[area]) {
             currDisc = 'private'
         }
@@ -105,7 +105,7 @@ function habitList({ area, prog }) {
         ),)
 
         // Benchmark bounds
-        
+
         var currBench = null
         if (habit == bench1[area]) {
             currBench = 'Benchmark #1'
@@ -151,11 +151,25 @@ function habitList({ area, prog }) {
 
     // Next Habit Preview
     var preview = null
+    makePreview:
     if (previews && prog < public_bounds[area]) {
         var habit = prog + 1
         while (skipped[area].includes(habit)) {
             if (habit + 1 <= public_bounds[area]) habit++
             continue
+        }
+        // Don't preview outside of discretion
+        if (habit <= public_bounds[area]) {
+            currDisc = 'public'
+        }
+        if (habit <= discrete_bounds[area]) {
+            currDisc = 'discrete'
+        }
+        if (habit <= private_bounds[area]) {
+            currDisc = 'private'
+        }
+        if ((currDisc == 'public' && disc != "Public") || (currDisc == 'discrete' && disc == 'Private')) {
+            break makePreview
         }
         habitContent = []
 
@@ -176,10 +190,10 @@ function habitList({ area, prog }) {
         // Discretion Badge
         if (habit <= public_bounds[area]) {
             currDisc = 'public'
-        } 
+        }
         if (habit <= discrete_bounds[area]) {
             currDisc = 'discrete'
-        } 
+        }
         if (habit <= private_bounds[area]) {
             currDisc = 'private'
         }
@@ -214,10 +228,10 @@ function habitList({ area, prog }) {
         // List group item
         preview = React.createElement(
             'ul',
-            {class: 'list-group'},
+            { class: 'list-group' },
             React.createElement(
                 'li',
-                { class: "list-group-item border-secondary"},
+                { class: "list-group-item border-secondary" },
                 habitContent
             )
         )
