@@ -36,7 +36,7 @@ function initializeTrackers() {
                         dailyTrackers[id]['habit'] = habit
                         dailyTrackers[id]['active'] = false
                     }
-                } else if (!('complete' in constantTrackers[id]) || dailyTrackers[id]['habit']['prog'] < habit.prog || nextReset < (new Date())) {
+                } else if (!('complete' in dailyTrackers[id]) || dailyTrackers[id]['habit']['prog'] < habit.prog || nextReset < (new Date())) {
                     dailyTrackers[id]['complete'] = false
                     dailyTrackers[id]['habit'] = habit
                 }
@@ -66,7 +66,6 @@ function initializeTrackers() {
                                 periodicTrackers[id]['ready'] = true
                             }
                         }
-                        
                     }
                 }  
             }
