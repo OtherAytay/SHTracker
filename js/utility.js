@@ -281,15 +281,26 @@ function updateOptionElements() {
 }
 
 // return the next reset given a time and interval
-function calcReset(last, interval) {
+function calcReset(last, interval, start=lastAlloc) {
     var lastReset = new Date(last); lastReset.setHours(dailyResetTime); lastReset.setMinutes(0); lastReset.setSeconds(0)
 
     var nextReset = new Date(lastReset)
-    if (lastAlloc < lastReset) { // last allocation occured before the reset on its day
+    if (start < lastReset) { // last allocation occured before the reset on its day
         interval--
     }
     nextReset.setDate(nextReset.getDate() + interval )
     return nextReset
+}
+
+function calcResetsSince(last) {
+    var lastReset = new Date(last); lastReset.setHours(dailyResetTime); lastReset.setMinutes(0); lastReset.setSeconds(0)
+    var todayReset = new Date(); todayReset.setHours(dailyResetTime); todayReset.setMinutes(0); todayReset.setSeconds(0)
+
+    var interval = (todayReset.getTime() - lastReset.getTime()) / (1000 * 60 * 60 * 24)
+    if ((new Date()) < todayReset) { // currently before reset
+        interval--
+    }
+    return Math.floor(Math.max(interval, 0))
 }
 
 // returns boolean for whether enough time has passed to allocate points.

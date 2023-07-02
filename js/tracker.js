@@ -59,18 +59,23 @@ function initializeTrackers() {
                     }
                     periodicTrackers[id]['lastCharge'] = null
                 } else if (nextReset < (new Date())) {
+                    resets = calcResetsSince(nextReset)
                     for (var i = 0; i < habit.charges; i++) {
-                        if (periodicTrackers[id]['recharge'] > 0) {
-                            periodicTrackers[id]['recharge']--;
-                            if (periodicTrackers[id]['recharge'] == 0) {
-                                periodicTrackers[id]['ready'] = true
+                        if (periodicTrackers[id]['recharge'][i] > 0) {
+                            periodicTrackers[id]['recharge'][i] = Math.max(periodicTrackers[id]['recharge'][i] - resets, 0);
+                            if (periodicTrackers[id]['recharge'][i] == 0) {
+                                periodicTrackers[id]['ready'][i] = true
                             }
                         }
                     }
-                }  
+                }
             }
         }
     }
+    if (nextReset < (new Date())) {
+        newReset()
+    }
+
     localStorage['SHTracker-dailyTrackers'] = JSON.stringify(dailyTrackers)
     localStorage['SHTracker-periodicTrackers'] = JSON.stringify(periodicTrackers)
 }
@@ -288,7 +293,7 @@ function charge(id, tracker) {
             {
                 id: 'button_' + id,
                 class: 'text-white fw-semibold btn btn-' + areaCoding(habit.area),
-                disabled: !(tracker['ready'].reduce((acc, i) => acc || i)),
+                disabled: !(tracker['ready'].reduce((acc, i) => acc || i)) || (new Date()) < calcReset(tracker['lastCharge'], tracker['habit'].cooldown, tracker['lastCharge']),
                 onClick: () => { manageCharge(id, tracker) }
             },
             React.createElement('i', { class: 'bi bi-dash' }),
@@ -306,9 +311,10 @@ function manageCharge(id, tracker) {
     tracker['lastCharge'] = (new Date())
 
     charges.innerText = tracker['ready'].reduce((acc, i) => i == true ? ++acc : acc, 0)
-    if (!tracker['ready'].reduce((acc, i) => acc || i)) {
+    if (tracker['habit'].cooldown > 0 || !tracker['ready'].reduce((acc, i) => acc || i)) {
         button.disabled = true
     }
+    localStorage['SHTracker-periodicTrackers'] = JSON.stringify(periodicTrackers)
 }
 
 function completion(id, tracker) {

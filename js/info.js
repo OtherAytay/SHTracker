@@ -7,7 +7,7 @@ const bench3 = { "Feminine Wear": 7, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Ca
 const bench4 = { "Feminine Wear": 10, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 8, Submission: 9, Chastity: 8, Exercise: 8, Diet: 8 };
 
 // Encode discretion boundaries
-const private_bounds = { "Feminine Wear": 5, Makeup: 4, Hygiene: 5, Shaving: 2, "Nail Care": 1, Plugging: 5, Submission: 7, Chastity: 6, Exercise: 8, Diet: 8 };
+const private_bounds = { "Feminine Wear": 5, Makeup: 4, Hygiene: 5, Shaving: 2, "Nail Care": 1, Plugging: 6, Submission: 7, Chastity: 6, Exercise: 8, Diet: 8 };
 const discrete_bounds = { "Feminine Wear": 6, Makeup: 4, Hygiene: 5, Shaving: 3, "Nail Care": 2, Plugging: 8, Submission: 8, Chastity: 7, Exercise: 8, Diet: 8 };
 const public_bounds = { "Feminine Wear": 10, Makeup: 6, Hygiene: 5, Shaving: 4, "Nail Care": 4, Plugging: 8, Submission: 9, Chastity: 8, Exercise: 8, Diet: 8 };
 
