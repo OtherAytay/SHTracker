@@ -1,7 +1,8 @@
 function initializeTrackers() {
     if (nextReset == null) { newReset() }
 
-    for (const [area, p] of Object.entries(prog)) {
+    for (const [area, areaProg] of Object.entries(prog)) {
+        var p = areaProg
         if (enabledAreas[area]) {
             for (const skip of skipped[area]) {
                 if (p >= skip) { p++ }
