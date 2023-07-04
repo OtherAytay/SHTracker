@@ -175,7 +175,7 @@ function timer(id, tracker) {
             {
                 id: 'button_' + id,
                 class: 'text-white fw-semibold btn btn-' + areaCoding(habit.area),
-                hidden: tracker['active'],
+                hidden: tracker['active'] || tracker['remaining'] <= 0,
                 onClick: () => { manageTimer(id, tracker) }
             },
             React.createElement('i', { class: 'bi bi-play-fill' }),
