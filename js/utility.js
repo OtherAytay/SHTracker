@@ -103,7 +103,8 @@ function clearSave() {
     allocInterval = 1; // 1: 1 day, 2: 2 days, 3: 3 days, 4: 7 days, 5: 14 days
     lastAlloc = false;
     allocsRemaining = allocPoints;
-    dailyTrackers = {}
+    constantTrackers = {};
+    dailyTrackers = {};
     periodicTrackers = {};
     dailyResetTime = 24;
     newReset();
