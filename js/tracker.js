@@ -8,6 +8,8 @@ function initializeTrackers() {
                 if (p >= skip) { p++ }
             }
             for (const habit of Constant.filter((i) => i.area == area && i.prog <= p)) {
+                if (skipped[area].includes(habit.prog)) { continue }
+                
                 channel = habit.channel || 1
                 if (habit.nullify) {
                     delete constantTrackers[id]
@@ -22,6 +24,8 @@ function initializeTrackers() {
                 }
             }
             for (const habit of Daily.filter((i) => i.area == area && i.prog <= p)) {
+                if (skipped[area].includes(habit.prog)) { continue }
+
                 channel = habit.channel || 1
                 if (habit.nullify) {
                     delete dailyTrackers[id]
@@ -43,6 +47,8 @@ function initializeTrackers() {
                 }
             }
             for (const habit of Periodic.filter((i) => i.area == area && i.prog <= p)) {
+                if (skipped[area].includes(habit.prog)) { continue }
+
                 channel = habit.channel || 1
                 if (habit.nullify) {
                     delete dailyTrackers[id]
