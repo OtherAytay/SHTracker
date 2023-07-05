@@ -133,6 +133,8 @@ function generateTrackers() {
 function habitTracker(id, tracker) {
     habit = tracker.habit
 
+    if (!enabledAreas[habit.area] || skipped[habit.area].includes(habit.prog)) { return }
+
     tracking = null
     if (habit.type == 'timer') {
         tracking = timer(id, tracker)
