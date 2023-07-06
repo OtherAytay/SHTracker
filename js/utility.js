@@ -71,8 +71,6 @@ function regenTrackers() {
     dailyTrackers = {}
     periodicTrackers = {}
     saveLocal()
-
-    generateTrackers()
 }
 
 function clearSaveConfirm(src) {
