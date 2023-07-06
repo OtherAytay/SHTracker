@@ -65,6 +65,7 @@ function initializeTrackers() {
                         periodicTrackers[id]['recharge'].push(0)
                     }
                     periodicTrackers[id]['lastCharge'] = null
+                    periodicTrackers[id]['habit'] = habit
                 } else if (nextReset < (new Date())) {
                     resets = calcResetsSince(nextReset)
                     for (var i = 0; i < habit.charges; i++) {
@@ -83,6 +84,7 @@ function initializeTrackers() {
         newReset()
     }
 
+    localStorage['SHTracker-constantTrackers'] = JSON.stringify(constantTrackers)
     localStorage['SHTracker-dailyTrackers'] = JSON.stringify(dailyTrackers)
     localStorage['SHTracker-periodicTrackers'] = JSON.stringify(periodicTrackers)
 }
@@ -857,16 +859,14 @@ const Periodic = [
         'recharge': 7,
         'charges': 3,
         'cooldown': 2,
-        'channel': 1,
     },
     {
         'area': 'Shaving',
         'prog': 2,
-        'habit': 'Shave chest and back 1 time per week',
+        'habit': 'Shave chest, groin, and butt 3 times per week',
         'recharge': 7,
-        'charges': 1,
-        'cooldown': 1,
-        'channel': 2,
+        'charges': 3,
+        'cooldown': 2,
     },
     {
         'area': 'Shaving',

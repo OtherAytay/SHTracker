@@ -315,13 +315,13 @@ function getHygiene(level) {
             return "Use facial cleanser every day. Recommended at end of or after shower.";
             break;
         case 2:
-            return "Use face and hand moisturizer every day. Recommended at end of or after shower.";
+            return "Use face and hand moisturizer every day. Recommended after shower.";
             break;
         case 3:
             return "Use face exfoliating scrub 3 times per week. Recommended at end of or after shower.";
             break;
         case 4:
-            return "Use full-body moisturizer 2 times per week. Recommended at end of or after shower.";
+            return "Use full-body moisturizer 2 times per week. Recommended after shower.";
             break;
         case 5:
             return "Use eye cream every day. Recommended at night before going to bed.";
