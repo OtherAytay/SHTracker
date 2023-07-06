@@ -66,6 +66,15 @@ function assimilateSave() {
     }
 }
 
+function regenTrackers() {
+    constantTrackers = {}
+    dailyTrackers = {}
+    periodicTrackers = {}
+    saveLocal()
+
+    generateTrackers()
+}
+
 function clearSaveConfirm(src) {
     if (src.checked) { // first click
         src.labels[0].innerText = "Confirm"
