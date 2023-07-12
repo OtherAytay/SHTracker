@@ -388,7 +388,7 @@ function manageTimer(id, tracker) {
 function updateTimer(id, tracker) {
     tracker['remaining'] -= (new Date()).getTime() - tracker['start']
     tracker['start'] = (new Date()).getTime()
-    time = document.getElementById('time__timer' + id);
+    time = document.getElementById('time_timer_' + id);
     if (tracker['remaining'] <= 0) {
         manageTimer(id, tracker)
     } else {
