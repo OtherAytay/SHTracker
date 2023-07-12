@@ -440,7 +440,7 @@ function charge(id, tracker) {
 }
 
 function manageCharge(id, tracker) {
-    button = document.querySelector('#button_' + id)
+    button = document.querySelector('#button_charge_' + id)
     charges = document.querySelector('#charges_' + id)
 
     usedCharge = tracker['ready'].indexOf(true)
