@@ -146,14 +146,14 @@ function habitTracker(id, tracker) {
     if (!enabledAreas[habit.area] || skipped[habit.area].includes(habit.prog)) { return }
 
     tracking = null
-    if (habit.type == 'timer') {
+    if (habit.type == 'constant') {
+        tracking = constant(id, tracker)
+    } else if (habit.type == 'timer') {
         tracking = timer(id, tracker)
     } else if (habit.type == 'completion') {
         tracking = completion(id, tracker)
-    } else if (habit.charges) {
-        tracking = charge(id, tracker)
     } else {
-        tracking = constant(id, tracker)
+        tracking = charge(id, tracker)
     }
 
     return React.createElement(
