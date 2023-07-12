@@ -181,7 +181,7 @@ function constant(id, tracker) {
     return React.createElement(
         'li',
         {
-            id: 'timer_constant_' + id,
+            id: 'constant_' + id,
             class: 'list-group-item col-sm-4 col-12 text-center border-' + areaCoding(habit.area)
         },
         React.createElement(
@@ -303,7 +303,7 @@ function timer(id, tracker) {
         React.createElement(
             'p',
             {
-                id: 'time_' + id,
+                id: 'time_timer_' + id,
                 class: 'text-center fw-semibold fs-4 mb-1'
             },
             tracker['remaining'] > 0 ? formatTime(tracker['remaining']) : 'Complete'
@@ -355,8 +355,8 @@ function timer(id, tracker) {
 }
 
 function manageTimer(id, tracker) {
-    button = document.getElementById('button_' + id)
-    progress = document.getElementById('progress_' + id);
+    button = document.getElementById('button_timer_' + id)
+    progress = document.getElementById('progress_timer_' + id);
 
     if (tracker['remaining'] <= 0) {
         tracker['intervalID'] = clearInterval(tracker['intervalID'])
@@ -388,7 +388,7 @@ function manageTimer(id, tracker) {
 function updateTimer(id, tracker) {
     tracker['remaining'] -= (new Date()).getTime() - tracker['start']
     tracker['start'] = (new Date()).getTime()
-    time = document.getElementById('time_' + id);
+    time = document.getElementById('time__timer' + id);
     if (tracker['remaining'] <= 0) {
         manageTimer(id, tracker)
     } else {
