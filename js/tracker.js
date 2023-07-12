@@ -18,9 +18,13 @@ function initializeTrackers() {
 
                 id = areaCodeMapping[area] + '_' + channel
                 constantTrackers[id] = constantTrackers[id] || { 'habit': habit }
-                if (!('complete' in constantTrackers[id]) || constantTrackers[id]['habit']['prog'] < habit.prog || nextReset < (new Date())) {
-                    constantTrackers[id]['complete'] = false
+                if (!('elapsed' in constantTrackers[id]) || constantTrackers[id]['habit']['prog'] < habit.prog) {
+                    constantTrackers[id]['elapsed'] = 0
                     constantTrackers[id]['habit'] = habit
+                    constantTrackers[id]['active'] = false
+                } else if (nextReset < (new Date()) && constantTrackers[id]['start'] < nextReset && constantTrackers[id]['active']) {
+                    constantTrackers[id]['elapsed'] = (new Date()).getTime() - nextReset.getTime()
+                    constantTrackers[id]['start'] = new Date()
                 }
             }
             for (const habit of Daily.filter((i) => i.area == area && i.prog <= p)) {
@@ -120,6 +124,10 @@ function generateTrackers() {
             }
         }
 
+        for (const id of Object.keys(constantTrackers).filter((key) => constantTrackers[key].active)) {
+            constantTrackers[id]['intervalID'] = setInterval(updateConstant, 1000, id, constantTrackers[id])
+        }
+
         for (const id of Object.keys(dailyTrackers).filter((key) => dailyTrackers[key].active)) {
             dailyTrackers[id]['intervalID'] = setInterval(updateTimer, 1000, id, dailyTrackers[id])
         }
@@ -142,8 +150,10 @@ function habitTracker(id, tracker) {
         tracking = timer(id, tracker)
     } else if (habit.type == 'completion') {
         tracking = completion(id, tracker)
-    } else {
+    } else if (habit.charges) {
         tracking = charge(id, tracker)
+    } else {
+        tracking = constant(id, tracker)
     }
 
     return React.createElement(
@@ -162,6 +172,123 @@ function habitTracker(id, tracker) {
         ),
         tracking
     )
+}
+
+function constant(id, tracker) {
+    habit = tracker.habit
+    width = (tracker['elapsed'] / (24 * 60 * 60 * 1000)) * 100;
+
+    return React.createElement(
+        'li',
+        {
+            id: 'timer_constant_' + id,
+            class: 'list-group-item col-sm-4 col-12 text-center border-' + areaCoding(habit.area)
+        },
+        React.createElement(
+            'p',
+            {
+                id: 'time_constant_' + id,
+                class: 'text-center fw-semibold fs-4 mb-1'
+            },
+            formatTime(tracker['elapsed'])
+        ),
+        React.createElement(
+            'button',
+            {
+                id: 'button_constant_' + id,
+                class: 'text-white fw-semibold btn btn-' + areaCoding(habit.area),
+                hidden: tracker['active'],
+                onClick: () => { manageConstant(id, tracker) }
+            },
+            React.createElement('i', { class: 'bi bi-play-fill' }),
+            'Start'
+        ),
+        React.createElement(
+            'div',
+            {
+                class: 'align-items-center ' + (tracker['active'] ? 'd-flex' : ''),
+                hidden: !tracker['active']
+            },
+            React.createElement(
+                'div',
+                {
+                    class: 'progress flex-fill me-2',
+                    role: 'progressbar',
+                    style: { height: '2rem' }
+                },
+                React.createElement(
+                    'div',
+                    {
+                        id: 'progress_constant_' + id,
+                        class: 'progress-bar progress-bar-striped progress-bar-animated text-white fw-bold fs-6 text-end ' + 
+                            (width < 50 ? 'bg-danger' : width < 80 ? 'bg-warning' : 'bg-success'),
+                        style: { width: width + '%' }
+                    },
+                    React.createElement('span', {class: 'me-1'}, Math.floor(width) * 100 + '%'),
+                    
+                )
+            ),
+            React.createElement(
+                'button',
+                {
+                    id: 'button_constant_' + id,
+                    class: 'fw-semibold btn btn-outline-' + areaCoding(habit.area),
+                    onClick: () => { manageConstant(id, tracker) }
+                },
+                React.createElement('i', { class: 'bi bi-pause-fill' }),
+            ),
+        )
+    )
+}
+
+function manageConstant(id, tracker) {
+    button = document.getElementById('button_constant_' + id)
+    progress = document.getElementById('progress_constant_' + id);
+
+    if (progress.parentElement.parentElement.hidden) { // start timer
+        tracker['start'] = (new Date()).getTime()
+        tracker['active'] = true
+        tracker['intervalID'] = setInterval(updateConstant, 1000, id, tracker)
+        progress.parentElement.parentElement.classList.add('d-flex');
+        progress.parentElement.parentElement.hidden = false;
+        button.hidden = true;
+    } else { // pause timer
+        tracker['elapsed'] += (new Date()).getTime() - tracker['start']
+        tracker['active'] = false
+        progress.parentElement.parentElement.hidden = true;
+        progress.parentElement.parentElement.classList.remove('d-flex');
+        button.hidden = false;
+        tracker['intervalID'] = clearInterval(tracker['intervalID']);
+    }
+
+    localStorage['SHTracker-constantTrackers'] = JSON.stringify(constantTrackers)
+}
+
+function updateConstant(id, tracker) {
+    tracker['elapsed'] += (new Date()).getTime() - tracker['start']
+    tracker['start'] = (new Date()).getTime()
+    time = document.getElementById('time_constant_' + id);
+    time.innerText = formatTime(tracker['elapsed']);
+
+    progress = document.getElementById('progress_constant_' + id);
+    width = (tracker['elapsed'] / (24 * 60 * 60 * 1000)) * 100
+    progress.innerHTML = "<span class='me-1'>" + Math.floor(width) + "%</span>"
+    progress.style.width = width + '%'
+    if (width < 50) {
+        progress.classList.add('bg-danger')
+        progress.classList.remove('bg-warning')
+        progress.classList.remove('bg-success')
+    } else if (width < 80) {
+        progress.classList.remove('bg-danger')
+        progress.classList.add('bg-warning')
+        progress.classList.remove('bg-success')
+    } else {
+        progress.classList.remove('bg-danger')
+        progress.classList.remove('bg-warning')
+        progress.classList.add('bg-success')
+    }
+
+    localStorage['SHTracker-constantTrackers'] = JSON.stringify(constantTrackers)
 }
 
 function timer(id, tracker) {
@@ -382,66 +509,66 @@ const Constant = [
         'area': 'Feminine Wear',
         'prog': 1,
         'habit': 'Wear panties at all times in private',
-        'type': 'completion',
+        'type': 'constant',
     },
     {
         'area': 'Feminine Wear',
         'prog': 2,
         'habit': 'Wear panties and a bra at all times in private',
-        'type': 'completion',
+        'type': 'constant',
     },
     {
         'area': 'Feminine Wear',
         'prog': 3,
         'habit': 'Wear a feminine top and bottom while not sleeping in private',
-        'type': 'completion',
+        'type': 'constant',
         'channel': 2
     },
     {
         'area': 'Feminine Wear',
         'prog': 4,
         'habit': 'Wear a feminine top and bottom, and women\'s jewelry while not sleeping in private',
-        'type': 'completion',
+        'type': 'constant',
         'channel': 2
     },
     {
         'area': 'Feminine Wear',
         'prog': 5,
         'habit': 'Wear breast forms while not sleeping in private',
-        'type': 'completion',
+        'type': 'constant',
         'channel': 3
     },
     {
         'area': 'Feminine Wear',
         'prog': 6,
         'habit': 'Wear panties at all times',
-        'type': 'completion',
+        'type': 'constant',
     },
     {
         'area': 'Feminine Wear',
         'prog': 7,
         'habit': 'Wear panties and a bra at all times in private',
-        'type': 'completion',
+        'type': 'constant',
     },
     {
         'area': 'Feminine Wear',
         'prog': 8,
         'habit': 'Wear a feminine top and bottom while not sleeping',
-        'type': 'completion',
+        'type': 'constant',
         'channel': 2
     },
     {
         'area': 'Feminine Wear',
         'prog': 9,
         'habit': 'Wear a feminine top and bottom, and women\'s jewelry while not sleeping',
-        'type': 'completion',
+        'type': 'constant',
         'channel': 2
     },
     {
         'area': 'Feminine Wear',
         'prog': 10,
         'habit': 'Wear breast forms while not sleeping',
-        'type': 'completion',
+        'type': 'constant',
         'channel': 3
     },
 
@@ -450,19 +577,19 @@ const Constant = [
         'area': 'Plugging',
         'prog': 5,
         'habit': 'Stay plugged while not sleeping in private',
-        'type': 'completion',
+        'type': 'constant',
     },
     {
         'area': 'Plugging',
         'prog': 6,
         'habit': 'Stay plugged while not sleeping in private',
-        'type': 'completion',
+        'type': 'constant',
     },
     {
         'area': 'Plugging',
         'prog': 8,
         'habit': 'Stay plugged at all times',
-        'type': 'completion',
+        'type': 'constant',
     },
 
     // Submission
@@ -470,39 +597,39 @@ const Constant = [
         'area': 'Submission',
         'prog': 1,
         'habit': 'Wear a light collar at all times in private',
-        'type': 'completion',
+        'type': 'constant',
     },
     {
         'area': 'Submission',
         'prog': 2,
         'habit': 'Wear light wrist and ankle cuffs at all times in private',
-        'type': 'completion',
+        'type': 'constant',
         'channel': 2
     },
     {
         'area': 'Submission',
         'prog': 5,
         'habit': 'Wear a heavy collar at all times in private',
-        'type': 'completion',
+        'type': 'constant',
     },
     {
         'area': 'Submission',
         'prog': 6,
         'habit': 'Wear heavy wrist and ankle cuffs at all times in private',
-        'type': 'completion',
+        'type': 'constant',
     },
     {
         'area': 'Submission',
         'prog': 8,
         'habit': 'Wear a day collar at all times in public',
-        'type': 'completion',
+        'type': 'constant',
         'channel': 3
     },
     {
         'area': 'Submission',
         'prog': 9,
         'habit': 'Wear a light collar at all times in public',
-        'type': 'completion',
+        'type': 'constant',
         'channel': 3
     },
 
@@ -511,19 +638,19 @@ const Constant = [
         'area': 'Chastity',
         'prog': 5,
         'habit': 'Stay in chastity while not sleeping in private',
-        'type': 'completion',
+        'type': 'constant',
     },
     {
         'area': 'Chastity',
         'prog': 6,
         'habit': 'Stay in chastity while not sleeping in private',
-        'type': 'completion',
+        'type': 'constant',
     },
     {
         'area': 'Chastity',
         'prog': 8,
         'habit': 'Stay in chastity at all times',
-        'type': 'completion',
+        'type': 'constant',
     },
 ]
 
