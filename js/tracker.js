@@ -311,7 +311,7 @@ function timer(id, tracker) {
         React.createElement(
             'button',
             {
-                id: 'button_' + id,
+                id: 'button_timer_' + id,
                 class: 'text-white fw-semibold btn btn-' + areaCoding(habit.area),
                 hidden: tracker['active'] || tracker['remaining'] <= 0,
                 onClick: () => { manageTimer(id, tracker) }
@@ -335,7 +335,7 @@ function timer(id, tracker) {
                 React.createElement(
                     'div',
                     {
-                        id: 'progress_' + id,
+                        id: 'progress_timer_' + id,
                         class: 'progress-bar progress-bar-striped progress-bar-animated bg-' + areaCoding(habit.area),
                         style: { width: (tracker['remaining'] / tracker['time']) * 100 + '%' }
                     }
@@ -344,7 +344,7 @@ function timer(id, tracker) {
             React.createElement(
                 'button',
                 {
-                    id: 'button_' + id,
+                    id: 'button_timer_' + id,
                     class: 'fw-semibold btn btn-outline-' + areaCoding(habit.area),
                     onClick: () => { manageTimer(id, tracker) }
                 },
@@ -429,7 +429,7 @@ function charge(id, tracker) {
         React.createElement(
             'button',
             {
-                id: 'button_' + id,
+                id: 'button_charge_' + id,
                 class: 'text-white fw-semibold btn btn-' + areaCoding(habit.area),
                 disabled: !(tracker['ready'].reduce((acc, i) => acc || i)) || (new Date()) < calcReset(tracker['lastCharge'], tracker['habit'].cooldown, tracker['lastCharge']),
                 onClick: () => { manageCharge(id, tracker) }
@@ -450,6 +450,7 @@ function manageCharge(id, tracker) {
 
     charges.innerText = tracker['ready'].reduce((acc, i) => i == true ? ++acc : acc, 0)
     if (tracker['habit'].cooldown > 0 || !tracker['ready'].reduce((acc, i) => acc || i)) {
+        console.log(button)
         button.disabled = true
     }
     localStorage['SHTracker-periodicTrackers'] = JSON.stringify(periodicTrackers)
