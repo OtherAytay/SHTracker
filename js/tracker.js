@@ -395,7 +395,7 @@ function updateTimer(id, tracker) {
         time.innerText = formatTime(tracker['remaining']);
     }
 
-    progress = document.getElementById('progress_' + id);
+    progress = document.getElementById('progress_timer_' + id);
     progress.style.width = (tracker['remaining'] / tracker['time']) * 100 + '%'
     localStorage['SHTracker-dailyTrackers'] = JSON.stringify(dailyTrackers)
 }
