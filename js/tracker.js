@@ -450,7 +450,6 @@ function manageCharge(id, tracker) {
 
     charges.innerText = tracker['ready'].reduce((acc, i) => i == true ? ++acc : acc, 0)
     if (tracker['habit'].cooldown > 0 || !tracker['ready'].reduce((acc, i) => acc || i)) {
-        console.log(button)
         button.disabled = true
     }
     localStorage['SHTracker-periodicTrackers'] = JSON.stringify(periodicTrackers)
