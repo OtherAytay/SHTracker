@@ -22,7 +22,7 @@ function initializeTrackers() {
                     constantTrackers[id]['elapsed'] = 0
                     constantTrackers[id]['habit'] = habit
                     constantTrackers[id]['active'] = false
-                } else if (nextReset < (new Date()) && constantTrackers[id]['start'] < nextReset && constantTrackers[id]['active']) {
+                } else if (nextReset < (new Date()) && constantTrackers[id]['start'] < nextReset) {
                     constantTrackers[id]['elapsed'] = (new Date()).getTime() - nextReset.getTime()
                     constantTrackers[id]['start'] = new Date()
                 }
